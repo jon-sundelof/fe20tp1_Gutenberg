@@ -1,0 +1,56 @@
+body{
+    background-color: grey;
+    padding: 0px;
+    margin: 0px;
+}
+
+.toolbar{
+    margin: 10px auto;
+    border: 1px solid black;
+    width: 100px;
+    height: 30px;
+
+    background:#f4f4f4;
+    border-radius: 5px;
+}
+
+.toolbar > ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    width: 80px;
+    padding: 0px;
+    margin: 10px auto;
+
+    
+}
+
+.url{
+    width: 500px;
+    height: 20px; 
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+.url > input{
+    width: 500px;
+    height: 20px; 
+    outline: none;
+}
+
+.editor{
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 700px;
+    width: 500px;
+    margin: 10px auto;
+    outline: none;
+    background:#f4f4f4;
+    padding: 5px;
+}
+
+
+
+.fas{
+    color: black;
+}
