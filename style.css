@@ -4,6 +4,10 @@ body{
     margin: 0px;
 }
 
+.hideMe{
+    display: none;
+}
+
 .toolbar{
     margin: 10px auto;
     border: 1px solid black;
@@ -53,4 +57,19 @@ body{
 
 .fas{
     color: black;
+}
+
+
+/* Following segment is styling for the control panel */
+
+.control-panel {
+    display:flex;
+    position: absolute;
+    flex-direction: column;
+    border: solid 1px black;
+    width: 15%;
+}
+
+.control-panel > button {
+    height: 15vh;
 }
