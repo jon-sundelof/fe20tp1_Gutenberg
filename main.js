@@ -18,7 +18,7 @@ btnAdd.addEventListener("click", () =>{
     let newDate = date.getHours() + ":" + ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes()) + ' / ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + ((date.getDate() < 10 ? '0' : '') + date.getDate());
 
     let html = `
-        <div class="editor">
+        <div class="editor" contenteditable="true">
 
         </div>
     `;
