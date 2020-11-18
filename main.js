@@ -1,14 +1,49 @@
 const note = document.querySelector(".editor");
+const content = document.querySelector(".content-wrapper");
+
 const btnSave = document.querySelector(".save");
-const content = document.querySelector(".content-wrapper")
-const btnAdd = document.querySelector(".add")
+const btnAdd = document.querySelector(".add");
+const btnPrint = document.querySelector(".print");
+
+
+
+load = () =>{
+    localStorage.getItem("savedNotes")
+    localStorage.getItem("noteText")
+}
+
+window.onload = load();
+
+
+//*En array som sparar anteckningar 
+let savedNotes = [];
 
 class Note{
-    constructor(title, author, date, text){
+    constructor(title, author, date, text, note){
         this.title = title,
         this.author = author,
         this.date = date,
-        this.text = text
+        this.text = text,
+        this.note = note
+    }
+
+    //*Metod för att printa
+    print(){
+        //*Tar in content från p och sparar det i pContent
+        let pContent = document.querySelector(".para").innerHTML;
+        let a = window.open("", "", "height=1000, width=800");
+        a.document.write("<html>");
+        a.document.write("<body>");
+        a.document.write(pContent);
+        a.document.write("</body></html>");
+        a.document.close();
+        a.print();
+    }
+
+    save(){
+        let pContent = document.querySelector(".para").innerHTML;
+        this.text = pContent;
+        localStorage.setItem("noteText", JSON.stringify(pContent))
     }
 }
 
@@ -17,20 +52,19 @@ btnAdd.addEventListener("click", () =>{
     const date = new Date()
     let newDate = date.getHours() + ":" + ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes()) + ' / ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + ((date.getDate() < 10 ? '0' : '') + date.getDate());
 
+    let i = 0;
     let html = `
-        <div class="editor" contenteditable="true">
-
+        <div class="editor note${i}">
+            <p contenteditable="true" class="para"></p>
         </div>
     `;
-
-    note1 = new Note("Nytt doc", "Jesper", newDate, "")
+    
     content.innerHTML += html;
+    note1 = new Note("Nytt doc", "Jesper", newDate, "")
+    
+    localStorage.setItem("savedNotes", JSON.stringify(note1))
     
 })
-
-//*En array som sparar anteckningar 
-let savedNotes = [];
-let page = 0;
 
 /* -----TEXTFORMATERING (bold, italic etc)----- */
 onclick = e => {
@@ -43,19 +77,17 @@ onclick = e => {
     }
 }
 
-btnSave.addEventListener("click", () =>{
-    
-    //*Sparar div i en array
-    savedNotes.push(note)
-    //*Sparar array i local storage
-    
-    localStorage.setItem("notes", savedNotes[page].innerText)
-    //++page;
-    
+btnPrint.addEventListener("click", ()=>{
+    note1.print()
 })
 
-let text = localStorage.getItem("notes")
-// note.innerText = text;
+btnSave.addEventListener("click", () =>{
+    let pContent = document.querySelector(".para").innerHTML;
+    note1.text = pContent;
+    note1.save();
+    localStorage.setItem("savedNotes", JSON.stringify(note1))
+    
+})
 
 
 

@@ -53,7 +53,11 @@ body{
     padding: 5px;
 }
 
-
+.para{
+    height: 680px;
+    width: 500px;
+    outline: none;
+}
 
 .fas{
     color: black;
