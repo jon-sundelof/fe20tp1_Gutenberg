@@ -2,10 +2,13 @@ body{
     background-color: grey;
     padding: 0px;
     margin: 0px;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     font-family: 'Poppins', sans-serif;
 >>>>>>> Stashed changes
+=======
+>>>>>>> main
 }
 
 .hideMe{
@@ -57,7 +60,15 @@ body{
     padding: 5px;
 }
 
+<<<<<<< HEAD
 
+=======
+.para{
+    height: 680px;
+    width: 500px;
+    outline: none;
+}
+>>>>>>> main
 
 .fas{
     color: black;
@@ -77,6 +88,7 @@ body{
 .control-panel > button {
     height: 15vh;
 }
+<<<<<<< HEAD
 
 .fa-info-circle {
     font-size: 4rem;
@@ -121,3 +133,5 @@ body{
 }
 
 /* End of segment for styling first-time visit */
+=======
+>>>>>>> main
