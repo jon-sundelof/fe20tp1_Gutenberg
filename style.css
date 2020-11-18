@@ -1,89 +1,96 @@
-body{
-    background-color: rgb(221, 228, 252);
-    padding: 0px;
-    margin: 0px;
-    font-family: 'Poppins', sans-serif;
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
-.hideMe{
+body{
+    background-color: rgb(221, 228, 252);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+main{
+    width: 70%;
+    height: 100vh;
+    position: relative;
+}
+.wrapper {
+    width: 80%;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+.mce-notification-warning{
     display: none;
 }
 
-.ql-toolbar.ql-snow{
-    margin-left: 300px;
+/* ??????????????? */
+.hideMe{
+    display: none;
+}
+/* -------------- */
+
+
+aside{
+    justify-self: center;
+    background-color: rgb(211, 211, 211);
+
+}
+aside div{
+    padding: 20px 20px;
+    border-bottom: 1px solid black;
+
+}
+.aktiv-div{
+    background-color: white;
+}
+nav{
+    background-color: burlywood;
+    width: 70px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+nav button{
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+
+}
+
+nav img{
+    width: 32px;
+    height: 32px;
+}
+
+
+nav .logo{
+    width: auto;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px ;
+    border-bottom: 1px solid black;
     margin-bottom: 20px;
 }
-
-
-.url{
-    width: 500px;
-    height: 20px; 
-    border: 1px solid black;
-    margin: 0 auto;
+nav i{
+    /* justify-self:; */
+    font-size: 2.5rem;
 }
-
-.url > input{
-    width: 500px;
-    height: 20px; 
-    outline: none;
+/* nav .navtools{
+    width: 32px;
+    height: 32px;
 }
+     */
 
-div.ql-editor{
-    border: black solid 1px;
-    border-radius: 10px;
-    height: 700px;
-    width: 500px;
-    margin: 0px auto;
-    outline: none;
-    background:#f4f4f4;
-    padding: 0;
-}
-
-div.ql-editor > p
-{
-    /* border: 1px solid black; */
-    border-radius: 10px;
-    height: 700px;
-    width: 500px;
-    margin: 0px auto;
-    outline: none;
-    background:#f4f4f4;
-    padding: 10px;
-}
-
-.para{
-    height: 680px;
-    width: 500px;
-    outline: none;
-}
-
-.fas{
-    color: black;
+.preview.notes:first-child{
+    background-color: gray;
+    
 }
 
 
-/* Following segment is styling for the control panel */
-
-.control-panel {
-    display:flex;
-    position: absolute;
-    flex-direction: column;
-    width: 15%;
-}
-
-.control-panel > button {
-    height: 15vh;
-    background-color: white;
-    border: none;
-    border-bottom: rgb(221, 228, 252) solid 2px;
-
-}
-
-.fa-info {
-    font-size: 4rem;
-}
-
-/* End of segment for styling control panel */
 
 
 
@@ -126,13 +133,7 @@ div.ql-editor > p
 
 
 
-.wrapper {
-    width: 70%;
-    float: right;
-    margin-right: 10%;
-    height: 800px;
 
-}
 /* 
  #mytextarea{
     background-color: white;
@@ -143,6 +144,3 @@ div.ql-editor > p
     display: none;
 } */
 
-.mce-notification-warning{
-    display: none;
-}

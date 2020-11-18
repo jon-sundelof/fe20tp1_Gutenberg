@@ -1,13 +1,13 @@
 /* Tiny MCE */
-  tinymce.init({
-     selector: '#mytextarea',
-     //height: 800
+tinymce.init({
+    selector: '#mytextarea',
+    height: 600
     //  max_height: 500,
     //  max_width: 500,
     //  min_height: 100,
     //  min_width: 400
 
-}); 
+});
 
 
 
@@ -20,7 +20,7 @@ const btnPrint = document.querySelector(".print");
 
 
 
-load = () =>{
+load = () => {
     localStorage.getItem("savedNotes")
     localStorage.getItem("noteText")
 }
@@ -31,17 +31,17 @@ window.onload = load();
 //*En array som sparar anteckningar 
 let savedNotes = [];
 
-class Note{
-    constructor(title, author, date, text, note){
+class Note {
+    constructor(title, author, date, text, note) {
         this.title = title,
-        this.author = author,
-        this.date = date,
-        this.text = text,
-        this.note = note
+            this.author = author,
+            this.date = date,
+            this.text = text,
+            this.note = note
     }
 
     //*Metod för att printa
-    print(){
+    print() {
         //*Tar in content från p och sparar det i pContent
         let pContent = document.querySelector(".para").innerHTML;
         let a = window.open("", "", "height=1000, width=800");
@@ -53,7 +53,7 @@ class Note{
         a.print();
     }
 
-    save(){
+    save() {
         let pContent = document.querySelector("#mytextarea").innerHTML;
         this.text = pContent;
         localStorage.setItem("noteText", JSON.stringify(pContent))
@@ -61,7 +61,7 @@ class Note{
 }
 
 //TODO När vi klickar på knappen så vill vi skapa ett nytt doc
-btnAdd.addEventListener("click", () =>{
+btnAdd.addEventListener("click", () => {
     console.log("create")
     const date = new Date()
     let newDate = date.getHours() + ":" + ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes()) + ' / ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + ((date.getDate() < 10 ? '0' : '') + date.getDate());
@@ -72,12 +72,12 @@ btnAdd.addEventListener("click", () =>{
             <p contenteditable="true" class="para"></p>
         </div>
     `;
-    
+
     //content.innerHTML += html;
     note1 = new Note("Nytt doc", "Jesper", newDate, "")
-    
+
     localStorage.setItem("savedNotes", JSON.stringify(note1))
-    
+
 })
 
 // let myObj = {id: Date.now(), name: 'Krille'}
@@ -92,18 +92,18 @@ onclick = e => {
     }
 }
 
-btnPrint.addEventListener("click", ()=>{
+btnPrint.addEventListener("click", () => {
     note1.print()
 })
 
-    btnSave.addEventListener("click", () =>{
-        console.log("save")
-        //let pContent = document.querySelector(".para").innerHTML;
-        //note1.text = pContent;
-        note1.save();
-        localStorage.setItem("savedNotes", JSON.stringify(note1))
-        
-    })
+btnSave.addEventListener("click", () => {
+    console.log("save")
+    //let pContent = document.querySelector(".para").innerHTML;
+    //note1.text = pContent;
+    note1.save();
+    localStorage.setItem("savedNotes", JSON.stringify(note1))
+
+})
 
 
 
