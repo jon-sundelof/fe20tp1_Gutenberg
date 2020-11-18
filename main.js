@@ -1,3 +1,15 @@
+/* Tiny MCE */
+  tinymce.init({
+     selector: '#mytextarea',
+     max_height: 500,
+     max_width: 500,
+     min_height: 100,
+     min_width: 400
+
+}); 
+
+
+
 const note = document.querySelector(".editor");
 const content = document.querySelector(".content-wrapper");
 
@@ -41,7 +53,7 @@ class Note{
     }
 
     save(){
-        let pContent = document.querySelector(".para").innerHTML;
+        let pContent = document.querySelector("#mytextarea").innerHTML;
         this.text = pContent;
         localStorage.setItem("noteText", JSON.stringify(pContent))
     }
@@ -49,6 +61,7 @@ class Note{
 
 //TODO När vi klickar på knappen så vill vi skapa ett nytt doc
 btnAdd.addEventListener("click", () =>{
+    console.log("create")
     const date = new Date()
     let newDate = date.getHours() + ":" + ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes()) + ' / ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + ((date.getDate() < 10 ? '0' : '') + date.getDate());
 
@@ -59,13 +72,14 @@ btnAdd.addEventListener("click", () =>{
         </div>
     `;
     
-    content.innerHTML += html;
+    //content.innerHTML += html;
     note1 = new Note("Nytt doc", "Jesper", newDate, "")
     
     localStorage.setItem("savedNotes", JSON.stringify(note1))
     
 })
 
+// let myObj = {id: Date.now(), name: 'Krille'}
 /* -----TEXTFORMATERING (bold, italic etc)----- */
 onclick = e => {
     if (e.target.classList.contains("fa-bold")) {
@@ -81,13 +95,14 @@ btnPrint.addEventListener("click", ()=>{
     note1.print()
 })
 
-btnSave.addEventListener("click", () =>{
-    let pContent = document.querySelector(".para").innerHTML;
-    note1.text = pContent;
-    note1.save();
-    localStorage.setItem("savedNotes", JSON.stringify(note1))
-    
-})
+    btnSave.addEventListener("click", () =>{
+        console.log("save")
+        //let pContent = document.querySelector(".para").innerHTML;
+        //note1.text = pContent;
+        note1.save();
+        localStorage.setItem("savedNotes", JSON.stringify(note1))
+        
+    })
 
 
 

@@ -1,38 +1,19 @@
 body{
-    background-color: grey;
+    background-color: rgb(221, 228, 252);
     padding: 0px;
     margin: 0px;
     font-family: 'Poppins', sans-serif;
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 }
 
 .hideMe{
     display: none;
 }
 
-.toolbar{
-    margin: 10px auto;
-    border: 1px solid black;
-    width: 100px;
-    height: 30px;
-
-    background:#f4f4f4;
-    border-radius: 5px;
+.ql-toolbar.ql-snow{
+    margin-left: 300px;
+    margin-bottom: 20px;
 }
 
-.toolbar > ul{
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    width: 80px;
-    padding: 0px;
-    margin: 10px auto;
-
-    
-}
 
 .url{
     width: 500px;
@@ -47,29 +28,34 @@ body{
     outline: none;
 }
 
-.editor{
-    border: 1px solid black;
+div.ql-editor{
+    border: black solid 1px;
     border-radius: 10px;
     height: 700px;
     width: 500px;
-    margin: 10px auto;
+    margin: 0px auto;
     outline: none;
     background:#f4f4f4;
-    padding: 5px;
+    padding: 0;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> main
+div.ql-editor > p
+{
+    /* border: 1px solid black; */
+    border-radius: 10px;
+    height: 700px;
+    width: 500px;
+    margin: 0px auto;
+    outline: none;
+    background:#f4f4f4;
+    padding: 10px;
+}
+
 .para{
     height: 680px;
     width: 500px;
     outline: none;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 
 .fas{
     color: black;
@@ -82,12 +68,15 @@ body{
     display:flex;
     position: absolute;
     flex-direction: column;
-    border: solid 1px black;
     width: 15%;
 }
 
 .control-panel > button {
     height: 15vh;
+    background-color: white;
+    border: none;
+    border-bottom: rgb(221, 228, 252) solid 2px;
+
 }
 
 .fa-info {
@@ -102,10 +91,12 @@ body{
 
 #first-visit-container {
     padding: 0;
+    margin-top: 2%;
     font-size: 24px;
     display: none;
     position: absolute;
-    
+    /* Gör så att diven kommer över allt annat */
+    z-index: 1;
 }
 
 #first-visit-content {
@@ -132,3 +123,26 @@ body{
     padding: 2% 11%;
 }
 /* End of segment for styling first-time visit */
+
+
+
+.wrapper {
+    width: 70%;
+    float: right;
+    margin-right: 10%;
+    height: 800px;
+
+}
+/* 
+ #mytextarea{
+    background-color: white;
+    height: 800px;
+}  */
+
+#mceu_28, #mceu_27-body {
+    display: none;
+}
+
+.mce-notification-warning{
+    display: none;
+}
