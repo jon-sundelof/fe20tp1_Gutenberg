@@ -1,10 +1,11 @@
 /* Tiny MCE */
   tinymce.init({
      selector: '#mytextarea',
-     max_height: 500,
-     max_width: 500,
-     min_height: 100,
-     min_width: 400
+     //height: 800
+    //  max_height: 500,
+    //  max_width: 500,
+    //  min_height: 100,
+    //  min_width: 400
 
 }); 
 
