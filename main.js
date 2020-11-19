@@ -10,48 +10,51 @@ tinymce.init({
 });
 
 
+//*En array som sparar anteckningar 
+let savedNotes = [];
 
-const note = document.querySelector(".editor");
+const note = document.querySelector(".wrapper");
 const content = document.querySelector(".content-wrapper");
-
+console.log(note)
 const btnSave = document.querySelector(".save");
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
 
 
+//*Kanske ha kvar kanske inte
+// load = () => {
+//     localStorage.getItem("savedNotes")
+//     localStorage.getItem("JSON.parse(noteText)")
+// }
 
-load = () => {
-    localStorage.getItem("savedNotes")
-    localStorage.getItem("noteText")
-}
-
-window.onload = load();
+// window.onload = load();
 
 
-//*En array som sparar anteckningar 
-let savedNotes = [];
-
+//TODO Göra om klassen
 class Note {
-    constructor(title, author, date, text, note) {
+    constructor(title, author, date, text, note, star) {
         this.title = title,
-            this.author = author,
-            this.date = date,
-            this.text = text,
-            this.note = note
+        this.author = author,
+        this.date = date,
+        this.text = text,
+        this.note = note,
+        this.id = Date.now(),
+        this.star = star
     }
 
-    //*Metod för att printa
-    print() {
-        //*Tar in content från p och sparar det i pContent
-        let pContent = document.querySelector(".para").innerHTML;
-        let a = window.open("", "", "height=1000, width=800");
-        a.document.write("<html>");
-        a.document.write("<body>");
-        a.document.write(pContent);
-        a.document.write("</body></html>");
-        a.document.close();
-        a.print();
-    }
+    
+    //*Finns media print
+    // print() {
+    ////     Tar in content från p och sparar det i pContent
+    //     let pContent = document.querySelector(".para").innerHTML;
+    //     let a = window.open("", "", "height=1000, width=800");
+    //     a.document.write("<html>");
+    //     a.document.write("<body>");
+    //     a.document.write(pContent);
+    //     a.document.write("</body></html>");
+    //     a.document.close();
+    //     a.print();
+    // }
 
     save() {
         let pContent = document.querySelector("#mytextarea").innerHTML;
@@ -60,25 +63,29 @@ class Note {
     }
 }
 
+note2 = new Note("Awesome Note", "Jesper", Date.now(), "", note, "")
+note3 = new Note("Awesome Note", "Jesper", Date.now(), "", note, "")
+savedNotes.push(note2, note3)
+
 //TODO När vi klickar på knappen så vill vi skapa ett nytt doc
-btnAdd.addEventListener("click", () => {
-    console.log("create")
-    const date = new Date()
-    let newDate = date.getHours() + ":" + ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes()) + ' / ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + ((date.getDate() < 10 ? '0' : '') + date.getDate());
+// btnAdd.addEventListener("click", () => {
+//     console.log("create")
+//     const date = new Date()
+//     let newDate = date.getHours() + ":" + ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes()) + ' / ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + ((date.getDate() < 10 ? '0' : '') + date.getDate());
 
-    let i = 0;
-    let html = `
-        <div class="editor note${i}">
-            <p contenteditable="true" class="para"></p>
-        </div>
-    `;
+//     let i = 0;
+//     let html = `
+//         <div class="editor note${i}">
+//             <p contenteditable="true" class="para"></p>
+//         </div>
+//     `;
 
-    //content.innerHTML += html;
-    note1 = new Note("Nytt doc", "Jesper", newDate, "")
+//     //content.innerHTML += html;
+//     note1 = new Note("Nytt doc", "Jesper", newDate, "")
 
-    localStorage.setItem("savedNotes", JSON.stringify(note1))
+//     localStorage.setItem("savedNotes", JSON.stringify(note1))
 
-})
+// })
 
 // let myObj = {id: Date.now(), name: 'Krille'}
 /* -----TEXTFORMATERING (bold, italic etc)----- */
