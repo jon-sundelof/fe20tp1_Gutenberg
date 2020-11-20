@@ -82,6 +82,16 @@ btnAdd.addEventListener("click", () => {
     tinymce.init({
         selector: '#mytextarea',
         height: 600
+
+        //Adds save button START
+    plugins: 'save',
+        toolbar: 'save',
+        //Adds save button END
+        //Function that run when clicking the save button START
+        save_onsavecallback: function () {
+            console.log("Note saved");
+        }
+    //Function that run when clicking the save button END
     });
   
     let content = tinymce.get("mytextarea").getContent()
