@@ -92,7 +92,7 @@ btnAdd.addEventListener("click", () => {
     previewHtml = `
     <div>
         <h3>${newNote.title}</h3>
-        <p>${newNote.text}</p>
+        ${newNote.id}
     </div>
     `;
 
