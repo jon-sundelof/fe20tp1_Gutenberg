@@ -1,8 +1,4 @@
 # fe20tp1_Gutenberg
 
-
-Karl: Formatering
-Anton: Skapa fler anteckningar
-Jon: Startsida
-Jesper: Skriva ut
-Onur: Spara classen i preview till höger 
+Vi kan spara ny note i local storage och det skapas även en "ny note" i preview och det stannar kvar efter refresh.
+Det blir overwritten dock efter refresh när man skapar en ny note så det måste fixas.

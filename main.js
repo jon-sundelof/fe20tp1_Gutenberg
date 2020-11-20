@@ -3,29 +3,79 @@ Måste få in varje ny note i preview och spara de där.
 Sen ska man kunna bläddra bland alla notes man skapat.
 
 Klickar ny så cleares det gamla och laddar den man klickar på (?)
+
+Typ fixat nya saker men måste kollar mer, är nog på rätt spår kanske :/
+
+//*Spara html som skapas i aside i noteObj och sen spara det i local storage som vanligt
+//*När sidan laddas så görs det en check ifall något finns i lokal storage och om det finns så tar den det
+//*Och med html så addar den det till aside som vanligt.
 */
 
-//*En array som sparar anteckningar 
+//***** ARRAYS *******/
 let savedNotes = [];
+let noteObjects = [];
+let asideArr = [];
 
-const main = document.querySelector("main")
-const notePreview = document.querySelector(".preview-notes")
+const main = document.querySelector("main");
+const notePreview = document.querySelector(".preview-notes");
 
 const note = document.querySelector(".wrapper");
+
 const btnSave = document.querySelector(".save");
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
 
+/************************/
+//***** FUNCTIONS *******/
+/************************/
+
+//*Hämtar data från local storage
+load = () => {
+    let stored = localStorage.getItem("savedNotes")
+    let storedAside = localStorage.getItem("noteObjects")
+    console.log("Get")
+    if(localStorage.noteObjects){
+       console.log("Exist");
+       aside = JSON.parse(storedAside)
+      
+       //*Här sparas det vi lägger till i aside/preview. 
+       //*Problemet är att det overwritas efter refresh men kan ha att göra med hur vi lägger till en ny note i local storage.
+       for(let i = 0; i < aside.length; i++){
+            let html = aside[i].previewSpot
+            notePreview.innerHTML += html;
+       }
+       
+       
+    }else{
+        console.log("Nothing")
+    }
+    
+}
+
+//*När man klickar på save så savear man en ny titel man skriver och även authorn
+onSave = () =>{
+    const title = document.querySelector(".title")
+    const author = document.querySelector(".author")
+
+    newNote.title = title.value;
+    newNote.author = author.value;  
+        
+
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
+             
+    //*Denna resetar text fieldsen
+    note.reset();
+    console.log("prompt clicked")
+}
+
+/************************/
+//***** FUNCTIONS *******/
+/************************/
+
+//*Varje gången sidan refreshas eller besöks så körs "load" functionen
+window.onload = load();
 
 
-// load = () => {
-//     localStorage.getItem(savedNotes)
-// }
-
-// window.onload = load();
-
-
-//TODO Göra om klassen
 class Note {
     constructor(title, author, date, text, note, star) {
         this.title = title,
@@ -37,29 +87,16 @@ class Note {
         this.star = star
     }
 
-    
-    //*Finns media print
-    // print() {
-    ////     Tar in content från p och sparar det i pContent
-    //     let pContent = document.querySelector(".para").innerHTML;
-    //     let a = window.open("", "", "height=1000, width=800");
-    //     a.document.write("<html>");
-    //     a.document.write("<body>");
-    //     a.document.write(pContent);
-    //     a.document.write("</body></html>");
-    //     a.document.close();
-    //     a.print();
-    // }
-
     save() {
         let content = tinymce.get("mytextarea").getContent()
         newNote.text = content;     
     }
+
 }
 
-//TODO När vi klickar på knappen så ska det skapas en ny note
 btnAdd.addEventListener("click", () => {
 
+    
     //*Här skapas textarean som tiny behöver innan tiny skapas
     let html = `
     <div class="prompt">
@@ -68,30 +105,25 @@ btnAdd.addEventListener("click", () => {
 
        <label>Author:</label>
        <input class="author" type="text">
-
-       <input class="updateNote" type="submit">
     </div>
     <textarea id="mytextarea">Text here</textarea>
     `;
 
+
     //*Här lägger vi till textarean i form
     note.innerHTML += html;
+
 
     //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
     /* Tiny MCE */
     tinymce.init({
         selector: '#mytextarea',
-        height: 600
+        height: 600,
+        menubar: true,
+        plugins: 'save',
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
+        save_onsavecallback: "onSave"
 
-        //Adds save button START
-    plugins: 'save',
-        toolbar: 'save',
-        //Adds save button END
-        //Function that run when clicking the save button START
-        save_onsavecallback: function () {
-            console.log("Note saved");
-        }
-    //Function that run when clicking the save button END
     });
   
     let content = tinymce.get("mytextarea").getContent()
@@ -101,40 +133,25 @@ btnAdd.addEventListener("click", () => {
 
     previewHtml = `
     <div>
-        <h3>${newNote.title}</h3>
-        ${newNote.id}
-    </div>
+    <a href="#">
+        <h3>Title</h3>    
+    </a>
+    </div> 
     `;
 
-    notePreview.innerHTML += previewHtml;
-    const title = document.querySelector(".title")
-    const author = document.querySelector(".author")
-    const updateNote = document.querySelector(".updateNote")
-
-
-    savedNotes.push(newNote)
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
-
-    for(let i = 0; i < savedNotes.length; i++){
-        console.log(savedNotes)
+    noteObj = {
+        note: newNote.id,
+        previewSpot: previewHtml
     }
 
-    //*Tanken är att man ska kunna ändra title och author på sina notes här och värdena ska uppdateras i local storage och i arrayen
-    updateNote.addEventListener("click", e =>{
-        e.preventDefault();
-        newNote.title = title.value;
-        newNote.author = author.value;  
-        
+    notePreview.innerHTML += previewHtml;
 
-        localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
-             
+
+    noteObjects.push(noteObj)
+    savedNotes.push(newNote)
     
-        note.reset();
-        console.log("prompt clicked")
-
-        
-    })
-
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
+    localStorage.setItem("noteObjects", JSON.stringify(noteObjects))
 })
 
 btnPrint.addEventListener("click", () => {
