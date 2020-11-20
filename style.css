@@ -31,10 +31,10 @@ main{
 }
 /* -------------- */
 
-
 aside{
     justify-self: center;
     background-color: rgb(211, 211, 211);
+    overflow: auto;
 
 }
 aside div{
