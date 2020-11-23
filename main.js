@@ -14,7 +14,8 @@ Typ fixat nya saker men måste kollar mer, är nog på rätt spår kanske :/
 //***** ARRAYS *******/
 let savedNotes = [];
 let noteObjects = [];
-let asideArr = [];
+
+let exEditor = false;
 
 const main = document.querySelector("main");
 const notePreview = document.querySelector(".preview-notes");
@@ -29,29 +30,71 @@ const btnPrint = document.querySelector(".print");
 //***** FUNCTIONS *******/
 /************************/
 
+if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
+    savedNotes = [];
+  } else {
+    savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
+  }
+
 //*Hämtar data från local storage
 load = () => {
-    let stored = localStorage.getItem("savedNotes")
-    let storedAside = localStorage.getItem("noteObjects")
-    console.log("Get")
-    if(localStorage.noteObjects){
-       console.log("Exist");
-       aside = JSON.parse(storedAside)
-      
-       //*Här sparas det vi lägger till i aside/preview. 
-       //*Problemet är att det overwritas efter refresh men kan ha att göra med hur vi lägger till en ny note i local storage.
-       for(let i = 0; i < aside.length; i++){
-            let html = aside[i].previewSpot
-            notePreview.innerHTML += html;
-       }
-       
-       
-    }else{
-        console.log("Nothing")
-    }
+    let stored = JSON.parse(localStorage.getItem("savedNotes"))
+    console.log(stored)
     
 }
 
+function createNote() {
+
+    if(exEditor == true){
+        let r = confirm("Save?")
+        if(r == true){
+            onSave();
+            exEditor = false;
+            createNote();
+        }else{
+            exEditor = false;
+            createNote();
+
+        }
+    } else {
+    
+    //*Här skapas textarean som tiny behöver innan tiny skapas  
+    let html = `
+    <div class="prompt">
+        <label>Title:</label>
+        <input class="title" type="text">
+
+        <label>Author:</label>
+        <input class="author" type="text">
+    </div>
+    <textarea class="mytextarea">Text here</textarea>
+    `;
+
+
+    //*Här lägger vi till textarean i form
+    note.innerHTML = html;
+
+
+    //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
+    /* Tiny MCE */
+    tinymce.init({
+        selector: '.mytextarea',
+        height: 600,
+        menubar: true,
+        plugins: 'save',
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
+        save_onsavecallback: "onSave"
+
+    });
+
+    //let content = tinymce.get("mytextarea").getContent()
+    let date = new Date()
+    newNote = new Note("New note", "No author", date.getTime(), "content", note, false)
+
+    exEditor = true;
+}
+}
+//console.log(exEditor);
 //*När man klickar på save så savear man en ny titel man skriver och även authorn
 onSave = () =>{
     const title = document.querySelector(".title")
@@ -60,6 +103,7 @@ onSave = () =>{
     newNote.title = title.value;
     newNote.author = author.value;  
         
+    savedNotes.push(newNote)
 
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
              
@@ -95,68 +139,20 @@ class Note {
 }
 
 btnAdd.addEventListener("click", () => {
-
-    
-    //*Här skapas textarean som tiny behöver innan tiny skapas
-    let html = `
-    <div class="prompt">
-       <label>Title:</label>
-       <input class="title" type="text">
-
-       <label>Author:</label>
-       <input class="author" type="text">
-    </div>
-    <textarea id="mytextarea">Text here</textarea>
-    `;
-
-
-    //*Här lägger vi till textarean i form
-    note.innerHTML += html;
-
-
-    //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
-    /* Tiny MCE */
-    tinymce.init({
-        selector: '#mytextarea',
-        height: 600,
-        menubar: true,
-        plugins: 'save',
-        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
-        save_onsavecallback: "onSave"
-
-    });
-  
-    let content = tinymce.get("mytextarea").getContent()
-    let date = new Date()
-    newNote = new Note("New note", "No author", date.getTime(), content, note, false)
-
-
-    previewHtml = `
-    <div>
-    <a href="#">
-        <h3>Title</h3>    
-    </a>
-    </div> 
-    `;
-
-    noteObj = {
-        note: newNote.id,
-        previewSpot: previewHtml
-    }
-
-    notePreview.innerHTML += previewHtml;
-
-
-    noteObjects.push(noteObj)
-    savedNotes.push(newNote)
-    
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
-    localStorage.setItem("noteObjects", JSON.stringify(noteObjects))
+    // if (exEditor = true){
+    //     console.log("True")
+    // }else{
+    //     console.log("False")
+        
+    // }
+        
+    createNote();  
+     
 })
 
-btnPrint.addEventListener("click", () => {
-    note1.print()
-})
+// btnPrint.addEventListener("click", () => {
+//     note1.print()
+// })
 
 btnSave.addEventListener("click", () => {
     console.log("save")
@@ -165,7 +161,23 @@ btnSave.addEventListener("click", () => {
 
 
 
+// //*Måste göra om detta
+    // previewHtml = `
+    // <div>
+    // <a href="#">
+    //     <h3>Title</h3>    
+    // </a>
+    // </div> 
+    // `;
 
-//visar datum-klockslag-----------------------------------
-// const datum = new Date();
-// const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+    // noteObj = {
+    //     note: newNote.id,
+    //     previewSpot: previewHtml
+    // }
+
+    // notePreview.innerHTML += previewHtml;
+
+
+    // noteObjects.push(noteObj)
+
+    // localStorage.setItem("noteObjects", JSON.stringify(noteObjects))
