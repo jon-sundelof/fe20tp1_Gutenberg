@@ -39,7 +39,7 @@ if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').le
 //*Hämtar data från local storage
 load = () => {
     let stored = JSON.parse(localStorage.getItem("savedNotes"))
-    console.log(stored)
+    //console.log(stored)
     
 }
 
@@ -96,20 +96,57 @@ function createNote() {
 }
 //console.log(exEditor);
 //*När man klickar på save så savear man en ny titel man skriver och även authorn
+
+//====================KARLS NEW STUFF start====================//
+/* PROBLEM: Hur kan jag "hoppa ur" OnSave efter att rad 116 
+har körts?? */
+
+
+function docExists(docTitle, arr) {
+
+    /* Söker i savedNotes. Om title redan finns sparad returneras 
+    true och objektets index lagras i variabeln sameDoc */
+    let sameDoc = arr.findIndex(function (post, index) {
+        if (post.title == docTitle) 
+           return true;
+    });
+    
+    if (sameDoc == -1) {
+        console.log('No title conflict, function continues');
+    } else {
+        console.log('doc title exists')
+        //Insert overwrite function here!
+    }
+
+    
+}
+
+//====================KARLS NEW STUFF end====================//
+
 onSave = () =>{
     const title = document.querySelector(".title")
     const author = document.querySelector(".author")
 
+//====================KARLS NEW STUFF start====================//
+
+    //1. Kolla om title är samma som i nått objekt i savedNotes
+    //2. Fråga user om hen vill spara ändringarna
+    //3. Ersätt objektet som hittades i steg 1 med det nuvarande
+
+    docExists(title.value, savedNotes);
+
+//====================KARLS NEW STUFF end====================//
+    
     newNote.title = title.value;
     newNote.author = author.value;  
         
-    savedNotes.push(newNote)
+    savedNotes.push(newNote);
 
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
              
     //*Denna resetar text fieldsen
-    note.reset();
-    console.log("prompt clicked")
+    //note.reset();
+    //console.log("prompt clicked")
 }
 
 /************************/
