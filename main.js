@@ -2,9 +2,6 @@
 Måste få in varje ny note i preview och spara de där.
 Sen ska man kunna bläddra bland alla notes man skapat.
 
-Klickar ny så cleares det gamla och laddar den man klickar på (?)
-
-Typ fixat nya saker men måste kollar mer, är nog på rätt spår kanske :/
 
 //*Spara html som skapas i aside i noteObj och sen spara det i local storage som vanligt
 //*När sidan laddas så görs det en check ifall något finns i lokal storage och om det finns så tar den det
@@ -13,7 +10,7 @@ Typ fixat nya saker men måste kollar mer, är nog på rätt spår kanske :/
 
 //***** ARRAYS *******/
 let savedNotes = [];
-let noteObjects = [];
+// let noteObjects = [];
 
 let exEditor = false;
 
@@ -22,9 +19,10 @@ const notePreview = document.querySelector(".preview-notes");
 
 const note = document.querySelector(".wrapper");
 
-const btnSave = document.querySelector(".save");
+// const btnSave = document.querySelector(".save");
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
+
 
 /************************/
 //***** FUNCTIONS *******/
@@ -58,58 +56,72 @@ function createNote() {
         }
     } else {
     
-    //*Här skapas textarean som tiny behöver innan tiny skapas  
-    let html = `
-    <div class="prompt">
-        <label>Title:</label>
-        <input class="title" type="text">
+        //*Här skapas textarean som tiny behöver innan tiny skapas  
+        let html = `
+        <div class="prompt">
+            <label>Title:</label>
+            <input class="title" type="text">
 
-        <label>Author:</label>
-        <input class="author" type="text">
-    </div>
-    <textarea class="mytextarea">Text here</textarea>
-    `;
-
-
-    //*Här lägger vi till textarean i form
-    note.innerHTML = html;
+            <label>Author:</label>
+            <input class="author" type="text">
+        </div>
+        <textarea class="mytextarea"></textarea>
+        `;
 
 
-    //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
-    /* Tiny MCE */
-    tinymce.init({
-        selector: '.mytextarea',
-        height: 600,
-        menubar: true,
-        plugins: 'save',
-        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
-        save_onsavecallback: "onSave"
+        //*Här lägger vi till textarean i form
+        note.innerHTML = html;
 
-    });
 
-    //let content = tinymce.get("mytextarea").getContent()
-    let date = new Date()
-    newNote = new Note("New note", "No author", date.getTime(), "content", note, false)
+        //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
+        /* Tiny MCE */
+        tinymce.init({
+            selector: '.mytextarea',
+            height: 600,
+            menubar: true,
+            plugins: 'save',
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
+            save_onsavecallback: "onSave"
 
-    exEditor = true;
+        });
+
+        // // Add a class to all paragraphs in the editor.
+        // tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('p'), 'text');
+
+        
+        let date = new Date()
+        newNote = new Note("New note", "No author", date.getTime(), " ", note, false)
+
+        exEditor = true;
+    }
 }
-}
-//console.log(exEditor);
+
+
 //*När man klickar på save så savear man en ny titel man skriver och även authorn
+//*Texten måste kunna sparas
 onSave = () =>{
     const title = document.querySelector(".title")
     const author = document.querySelector(".author")
+    let content = tinyMCE.activeEditor.getContent({format : 'raw'});
+    console.log("Content: " + content)
+    // Gets the current editors selection as text
+    let textArea = tinymce.activeEditor.selection.getContent({format: 'text'});
+     
+    console.log(textArea)
 
+    console.log("Saved btn clicked")
+    console.log(textArea.innerText)
     newNote.title = title.value;
     newNote.author = author.value;  
-        
+    // newNote.text = textArea;  
+
     savedNotes.push(newNote)
 
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
              
     //*Denna resetar text fieldsen
-    note.reset();
-    console.log("prompt clicked")
+    //note.reset();
+    
 }
 
 /************************/
@@ -139,45 +151,14 @@ class Note {
 }
 
 btnAdd.addEventListener("click", () => {
-    // if (exEditor = true){
-    //     console.log("True")
-    // }else{
-    //     console.log("False")
-        
-    // }
-        
-    createNote();  
-     
+    createNote();
 })
 
 // btnPrint.addEventListener("click", () => {
 //     note1.print()
 // })
 
-btnSave.addEventListener("click", () => {
-    console.log("save")
-    newNote.save();
-})
-
-
-
-// //*Måste göra om detta
-    // previewHtml = `
-    // <div>
-    // <a href="#">
-    //     <h3>Title</h3>    
-    // </a>
-    // </div> 
-    // `;
-
-    // noteObj = {
-    //     note: newNote.id,
-    //     previewSpot: previewHtml
-    // }
-
-    // notePreview.innerHTML += previewHtml;
-
-
-    // noteObjects.push(noteObj)
-
-    // localStorage.setItem("noteObjects", JSON.stringify(noteObjects))
+// btnSave.addEventListener("click", () => {
+//     console.log("save")
+//     newNote.save();
+// })
