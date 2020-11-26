@@ -5,7 +5,7 @@
 }
 
 body{
-    background-color: rgb(221, 228, 252);
+    background-color: rgb(184, 201, 255);
     font-family: 'Poppins', sans-serif;
     display: flex;
     width: 100vw;
@@ -46,7 +46,7 @@ aside div{
     background-color: white;
 }
 nav{
-    background-color: burlywood;
+    background-color: rgb(103, 139, 255);
     width: 70px;
     height: 100vh;
     display: flex;
@@ -110,23 +110,47 @@ nav i{
     margin: 0 auto;
     padding: 2.5%;
     width: 60%;
-    height: 80vh;
-    border-radius: 10px;
-    background-color: #f4f4f4;
+    height: 90vh;
+    border-radius: 80px;
+    background-color: rgb(255, 255, 255);
+    line-height: 1.4em;
+    letter-spacing: 3px;
+    font-size: 30px;
+    color: #333;
     flex-direction: column;
+    box-shadow: 5px 10px 10px #0000006b;
 }
 #first-visit-content > h1 {
     text-align: center;
+    color: rgb(103, 139, 255);
+    margin-bottom: 3%;
+    font-size: 2.5em;
+    letter-spacing: 6px;
+    
 }
+
+p > span {
+    color:rgb(103, 139, 255);
+    font-weight: bold;
+    font-size: 40px;
+}
+
+#first-visit-content > img {
+    display: flex;
+    height: 50%;
+    margin: 0 auto;
+
+}
+
 #first-visit-content > button {
     display: flex;
-    margin: 10% auto;
-    background-color: grey;
+    margin: 3% auto;
+    background-color: rgb(103, 139, 255);
     color: white;
     font-weight: 800;
     font-size: 2rem;
     border: none;
-    border-radius: 20px;
+    border-radius: 60px;
     padding: 2% 11%;
 }
 /* End of segment for styling first-time visit */
