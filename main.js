@@ -1,48 +1,105 @@
-/* 
-Måste få in varje ny note i preview och spara de där.
-Sen ska man kunna bläddra bland alla notes man skapat.
-
-Klickar ny så cleares det gamla och laddar den man klickar på (?)
-
-Typ fixat nya saker men måste kollar mer, är nog på rätt spår kanske :/
-
-//*Spara html som skapas i aside i noteObj och sen spara det i local storage som vanligt
-//*När sidan laddas så görs det en check ifall något finns i lokal storage och om det finns så tar den det
-//*Och med html så addar den det till aside som vanligt.
-*/
-
-//***** ARRAYS *******/
-let savedNotes = [];
-let noteObjects = [];
 
 let exEditor = false;
 
-const main = document.querySelector("main");
+//*QUILL OPTIONS
+let toolbarOptions = [
+    ['bold', 'italic', 'underline',],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    [{ 'header': [1, 2, 3, false] }],   
+];
+
+
+
+//const printscreen = document.querySelector('.printscreen')
 const notePreview = document.querySelector(".preview-notes");
 
-const note = document.querySelector(".wrapper");
+//*Detta är en editorn
+const note = document.querySelector("#editor")
 
-const btnSave = document.querySelector(".save");
+// const btnSave = document.querySelector(".save");
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
+
+const titleInput = document.querySelector("#title-input")
+
+/************************/
+//******** QUILL ********/
+/************************/
+
+//let editor = new Quill('#editor', options);
+let options =  {
+    modules: {
+        toolbar: toolbarOptions,
+    },
+    placeholder: 'Compose an epic story...', //placeholder text 
+    readOnly: false, // kan bara läsa texten om true, kanske är so preview?
+    theme: 'bubble'
+}
+
+let editor = new Quill('#editor', options);
+let delta = editor.getContents(); //getContents(index: Number = 0, length: Number = remaining): Delta
+
 
 /************************/
 //***** FUNCTIONS *******/
 /************************/
+let savedNotes = [];
 
-if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
-    savedNotes = [];
-  } else {
-    savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
-  }
+    if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
+        savedNotes = [];
+    } else {
+        savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
+    }
 
 //*Hämtar data från local storage
 load = () => {
     let stored = JSON.parse(localStorage.getItem("savedNotes"))
     console.log(stored)
-    
 }
 
+/************************/
+//**** NOTE KLASSEN *****/
+/************************/
+class Note {
+    constructor(title, date, text, star) {
+        this.title = title,
+        this.date = date,
+        this.text = text,
+        this.star = star,
+        this.id = Date.now()
+    }
+
+    save() {
+            
+    }
+
+}
+
+let newNote = savedNotes[0]
+
+setInterval( () => {
+    
+    //Hitta innehållet, om id ej finns, spara i local storage
+    //* HÄR ONUR
+    textContent = editor.getText()
+    
+    
+    if(savedNotes[0].id == newNote.id){
+        console.log("Array är inte tom")
+
+        newNote.text = textContent;
+        newNote.title = titleInput.value;
+
+        localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
+        console.log(savedNotes)
+    } else {
+        console.log("Array är tom")
+        savedNotes.push(newNote)
+    }
+}, 20000);
+
+//*En function där våran note skapas
 function createNote() {
 
     if(exEditor == true){
@@ -57,59 +114,20 @@ function createNote() {
 
         }
     } else {
-    
-    //*Här skapas textarean som tiny behöver innan tiny skapas  
-    let html = `
-    <div class="prompt">
-        <label>Title:</label>
-        <input class="title" type="text">
-
-        <label>Author:</label>
-        <input class="author" type="text">
-    </div>
-    <textarea class="mytextarea">Text here</textarea>
-    `;
-
-
-    //*Här lägger vi till textarean i form
-    note.innerHTML = html;
-
-
-    //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
-    /* Tiny MCE */
-    tinymce.init({
-        selector: '.mytextarea',
-        height: 600,
-        menubar: true,
-        plugins: 'save',
-        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
-        save_onsavecallback: "onSave"
-
-    });
-
-    //let content = tinymce.get("mytextarea").getContent()
-    let date = new Date()
-    newNote = new Note("New note", "No author", date.getTime(), "content", note, false)
-
-    exEditor = true;
-}
-}
-//console.log(exEditor);
-//*När man klickar på save så savear man en ny titel man skriver och även authorn
-onSave = () =>{
-    const title = document.querySelector(".title")
-    const author = document.querySelector(".author")
-
-    newNote.title = title.value;
-    newNote.author = author.value;  
+           
+        let date = new Date()
         
-    savedNotes.push(newNote)
 
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
-             
-    //*Denna resetar text fieldsen
-    note.reset();
-    console.log("prompt clicked")
+        exEditor = true;
+    }
+}
+
+
+//*När man klickar save så sparas texten fast texten sparas i html format som förut.
+//*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
+onSave = () =>{
+   
+    
 }
 
 /************************/
@@ -119,65 +137,50 @@ onSave = () =>{
 //*Varje gången sidan refreshas eller besöks så körs "load" functionen
 window.onload = load();
 
+//*PRINT
+btnPrint.addEventListener("click", () =>{
+    //window.print(delta);
+    content = editor.getText();
+    let divContents = content;
+    let openWindow = window.open("","","width=700, height=900");
+    openWindow.document.write('<html>');
+    openWindow.document.write('<body>');
+    openWindow.document.write(divContents);
+    openWindow.document.write('</body></html>');
+    openWindow.document.close();
+    openWindow.print()
+})
 
-class Note {
-    constructor(title, author, date, text, note, star) {
-        this.title = title,
-        this.author = author,
-        this.date = date,
-        this.text = text,
-        this.note = note,
-        this.id = Date.now(),
-        this.star = star
-    }
-
-    save() {
-        let content = tinymce.get("mytextarea").getContent()
-        newNote.text = content;     
-    }
-
+/* function printInfo(ele) {
+  var openWindow = window.open("", "title", "attributes");
+  openWindow.document.write(ele.previousSibling.innerHTML);
+  openWindow.document.close();
+  openWindow.focus();
+  openWindow.print();
+  openWindow.close();
+} */
+//*När man klickar save så sparas texten fast texten sparas i html format som förut.
+//*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
+onSave = () =>{
+   
+    
 }
 
-btnAdd.addEventListener("click", () => {
-    // if (exEditor = true){
-    //     console.log("True")
-    // }else{
-    //     console.log("False")
-        
-    // }
-        
-    createNote();  
-     
-})
+/************************/
+//***** FUNCTIONS *******/
+/************************/
 
-// btnPrint.addEventListener("click", () => {
-//     note1.print()
+//*Varje gången sidan refreshas eller besöks så körs "load" functionen
+window.onload = load();
+
+// btnPrint.addEventListener("click", () =>{
+//     console.log(delta);
+//     //printscreen.innerHTML = editor.getContents();
+//     //editor.getContents();
+//     //printscreen.innerHTML = editor;
 // })
 
-btnSave.addEventListener("click", () => {
-    console.log("save")
-    newNote.save();
+
+btnAdd.addEventListener("click", () => {
+    createNote();
 })
-
-
-
-// //*Måste göra om detta
-    // previewHtml = `
-    // <div>
-    // <a href="#">
-    //     <h3>Title</h3>    
-    // </a>
-    // </div> 
-    // `;
-
-    // noteObj = {
-    //     note: newNote.id,
-    //     previewSpot: previewHtml
-    // }
-
-    // notePreview.innerHTML += previewHtml;
-
-
-    // noteObjects.push(noteObj)
-
-    // localStorage.setItem("noteObjects", JSON.stringify(noteObjects))
