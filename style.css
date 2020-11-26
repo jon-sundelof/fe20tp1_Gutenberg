@@ -119,6 +119,9 @@ nav i{
 #first-visit-content > h1 {
     text-align: center;
 }
+#first-visit-content > img {
+    width: 50%;
+}
 #first-visit-content > button {
     display: flex;
     margin: 10% auto;
