@@ -17,18 +17,18 @@ let toolbarOptions = [
 
 
 
-const main = document.querySelector("main");
+const printscreen = document.querySelector('.printscreen')
 const notePreview = document.querySelector(".preview-notes");
 
 //*Detta är en editorn
-let note = document.querySelector("#editor")
+const note = document.querySelector("#editor")
 
 // const btnSave = document.querySelector(".save");
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
 
 /************************/
-//***** QUILL *******/
+//******** QUILL ********/
 /************************/
 
 //let editor = new Quill('#editor', options);
@@ -42,12 +42,12 @@ let options =  {
 }
 let editor = new Quill('#editor', options);
 
+let delta = editor.getContents(); //getContents(index: Number = 0, length: Number = remaining): Delta
 
 
 /************************/
 //***** FUNCTIONS *******/
 /************************/
-
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
@@ -61,6 +61,43 @@ load = () => {
     console.log(stored)
     
 }
+
+/************************/
+//**** NOTE KLASSEN *****/
+/************************/
+class Note {
+    constructor(title, date, text, star) {
+        this.title = title,
+        this.date = date,
+        this.text = text,
+        this.star = star,
+        this.note = note,
+        this.id = Date.now()
+    }
+
+    save() {
+            
+    }
+
+}
+
+let newNote = new Note("Note", Date.now(), "", true)
+
+setInterval( () => {
+    //Hitta innehållet, om id ej finns, spara i local storage
+    textContent = editor.getText()
+    
+    
+    if(!savedNotes.includes(Note)){
+        newNote.text = textContent;
+        savedNotes.push(newNote)
+    }else{
+        console.log("Inte tom")
+    }
+    
+    //console.log(savedNotes)
+    //Kolla om samma id finns med if-sats
+}, 3000);
 
 //*En function där våran note skapas
 function createNote() {
@@ -79,7 +116,7 @@ function createNote() {
     } else {
            
         let date = new Date()
-        newNote = new Note("New note", date.getTime(), " ", note, false)
+        
 
         exEditor = true;
     }
@@ -89,24 +126,7 @@ function createNote() {
 //*När man klickar save så sparas texten fast texten sparas i html format som förut.
 //*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
 onSave = () =>{
-    const title = document.querySelector(".title")
-
-    //*Såhär får vi ut text content i enbart text format
-    let contentText = tinymce.activeEditor.getContent({format: 'text'});
-
-    //*Ifall vi behöver text content i html form så finns det här
-    let contentHtml = tinymce.activeEditor.getContent({format: 'raw'});
-    console.log("Content: " + contentHtml)
-    
-
-    console.log("Saved btn clicked")
-
-    newNote.title = title.value;
-    newNote.text = contentText;  
-
-    savedNotes.push(newNote)
-
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
+   
     
 }
 
@@ -117,66 +137,45 @@ onSave = () =>{
 //*Varje gången sidan refreshas eller besöks så körs "load" functionen
 window.onload = load();
 
+btnPrint.addEventListener("click" , () =>{
+    window.print(delta);
+    console.log(delta);
+    
+    //printscreen.innerHTML = editor.getContents();
+    //editor.getContents();
+    //printscreen.innerHTML = editor;
+//     } else {
+           
+//         let date = new Date()
+        
 
-class Note {
-    constructor(title, date, text, note, star) {
-        this.title = title,
-        this.date = date,
-        this.text = text,
-        this.note = note,
-        this.star = star,
-        this.id = Date.now()
-    }
+//         exEditor = true;
+//     }
+// }
+})
 
-    save() {
-            
-    }
-
+//*När man klickar save så sparas texten fast texten sparas i html format som förut.
+//*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
+onSave = () =>{
+   
+    
 }
+
+/************************/
+//***** FUNCTIONS *******/
+/************************/
+
+//*Varje gången sidan refreshas eller besöks så körs "load" functionen
+window.onload = load();
+
+btnPrint.addEventListener("click", () =>{
+    console.log(delta);
+    //printscreen.innerHTML = editor.getContents();
+    //editor.getContents();
+    //printscreen.innerHTML = editor;
+})
+
 
 btnAdd.addEventListener("click", () => {
     createNote();
 })
-
-
-
-
-
-//*För att kunna spara() och Auto save
-/*
-// Store accumulated changes
-var change = new Delta();
-quill.on('text-change', function(delta) {
-  change = change.compose(delta);
-});
-
-// Save periodically
-setInterval(function() {
-  if (change.length() > 0) {
-    console.log('Saving changes', change);
-    /* 
-    Send partial changes
-    $.post('/your-endpoint', { 
-      partial: JSON.stringify(change) 
-    });
-    
-    Send entire document
-    $.post('/your-endpoint', { 
-      doc: JSON.stringify(quill.getContents())
-    });
-    change = new Delta();
-    */
-   
-   /*
-}
-}, 5*1000);
-
-// Check for unsaved data
-window.onbeforeunload = function() {
-if (change.length() > 0) {
-  return 'There are unsaved changes. Are you sure you want to leave?';
-}
-}
-
-
-*/
