@@ -7,15 +7,17 @@
 }
 
 body{
-    font-family: 'Poppins', sans-serif;
     display: flex;
-    /* width: 100vw; */
+    width: 100vw;
     height: 100vh;
 }
 main{
-    width: 70%;
+    width: 80%  ;
     height: 100vh;
     overflow: hidden;
+    z-index: 10;
+    overflow-y: auto;
+
     /* position: relative; */
 }
 
@@ -27,24 +29,31 @@ main{
 /* -------------- */
 
 aside{
-    justify-self: center;
+    /* justify-self: center; */
     padding: 20px;
     border-top-left-radius: 40px;
     position: relative;
-    left: -50px;
+    left: -35px;
     z-index: 2;
-    border-top-right-radius: 40px;
-    background: #e3eaff;
+    border-right: 1px solid rgba(0, 0, 0, 0.301);
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    /* Går ej att markera text - kod nedan*/
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */   
 }
 aside div{
     padding: 10px;
     /* border-bottom: 1px solid black; */
 }
 aside .filter{
+    margin: 0 auto;
     padding: 0;
     width: 180px;
     height: 7%;
@@ -62,13 +71,13 @@ aside .filter{
 
 /* Toggle alla-favo--------------------- */
 .filter label {
+    justify-self: self-end;
     height: 30px;
     position: relative;
     overflow: hidden;
     width: 100%;
     display:block;
-
-    background: #f0f0f7;
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 20px;
 }
 
@@ -149,7 +158,7 @@ aside .filter{
     width: calc(100% - 40px);
 }
 nav{
-    background-color: rgb(0, 83, 146);
+    background-color: #213991;
     width: 120px;
     height: 100vh;
     display: flex;
@@ -162,7 +171,7 @@ nav button{
     width: 48px;
     height: 48px;
     margin-bottom: 20px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     border: none;
     border-radius: 5px;
     outline-style: none;
@@ -180,12 +189,17 @@ nav .logo{
     height: auto;
     padding-top: 20px;
     padding-bottom: 20px ;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(255, 255, 255);
     margin-bottom: 20px;
+    filter: saturate(1);
 }
+
 nav i{
     /* justify-self:; */
     font-size: 2.5rem;
+}
+nav i, .add, .save, .print, .navtools{
+    filter: invert();
 }
 /* nav .navtools{
     width: 32px;
@@ -260,25 +274,29 @@ nav i{
 /* End of segment for styling first-time visit */
 
 #title-input{
-    position: absolute;
-    
-    /* margin: 3% 40%; */
+    position: fixed;
+    width: 70%;
     top: 0;
     border:none;
-    border-bottom: 1px solid black;
-    padding: 30px 0px;
     font-size: 25px;
+    padding-top: 30px;
+    padding-bottom: 10px;
     outline: none;
+    border:none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.192);
+    background-color: #ffffff;
+    z-index: 1;
 }
 
 #editor {
     position: absolute;
     font-size: 16px;
-    padding: 30px 0px;
-
     width: 70%;
-    height: 60%;
+    height: auto;
     top: 80px;
+    border:none;
+    
+
     /* padding: 0 30px; */
     /* margin-left: 500px; */
 
@@ -287,4 +305,6 @@ nav i{
     padding: 0 !important;
 
 }
-
+.ql-tooltip{
+    z-index: 1000 !important;
+}
