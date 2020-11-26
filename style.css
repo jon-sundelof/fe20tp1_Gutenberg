@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
+
 *{
     box-sizing: border-box;
     padding: 0;
@@ -13,7 +15,8 @@ body{
 main{
     width: 70%;
     height: 100vh;
-    position: relative;
+    overflow: hidden;
+    /* position: relative; */
 }
 
 
@@ -25,26 +28,135 @@ main{
 
 aside{
     justify-self: center;
-    background-color: rgb(211, 211, 211);
-    overflow: auto;
-
+    padding: 20px;
+    border-top-left-radius: 40px;
+    position: relative;
+    left: -50px;
+    z-index: 2;
+    border-top-right-radius: 40px;
+    background: #e3eaff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 aside div{
-    padding: 20px 20px;
-    border-bottom: 1px solid black;
+    padding: 10px;
+    /* border-bottom: 1px solid black; */
+}
+aside .filter{
+    padding: 0;
+    width: 180px;
+    height: 7%;
+    font-family: 'Cairo', sans-serif;
+    align-self: flex-start;
+}
+
+.preview-notes > div {
+    background: white;
+    border-top-left-radius: 20px;
+    position: relative;
+    right: 0;
+    border-bottom-left-radius: 20px;
+}
+
+/* Toggle alla-favo--------------------- */
+.filter label {
+    height: 30px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    display:block;
+
+    background: #f0f0f7;
+    border-radius: 20px;
+}
+
+.filter label .slider {
+    height: 100%;
+    background: #213991;
+    width: 65px;
+    z-index: 5;
+    display: block;
+    border-radius: 20px;
+    left:0;
+    top:0;
+    position: absolute;
+    transition: all ease-in-out 0.3s;
+}
+.filter input{
+    position:absolute;
+    left:-200%;
+}
+.filter input:checked + .slider{
+    left:100%;
+    margin-left:-109px;
+    width:109px;
+        }
+.filter label .button {
+    z-index: 6;
+    color: #FFF;
+    position: relative;
+    margin: 0;
+    transition:all ease-in-out 0.3s;
+}
+
+.filter label .button.all {
+    padding: 0 15px;
+}
+.filter label .button:last-child{
+    position:absolute;
+    right:0;
+    padding: 0 15px;
+    color:#213991;
 
 }
-.aktiv-div{
-    background-color: white;
+.filter input:checked ~ .button:last-child {
+    color:white;
+    
 }
-nav{
-    background-color: rgb(0, 83, 146);
-    width: 70px;
-    height: 120vh;
+.filter input:checked ~ .button.all {
+    color:#213991;
+    
+}
+/* ______________________________________ */
+.preview-notes{
+    overflow-y: auto;
+    height: 93%;
+    width: 300px;
+    /* background-color: rgb(255, 255, 255); */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
+}
+.preview-notes::-webkit-scrollbar {
+    width: 10px;
+}
+
+.preview-notes::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.089); 
+    border-radius: 10px;
+}
+
+.preview-notes::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+.preview-notes div{
+    width: calc(100% - 40px);
+}
+nav{
+    background-color: rgb(0, 83, 146);
+    width: 120px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px;
 }
 nav button{
     width: 48px;
@@ -52,6 +164,7 @@ nav button{
     margin-bottom: 20px;
     background-color: white;
     border: none;
+    border-radius: 5px;
     outline-style: none;
 
 }
@@ -80,11 +193,6 @@ nav i{
 }
      */
 
-.preview.notes:first-child{
-    background-color: gray;
-    
-}
-
 
 
 
@@ -92,7 +200,7 @@ nav i{
 /* Following segment is styling for first-time visit information. */
 
 #first-visit-container {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     font-size: 24px;
     position: absolute;
@@ -108,18 +216,18 @@ nav i{
     align-items: center;
     margin: 0 auto;
     padding: 2.5%;
-    height: 70vh;
     border-radius: 10px;
     background-color:white;
     line-height: 1.4em;
     letter-spacing: 2px;
     font-size: 30px;
     color: #333;
+    width: 100%;
 }
 #first-visit-content > h1 {
     text-align: center;
     width: 100%;
-    color: #6C63FF;
+    color: rgb(0, 83, 146);
     font-size: 2.5em;
     letter-spacing: 6px;
     margin-bottom: 5%;
@@ -133,15 +241,15 @@ nav i{
    margin: 0 auto;
 }
 
-p > span {
-    color:#6C63FF;
+.first-visit-span {
+    color: rgb(0, 83, 146);
     font-weight: bold;
     font-size: 40px;
 }
 
 #first-visit-content > button {
     margin: 4% auto;
-    background-color: #6C63FF;
+    background-color: rgb(0, 83, 146);
     border: none;
     color: white;
     font-weight: 800;
@@ -153,22 +261,30 @@ p > span {
 
 #title-input{
     position: absolute;
+    
     /* margin: 3% 40%; */
+    top: 0;
     border:none;
-    padding: 0 30px;
+    border-bottom: 1px solid black;
+    padding: 30px 0px;
     font-size: 25px;
     outline: none;
-    top: 20px;
-    margin-left: 500px;
 }
 
 #editor {
     position: absolute;
     font-size: 16px;
-    width: 100%;
+    padding: 30px 0px;
+
+    width: 70%;
+    height: 60%;
     top: 80px;
-    padding: 0 30px;
-    margin-left: 500px;
+    /* padding: 0 30px; */
+    /* margin-left: 500px; */
+
+}
+.ql-editor{
+    padding: 0 !important;
 
 }
 

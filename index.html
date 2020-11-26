@@ -15,6 +15,7 @@
     <!-- Tiny MCE Script -->
     <!-- <script src='https://cloud.tinymce.com/stable/tinymce.min.js' defer></script> -->
     <script src="main.js" defer></script>
+    <script src="firstvisit.js" defer></script>
 </head>
 
 <body>
@@ -29,18 +30,42 @@
         <button class="info"><i class="fas fa-info"></i></button>
 
     </nav>
+
+
+
+
     <aside>
+        <div class="filter">
+            <label>
+                <input type="checkbox">
+                <span class="slider"></span>
+                <span class="button all">ALLA</span><span class="button favorit">FAVORITER</span>
+            </label>
+        </div>
         <section class="preview-notes">
 
         </section>
     </aside>
 
-    <section>
-        <div class="printscreen"></div>
-    </section>
+    <!-- <div id="....">
+        <div>
+            content to print
+        </div><a href="#" onclick="printInfo(this)">Print</a>
+    </div> -->
 
     <main>
-
+    <section>
+        <div id="first-visit-container">
+        <div id="first-visit-content">
+                <h1>Welcome to Quire!</h1>
+                <p>We are glad to have you here at Quire! The best and most known note app across the globe. You have
+                    just opended the doors to narnia of note apps. Here, <span class="first-visit-span">EVERYTHING</span> is posible. Now, let's take you for
+                    spin since this is the first time you visit us.Lay back, buckle up and let's enter the world of <span class="first-visit-span">Quire!</span></p>
+                    <img src="pictures/personal-notebook.png" alt="note-picture">
+            <button>Let's Get Started!</button>
+        </div>
+        </div>
+    </section>
 
         <input placeholder="Enter Title Here!" id="title-input" autocomplete="off"></input>
         <!-- Create the editor container -->
