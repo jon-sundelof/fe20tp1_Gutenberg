@@ -1,32 +1,53 @@
 /* 
-Måste få in varje ny note i preview och spara de där.
-Sen ska man kunna bläddra bland alla notes man skapat.
 
-
-//*Spara html som skapas i aside i noteObj och sen spara det i local storage som vanligt
-//*När sidan laddas så görs det en check ifall något finns i lokal storage och om det finns så tar den det
-//*Och med html så addar den det till aside som vanligt.
 */
 
-//***** ARRAYS *******/
+//***** VARIABLES *******/
 let savedNotes = [];
-// let noteObjects = [];
 
 let exEditor = false;
+
+//*QUILL OPTIONS
+let toolbarOptions = [
+    ['bold', 'italic', 'underline',],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    [{ 'header': [1, 2, 3, false] }],   
+];
+
+
 
 const main = document.querySelector("main");
 const notePreview = document.querySelector(".preview-notes");
 
-const note = document.querySelector(".wrapper");
+//*Detta är en editorn
+let note = document.querySelector("#editor")
 
 // const btnSave = document.querySelector(".save");
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
 
+/************************/
+//***** QUILL *******/
+/************************/
+
+//let editor = new Quill('#editor', options);
+let options =  {
+    modules: {
+        toolbar: toolbarOptions,
+    },
+    placeholder: 'Compose an epic story...', //placeholder text 
+    readOnly: false, // kan bara läsa texten om true, kanske är so preview?
+    theme: 'bubble'
+}
+let editor = new Quill('#editor', options);
+
+
 
 /************************/
 //***** FUNCTIONS *******/
 /************************/
+
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
@@ -41,6 +62,7 @@ load = () => {
     
 }
 
+//*En function där våran note skapas
 function createNote() {
 
     if(exEditor == true){
@@ -55,72 +77,36 @@ function createNote() {
 
         }
     } else {
-    
-        //*Här skapas textarean som tiny behöver innan tiny skapas  
-        let html = `
-        <div class="prompt">
-            <label>Title:</label>
-            <input class="title" type="text">
-
-            <label>Author:</label>
-            <input class="author" type="text">
-        </div>
-        <textarea class="mytextarea"></textarea>
-        `;
-
-
-        //*Här lägger vi till textarean i form
-        note.innerHTML = html;
-
-
-        //*TinyMCE initar först när vi klickar på ny note knappen, så den skapas när man klickar på knappen
-        /* Tiny MCE */
-        tinymce.init({
-            selector: '.mytextarea',
-            height: 600,
-            menubar: true,
-            plugins: 'save',
-            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save',
-            save_onsavecallback: "onSave"
-
-        });
-
-        // // Add a class to all paragraphs in the editor.
-        // tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('p'), 'text');
-
-        
+           
         let date = new Date()
-        newNote = new Note("New note", "No author", date.getTime(), " ", note, false)
+        newNote = new Note("New note", date.getTime(), " ", note, false)
 
         exEditor = true;
     }
 }
 
 
-//*När man klickar på save så savear man en ny titel man skriver och även authorn
-//*Texten måste kunna sparas
+//*När man klickar save så sparas texten fast texten sparas i html format som förut.
+//*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
 onSave = () =>{
     const title = document.querySelector(".title")
-    const author = document.querySelector(".author")
-    let content = tinyMCE.activeEditor.getContent({format : 'raw'});
-    console.log("Content: " + content)
-    // Gets the current editors selection as text
-    let textArea = tinymce.activeEditor.selection.getContent({format: 'text'});
-     
-    console.log(textArea)
+
+    //*Såhär får vi ut text content i enbart text format
+    let contentText = tinymce.activeEditor.getContent({format: 'text'});
+
+    //*Ifall vi behöver text content i html form så finns det här
+    let contentHtml = tinymce.activeEditor.getContent({format: 'raw'});
+    console.log("Content: " + contentHtml)
+    
 
     console.log("Saved btn clicked")
-    console.log(textArea.innerText)
+
     newNote.title = title.value;
-    newNote.author = author.value;  
-    // newNote.text = textArea;  
+    newNote.text = contentText;  
 
     savedNotes.push(newNote)
 
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes))
-             
-    //*Denna resetar text fieldsen
-    //note.reset();
     
 }
 
@@ -133,19 +119,17 @@ window.onload = load();
 
 
 class Note {
-    constructor(title, author, date, text, note, star) {
+    constructor(title, date, text, note, star) {
         this.title = title,
-        this.author = author,
         this.date = date,
         this.text = text,
         this.note = note,
-        this.id = Date.now(),
-        this.star = star
+        this.star = star,
+        this.id = Date.now()
     }
 
     save() {
-        let content = tinymce.get("mytextarea").getContent()
-        newNote.text = content;     
+            
     }
 
 }
@@ -154,11 +138,45 @@ btnAdd.addEventListener("click", () => {
     createNote();
 })
 
-// btnPrint.addEventListener("click", () => {
-//     note1.print()
-// })
 
-// btnSave.addEventListener("click", () => {
-//     console.log("save")
-//     newNote.save();
-// })
+
+
+
+//*För att kunna spara() och Auto save
+/*
+// Store accumulated changes
+var change = new Delta();
+quill.on('text-change', function(delta) {
+  change = change.compose(delta);
+});
+
+// Save periodically
+setInterval(function() {
+  if (change.length() > 0) {
+    console.log('Saving changes', change);
+    /* 
+    Send partial changes
+    $.post('/your-endpoint', { 
+      partial: JSON.stringify(change) 
+    });
+    
+    Send entire document
+    $.post('/your-endpoint', { 
+      doc: JSON.stringify(quill.getContents())
+    });
+    change = new Delta();
+    */
+   
+   /*
+}
+}, 5*1000);
+
+// Check for unsaved data
+window.onbeforeunload = function() {
+if (change.length() > 0) {
+  return 'There are unsaved changes. Are you sure you want to leave?';
+}
+}
+
+
+*/

@@ -5,7 +5,6 @@
 }
 
 body{
-    background-color: rgb(221, 228, 252);
     font-family: 'Poppins', sans-serif;
     display: flex;
     width: 100vw;
@@ -46,7 +45,7 @@ aside div{
     background-color: white;
 }
 nav{
-    background-color: burlywood;
+    background-color: rgb(0, 83, 146);
     width: 70px;
     height: 100vh;
     display: flex;
@@ -112,7 +111,9 @@ nav i{
     width: 60%;
     height: 80vh;
     border-radius: 10px;
-    background-color: #f4f4f4;
+    background-color:white;
+    border: 8px solid rgb(7, 133, 230);
+    color: #333;
     flex-direction: column;
 }
 #first-visit-content > h1 {
@@ -121,25 +122,34 @@ nav i{
 #first-visit-content > button {
     display: flex;
     margin: 10% auto;
-    background-color: grey;
+    background-color: rgb(7, 133, 230);
+    border: 4px solid white;
     color: white;
     font-weight: 800;
     font-size: 2rem;
-    border: none;
-    border-radius: 20px;
+    border-radius: 40px;
     padding: 2% 11%;
 }
 /* End of segment for styling first-time visit */
 
+#title-input{
+    position: absolute;
+    /* margin: 3% 40%; */
+    border:none;
+    padding: 0 30px;
+    font-size: 25px;
+    outline: none;
+    top: 20px;
+}
 
+#editor {
+    position: absolute;
+    font-size: 16px;
+    width: 100%;
+    top: 80px;
+    padding: 0 30px;
+    
 
+    /* margin: 8% 40%; */
+}
 
-/* 
- #mytextarea{
-    background-color: white;
-    height: 800px;
-}  */
-
-/* #mceu_28, #mceu_27-body {
-    display: none;
-} */
