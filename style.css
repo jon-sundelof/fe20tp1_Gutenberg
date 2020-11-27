@@ -12,7 +12,7 @@ body{
     height: 100vh;
 }
 main{
-    width: 80%  ;
+    width: 100%;
     height: 100vh;
 <<<<<<< HEAD
     position: relative;
@@ -29,7 +29,6 @@ main{
     overflow: hidden;
     z-index: 10;
     overflow-y: auto;
-
     /* position: relative; */
 >>>>>>> main
 }
@@ -287,8 +286,8 @@ nav i, .add, .save, .print, .navtools{
 /* End of segment for styling first-time visit */
 
 #title-input{
-    position: fixed;
-    width: 70%;
+    /* position: fixed; */
+    width: 100%;
     top: 0;
     border:none;
     font-size: 25px;
@@ -302,22 +301,22 @@ nav i, .add, .save, .print, .navtools{
 }
 
 #editor {
-    position: absolute;
+    /* position: absolute; */
     font-size: 16px;
-    width: 70%;
+    width: 100%;
     height: auto;
-    top: 80px;
+    margin: 30px 0;
     border:none;
-    
-
     /* padding: 0 30px; */
     /* margin-left: 500px; */
-
 }
 .ql-editor{
-    padding: 0 !important;
+    padding: 0;
 
 }
 .ql-tooltip{
-    z-index: 1000 !important;
+    z-index: 1000;
+}
+.ql-editor.ql-blank::before {
+left:0;
 }
