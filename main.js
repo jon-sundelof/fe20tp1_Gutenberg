@@ -13,63 +13,72 @@ let toolbarOptions = [
 //*****Search START *****/
 /************************/
 
-//Test-array
-let savedNotesTest = ['green', 'blue', 'yellow', 'red'];
+//notes = note-objekt inuti savedNotes
+//group = savedNotes filtrerat med users sök-input
 
-// getting all required elements
-const searchWrapper = document.querySelector(".search-input");
-const inputBox = searchWrapper.querySelector("input");
-const suggBox = searchWrapper.querySelector(".autocom-box");
-const icon = searchWrapper.querySelector(".icon");
-//let linkTag = searchWrapper.querySelector("a");
+const list = document.getElementById('list');
 
-// if user press any key and release
-inputBox.onkeyup = (e) => {
-    let userData = e.target.value; //user enetered data
-    let emptyArray = [];
-    if (userData) {
-        icon.onclick = () => {
-            console.log('Clicked search icon');
-        }
-        emptyArray = savedNotesTest.filter((data) => {
-            //filtering array value and user characters to lowercase and return only those words which are start with user enetered chars
-            return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
-        });
-        emptyArray = emptyArray.map((data) => {
-            // passing return data inside li tag
-            return data = '<li>' + data + '</li>';
-        });
-        searchWrapper.classList.add("active"); //show autocomplete box
-        showSuggestions(emptyArray);
-        let allList = suggBox.querySelectorAll("li");
-        for (let i = 0; i < allList.length; i++) {
-            //adding onclick attribute in all li tag
-            allList[i].setAttribute("onclick", "select(this)");
-        }
+function setList(group) {
+    clearList();
+    for (const notes of group) {
+        const item = document.createElement('li');
+        const text = document.createTextNode(notes.title);
+        item.appendChild(text);
+        list.appendChild(item);
+    }
+    if (group.length === 0) {
+        setNoResults();
+    }
+}
+
+//Rensar list-items
+function clearList() {
+    while (list.firstChild) {
+        list.removeChild(list.firstChild);
+    }
+}
+//När inga sökresultat hittas
+function setNoResults() {
+    const item = document.createElement('li');
+    const text = document.createTextNode('No results found');
+    item.appendChild(text);
+    list.appendChild(item);
+}
+//Sortera sökresultat via relevans. PRIO: 
+//*Exakt rätt titel (if)
+//*Börjar rätt (else if)
+//*Alla andra fall (else if)
+function getRelevancy(value, searchTerm) {
+    if (value === searchTerm) {
+        return 2;
+    } else if (value.startsWith(searchTerm)) {
+        return 1;
+    } else if (value.includes(searchTerm)) {
+        return 0;
+    }
+}
+
+const searchInput = document.getElementById('search');
+
+/* ==================== EVENT LISTENER ==================== */
+searchInput.addEventListener('input', (event) => {
+    let value = event.target.value;
+    //Kollar om value finns, om längden är längre än 0 + tar bort mellanrum innan och efter users sök
+    if (value && value.trim().length > 0) {
+        value = value.trim();
+        //Skapar nytt list-item, filtrerat via sökterm
+        setList(savedNotes.filter(notes => {
+            //Om söktermen är någon del av en notes titel returneras den
+            return notes.title.includes(value);
+            //Sorterar sökresultat via relevans
+        }).sort((noteA, noteB) => {
+            return getRelevancy(noteB.title, value) - getRelevancy(noteA.title, value);
+        }));
     } else {
-        searchWrapper.classList.remove("active"); //hide autocomplete box
+        clearList();
     }
-}
+});
 
-function select(element) {
-    let selectData = element.textContent;
-    inputBox.value = selectData;
-    icon.onclick = () => {
-        console.log(`searched for ${selectData}`);
-    }
-    searchWrapper.classList.remove("active");
-}
-
-function showSuggestions(list) {
-    let listData;
-    if (!list.length) {
-        userValue = inputBox.value;
-        listData = '<li>' + userValue + '</li>';
-    } else {
-        listData = list.join('');
-    }
-    suggBox.innerHTML = listData;
-}
 /************************/
 //***** Search END ******/
 /************************/
