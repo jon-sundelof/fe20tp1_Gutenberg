@@ -1,4 +1,3 @@
-
 let exEditor = false;
 
 //*QUILL OPTIONS
@@ -8,7 +7,6 @@ let toolbarOptions = [
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],   
 ];
-
 
 
 //const printscreen = document.querySelector('.printscreen')
@@ -27,7 +25,6 @@ const titleInput = document.querySelector("#title-input")
 //******** QUILL ********/
 /************************/
 
-//let editor = new Quill('#editor', options);
 let options =  {
     modules: {
         toolbar: toolbarOptions,
@@ -40,17 +37,14 @@ let options =  {
 let editor = new Quill('#editor', options);
 let delta = editor.getContents(); //getContents(index: Number = 0, length: Number = remaining): Delta
 
-
-/************************/
-//***** FUNCTIONS *******/
-/************************/
+//*En array där vi sparar våra notes
 let savedNotes = [];
 
-    if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
-        savedNotes = [];
-    } else {
-        savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
-    }
+if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
+     savedNotes = [];
+} else {
+    savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
+}
 
 //*Hämtar data från local storage
 load = () => {
@@ -76,6 +70,7 @@ class Note {
 
 }
 
+//*Denna ska inte vara kvar, bara för testing
 let newNote = savedNotes[0]
 
 setInterval( () => {
@@ -84,7 +79,7 @@ setInterval( () => {
     //* HÄR ONUR
     textContent = editor.getText()
     
-    
+    //*for loop?
     if(savedNotes[0].id == newNote.id){
         console.log("Array är inte tom")
 
@@ -100,6 +95,7 @@ setInterval( () => {
 }, 20000);
 
 //*En function där våran note skapas
+//TODO Denna måste fixas till lite
 function createNote() {
 
     if(exEditor == true){
@@ -134,9 +130,6 @@ onSave = () =>{
 //***** FUNCTIONS *******/
 /************************/
 
-//*Varje gången sidan refreshas eller besöks så körs "load" functionen
-window.onload = load();
-
 //*PRINT
 btnPrint.addEventListener("click", () =>{
     //window.print(delta);
@@ -161,14 +154,11 @@ btnPrint.addEventListener("click", () =>{
 } */
 //*När man klickar save så sparas texten fast texten sparas i html format som förut.
 //*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
+//*Ska vi ha kvar denna??
 onSave = () =>{
    
     
 }
-
-/************************/
-//***** FUNCTIONS *******/
-/************************/
 
 //*Varje gången sidan refreshas eller besöks så körs "load" functionen
 window.onload = load();
