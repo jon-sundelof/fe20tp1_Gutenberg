@@ -2,7 +2,7 @@ let exEditor = false;
 
 //*QUILL OPTIONS
 let toolbarOptions = [
-    ['bold', 'italic', 'underline',],
+    ['bold', 'italic', 'underline'],
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
@@ -27,6 +27,7 @@ const btnPrint = document.querySelector(".print");
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
 
+
 /************************/
 //******** QUILL ********/
 /************************/
@@ -39,8 +40,14 @@ let options = {
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
 }
+
+
 //var Delta = Quill.import('delta'); // provar delta
 let editor = new Quill('#editor', options);
+function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
+const getQuill = editor.root.innerHTML;
+
+
 
 //*En array där vi sparar våra notes
 let savedNotes = [];
@@ -49,6 +56,8 @@ if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').le
      savedNotes = [];
 } else {
     savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
+
+    buildPreviewWind();
 }
 
 //*Hämtar data från local storage
@@ -76,16 +85,78 @@ class Note {
 
 }
 
-const previewDiv = document.querySelectorAll('.preDiv');
 
-let previewDivArray = Array.from(previewDiv);
-console.log(previewDivArray);
 
-//*En function där våran note skapas
-//TODO Denna måste fixas till lite
-function createNote() {
+//////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function buildPreviewWind() {
+    for (let i = 0; i < savedNotes.length; i++) {
+        const preDiv = document.createElement("div");
+        preDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 45)}</p><p class="pretime">${savedNotes[i].date}</p>`;
+        preDiv.setAttribute('class', 'preDiv');
+        preDiv.setAttribute('id', savedNotes[i].id);
+        notePreview.prepend(preDiv);
+    }
+    
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function updateArrRebuild() {
+    for (let i = 0; i < savedNotes.length; i++) {
+        if (currentNoteId == savedNotes[i].id.toString()) {
+            textContent = getQuillHtml()
+            savedNotes[i].title = titleInput.value;
+            savedNotes[i].date = date;
+            savedNotes[i].text = textContent;
+            savedNotes[i].star = false;
+
+        }
+    }
+
+    /*  savedNotes.push(newNote); */
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+    let nodes = document.querySelectorAll(".preDiv");
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].parentNode.removeChild(nodes[i]);
+    }
+
+    buildPreviewWind();
 
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function createNote() {
+    textContent = getQuill;
+    let newNote = new Note(titleInput.value, date, textContent, false);
+    savedNotes.push(newNote);
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+
+    const preDiv = document.createElement("div");
+    preDiv.innerHTML = `<p>${savedNotes[savedNotes.length - 1].date}</p>`;
+    preDiv.setAttribute('class', 'preDiv');
+    preDiv.setAttribute('id', savedNotes[savedNotes.length - 1].id);
+    notePreview.prepend(preDiv);
+
+    titleInput.value = "New Note";
+    editor.setText("");
+    
+    currentNote = savedNotes[savedNotes.length - 1];
+    currentNoteId = savedNotes[savedNotes.length - 1].id;
+    
+
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const previewDiv = document.querySelectorAll('.preDiv');
+
+/* let previewDivArray = Array.from(previewDiv);
+console.log(previewDivArray); */
 
 let pressedPreview = false;
 let thisDivIndex;
@@ -95,21 +166,19 @@ let thisDivIndex;
 previewDiv.forEach(item => {
     item.addEventListener('click', event => {
         //handle click
-
         let thisDivId = event.target.closest('.preDiv').id;
-        console.log("Div id: " + thisDivId);
+        console.log(thisDivId);
+        for (let i = 0; i < savedNotes.length; i++){
+            if (thisDivId == savedNotes[i].id.toString()){
+                console.log(savedNotes[i].id.toString())
+                editor.setText(savedNotes[i].text);
+                titleInput.value = savedNotes[i].title;
 
-        let thisDivIndex = savedNotes.findIndex(x => x.id === thisDivId);
-        console.log(thisDivIndex);
+                currentNoteId = thisDivId;
+                console.log("Current note id: " + currentNoteId)
+                pressedPreview = true;
 
-        if (thisDivId.toString() == savedNotes[thisDivIndex].id.toString()) {
-
-            editor.setText(savedNotes[thisDivIndex].text);
-            titleInput.value = savedNotes[thisDivIndex].title;
-
-            currentNoteId = thisDivId;
-            pressedPreview = true;
-
+            }
         }
     });
 });
@@ -127,7 +196,6 @@ setInterval(() => {
         // Kollar ifall arrayen är tome eller om noteId inte inte matchar senast skapta ID- I båda fallen skapar den ny note. 
         if (length <= 0 || savedNotes[savedNotes.length - 1].id !== currentNoteId) {
             textContent = getQuill;
-            /* checkForInput() */
             let newNote = new Note(titleInput.value, date, textContent, false);
             savedNotes.push(newNote);
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
@@ -159,13 +227,6 @@ setInterval(() => {
 }, 4000);
 
 
-
-
-//*När man klickar save så sparas texten fast texten sparas i html format som förut.
-//*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
-onSave = () => {
-
-}
 //*PRINT
 btnPrint.addEventListener("click", () => {
     //window.print(delta);
@@ -190,23 +251,10 @@ btnPrint.addEventListener("click", () => {
   openWindow.print();
   openWindow.close();
 } */
-//*När man klickar save så sparas texten fast texten sparas i html format som förut.
-//*Varje gång man sparar så sparas det en ny note, fast den borde overwrita den man är på (?).
-//*Ska vi ha kvar denna??
-onSave = () =>{
-   
-    
-}
+
 
 //*Varje gången sidan refreshas eller besöks så körs "load" functionen
 window.onload = load();
-
-// btnPrint.addEventListener("click", () =>{
-//     console.log(delta);
-//     //printscreen.innerHTML = editor.getContents();
-//     //editor.getContents();
-//     //printscreen.innerHTML = editor;
-// })
 
 
 btnAdd.addEventListener("click", () => {
