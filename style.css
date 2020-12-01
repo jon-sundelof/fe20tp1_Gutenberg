@@ -67,6 +67,7 @@ aside .filter{
     background: white;
     position: relative;
     right: 0;
+    border-bottom: 1px solid rgb(211, 211, 211);
 }
 .preview-notes > div:hover{
     background-color: rgb(240, 240, 240);
@@ -80,6 +81,19 @@ aside .filter{
 }
 .preview-notes div p{
     padding: 5px 0;
+}
+.preview-notes .star{
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    color:rgb(124, 124, 124);
+    font-size: 38px;
+    border:none;
+    background:none;
+    outline: none;
+}
+.preview-notes .star.starClicked{
+    color: orange;
 }
 
 /* Toggle alla-favo--------------------- */
