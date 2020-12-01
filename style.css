@@ -4,6 +4,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: 'Cairo', sans-serif;
 }
 
 body{
@@ -206,6 +207,9 @@ nav i, .add, .save, .print, .navtools{
 }
      */
 
+.ql-toolbar{
+   z-index: 4;
+}
 
 
 
@@ -213,7 +217,7 @@ nav i, .add, .save, .print, .navtools{
 /* Following segment is styling for first-time visit information. */
 
 #first-visit-container {
-    width: 100%;
+    width: 75%;
     margin: 0 auto;
     font-size: 24px;
     position: absolute;
@@ -240,7 +244,7 @@ nav i, .add, .save, .print, .navtools{
 #first-visit-content > h1 {
     text-align: center;
     width: 100%;
-    color: rgb(0, 83, 146);
+    color: #213991;
     font-size: 2.5em;
     letter-spacing: 6px;
     margin-bottom: 5%;
@@ -255,20 +259,23 @@ nav i, .add, .save, .print, .navtools{
 }
 
 .first-visit-span {
-    color: rgb(0, 83, 146);
+    color: #213991;
     font-weight: bold;
     font-size: 40px;
 }
 
 #first-visit-content > button {
     margin: 4% auto;
-    background-color: rgb(0, 83, 146);
+    outline-style: none;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.452);
+    background-color: #213991;
     border: none;
     color: white;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 2rem;
+    letter-spacing: 1px;
     border-radius: 60px;
-    padding: 1% 6%;
+    padding: 4px 100px;
 }
 /* End of segment for styling first-time visit */
 
