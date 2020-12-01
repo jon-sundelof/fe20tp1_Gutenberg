@@ -53,7 +53,7 @@ const getQuill = editor.root.innerHTML;
 let savedNotes = [];
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
-     savedNotes = [];
+    savedNotes = [];
 } else {
     savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
 
@@ -79,9 +79,7 @@ class Note {
             this.id = Date.now()
     }
 
-    save() {
 
-    }
 
 }
 
@@ -93,12 +91,12 @@ class Note {
 function buildPreviewWind() {
     for (let i = 0; i < savedNotes.length; i++) {
         const preDiv = document.createElement("div");
-        preDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 45)}</p><p class="pretime">${savedNotes[i].date}</p>`;
+        preDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 60)}</p><p class="pretime">${savedNotes[i].date}</p>`;
         preDiv.setAttribute('class', 'preDiv');
         preDiv.setAttribute('id', savedNotes[i].id);
         notePreview.prepend(preDiv);
     }
-    
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,10 +141,10 @@ function createNote() {
 
     titleInput.value = "New Note";
     editor.setText("");
-    
+
     currentNote = savedNotes[savedNotes.length - 1];
     currentNoteId = savedNotes[savedNotes.length - 1].id;
-    
+
 
 }
 
@@ -168,8 +166,8 @@ previewDiv.forEach(item => {
         //handle click
         let thisDivId = event.target.closest('.preDiv').id;
         console.log(thisDivId);
-        for (let i = 0; i < savedNotes.length; i++){
-            if (thisDivId == savedNotes[i].id.toString()){
+        for (let i = 0; i < savedNotes.length; i++) {
+            if (thisDivId == savedNotes[i].id.toString()) {
                 console.log(savedNotes[i].id.toString())
                 editor.setText(savedNotes[i].text);
                 titleInput.value = savedNotes[i].title;

@@ -32,7 +32,7 @@ main{
 
 aside{
     /* justify-self: center; */
-    padding: 20px;
+    padding: 20px 10px;
     border-top-left-radius: 40px;
     position: relative;
     left: -35px;
@@ -74,6 +74,12 @@ aside .filter{
 
 .preview-notes div{
     font-size: 14px;
+    width: 100%;
+    word-wrap: break-word;
+
+}
+.preview-notes div p{
+    padding: 5px 0;
 }
 
 /* Toggle alla-favo--------------------- */
@@ -147,6 +153,11 @@ aside .filter{
     align-items: center;
 
 }
+p.pretime{
+    padding: 0;
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.582);
+}
 .preview-notes::-webkit-scrollbar {
     width: 10px;
 }
@@ -162,7 +173,7 @@ aside .filter{
 }
 
 .preview-notes div{
-    width: calc(100% - 40px);
+    /* width: calc(100% - 40px); */
 }
 nav{
     background-color: #213991;
@@ -307,6 +318,7 @@ nav i, .add, .save, .print, .navtools{
 }
 .ql-editor{
     padding: 0;
+    min-height: 400px;
 
 }
 .ql-tooltip{
