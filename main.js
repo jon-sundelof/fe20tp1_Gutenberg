@@ -261,3 +261,14 @@ btnAdd.addEventListener("click", () => {
     createNote();
 })
 
+//*LÄGGA TILL RADERA KNAPPEN I DENNA, DENNA ÄR LITE ÖVER
+/*
+preDiv.innerHTML = 
+    <button class="like ${noteToBeAdded.fav ? "liked" : ""}" data-id="${noteToBeAdded.id}">&#9733;</button>
+    <button class="trash">&#10006;</button>
+    <h3>${noteToBeAdded.textTitle.substr(0, 15)}</h3>
+    <p>${noteToBeAdded.text.substr(0, 20)}...</p>
+    <p>${noteToBeAdded.datum}</p>; //ger diven innehåll
+    previewNotes.prepend(preDiv); // nya diven blir barn till <section class="preview-notes"> och blir synlig på sidan.
+}
+*/
