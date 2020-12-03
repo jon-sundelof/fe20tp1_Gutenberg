@@ -127,16 +127,15 @@ const getQuill = editor.root.innerHTML;
 
 // Store accumulated changes
 var change = new Delta();
-let delta = editor.getContents();
-// editor.on('text-change', function{//function(delta) {
-//   //change = change.compose(delta);
-//   let delta = editor.getContents();
+const delta = editor.getContents();
 
-//   preciousContent.innerHTML = JSON.stringify(delta);
-//   console.log(preciousContent)
-// });
+var container = editor.addContainer('ql-custom');
+ editor.on('text-change', function(delta) {
+   change = change.compose(delta);
+   console.log(change)
+ });
 
-
+ 
 
 // Save periodically
 // setInterval(function() {
@@ -157,7 +156,7 @@ let delta = editor.getContents();
 //     }
   //}, 5*1000);
   
-  // Check for unsaved data
+// Check for unsaved data
 //   window.onbeforeunload = function() {
 //     if (change.length() > 0) {
 //       return 'There are unsaved changes. Are you sure you want to leave?';
