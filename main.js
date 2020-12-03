@@ -6,6 +6,7 @@ let toolbarOptions = [
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
+    ['image','link']
 ];
 
 /************************/
@@ -100,6 +101,7 @@ const btnPrint = document.querySelector(".print");
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
 
+var preciousContent = document.getElementById('myPrecious');
 
 /************************/
 //******** QUILL ********/
@@ -108,6 +110,9 @@ const innerText = document.querySelector(".ql-editor")
 let options = {
     modules: {
         toolbar: toolbarOptions,
+        // handlers: {
+        //     image: imageHandler
+        // }
     },
     placeholder: 'Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
@@ -115,13 +120,58 @@ let options = {
 }
 
 
-//var Delta = Quill.import('delta'); // provar delta
+
+var Delta = Quill.import('delta'); // provar delta
 let editor = new Quill('#editor', options);
 function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
 const getQuill = editor.root.innerHTML;
+//let delta = editor.getContents();
+// function imageHandler() {
+//     var range = this.editor.getSelection();
+//     var value = prompt('please copy paste the image url here.');
+//     if(value){
+//         this.editor.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+//     }
+// }
+// Store accumulated changes
+var change = new Delta();
+let delta = editor.getContents();
+// editor.on('text-change', function() {//function(delta) {
+//   //change = change.compose(delta);
+//   let delta = editor.getContents();
+
+//   preciousContent.innerHTML = JSON.stringify(delta);
+//   console.log(preciousContent)
+// });
 
 
 
+// Save periodically
+// setInterval(function() {
+//     if (change.length() > 0) {
+//       console.log('Saving changes', change);
+//       /* 
+//       Send partial changes
+//       $.post('/your-endpoint', { 
+//         partial: JSON.stringify(change) 
+//       });
+      
+//       Send entire document
+//       $.post('/your-endpoint', { 
+//         doc: JSON.stringify(quill.getContents())
+//       });
+//       */
+//       change = new Delta();
+//     }
+  //}, 5*1000);
+  
+  // Check for unsaved data
+//   window.onbeforeunload = function() {
+//     if (change.length() > 0) {
+//       return 'There are unsaved changes. Are you sure you want to leave?';
+//     }
+//   }
+  
 //*En array där vi sparar våra notes
 let savedNotes = [];
 
@@ -198,7 +248,7 @@ function updateArrRebuild() {
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
 function createNote() {
     textContent = getQuill;
     let newNote = new Note(titleInput.value, date, textContent, false);
@@ -242,7 +292,8 @@ previewDiv.forEach(item => {
         for (let i = 0; i < savedNotes.length; i++) {
             if (thisDivId == savedNotes[i].id.toString()) {
                 console.log(savedNotes[i].id.toString())
-                editor.setText(savedNotes[i].text);
+
+                editor.root.innerHTML = savedNotes[i].text;
                 titleInput.value = savedNotes[i].title;
 
                 currentNoteId = thisDivId;
@@ -301,9 +352,8 @@ setInterval(() => {
 //*PRINT
 btnPrint.addEventListener("click", () => {
     //window.print(delta);
-    //content = JSON.stringify(quill.getContents());
-    //console.log(getQuillHtml());
     content = getQuillHtml();
+    //console.log(preciousContent );
     let divContents = content;
     let openWindow = window.open("", "", "width=700, height=900");
     openWindow.document.write('<html>');
