@@ -110,9 +110,7 @@ var preciousContent = document.getElementById('myPrecious');
 let options = {
     modules: {
         toolbar: toolbarOptions,
-        // handlers: {
-        //     image: imageHandler
-        // }
+
     },
     placeholder: 'Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
@@ -126,17 +124,11 @@ let editor = new Quill('#editor', options);
 function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
 const getQuill = editor.root.innerHTML;
 //let delta = editor.getContents();
-// function imageHandler() {
-//     var range = this.editor.getSelection();
-//     var value = prompt('please copy paste the image url here.');
-//     if(value){
-//         this.editor.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-//     }
-// }
+
 // Store accumulated changes
 var change = new Delta();
 let delta = editor.getContents();
-// editor.on('text-change', function() {//function(delta) {
+// editor.on('text-change', function{//function(delta) {
 //   //change = change.compose(delta);
 //   let delta = editor.getContents();
 
