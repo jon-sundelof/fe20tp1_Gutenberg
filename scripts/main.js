@@ -223,7 +223,7 @@ btnPrint.addEventListener("click", () => {
     //window.print(delta);
     //content = JSON.stringify(quill.getContents());
     //console.log(getQuillHtml());
-    content = getQuillHtml();
+    content = getQuillContents;
     let divContents = content;
     let openWindow = window.open("", "", "width=700, height=900");
     openWindow.document.write('<html>');
