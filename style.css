@@ -5,6 +5,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: 'Cairo', sans-serif;
 }
 
 body{
@@ -225,6 +226,9 @@ nav i, .add, .save, .print, .navtools{
 }
      */
 
+.ql-toolbar{
+   z-index: 4;
+}
 
 
 
@@ -232,7 +236,7 @@ nav i, .add, .save, .print, .navtools{
 /* Following segment is styling for first-time visit information. */
 
 #first-visit-container {
-    width: 100%;
+    width: 75%;
     margin: 0 auto;
     font-size: 24px;
     position: absolute;
@@ -259,7 +263,7 @@ nav i, .add, .save, .print, .navtools{
 #first-visit-content > h1 {
     text-align: center;
     width: 100%;
-    color: rgb(0, 83, 146);
+    color: #213991;
     font-size: 2.5em;
     letter-spacing: 6px;
     margin-bottom: 5%;
@@ -274,20 +278,23 @@ nav i, .add, .save, .print, .navtools{
 }
 
 .first-visit-span {
-    color: rgb(0, 83, 146);
+    color: #213991;
     font-weight: bold;
     font-size: 40px;
 }
 
 #first-visit-content > button {
     margin: 4% auto;
-    background-color: rgb(0, 83, 146);
+    outline-style: none;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.452);
+    background-color: #213991;
     border: none;
     color: white;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 2rem;
+    letter-spacing: 1px;
     border-radius: 60px;
-    padding: 1% 6%;
+    padding: 4px 100px;
 }
 /* End of segment for styling first-time visit */
 
@@ -400,3 +407,63 @@ left:0;
   cursor: pointer;
 }
 /* ==========SEARCH FUNCTION end========== */
+
+
+
+/*********************************************************/
+    /* Fonts for Quill */
+    /* Set dropdown font-families */
+  
+/* Set droplist names - -item is the currently selected font, -label is the font's appearance in the droplist*/
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value='']::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value='']::before
+{
+  content: 'Default';
+}
+
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value='times-new-roman']::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value='times-new-roman']::before
+{
+  content: 'Times New...';
+  font-family: 'Times New Roman';
+}
+
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value='arial']::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value='arial']::before
+{
+  content: 'Arial';
+  font-family: 'Arial';
+}
+
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value='roboto']::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value='roboto']::before
+{
+  content: 'Roboto';
+  font-family: 'Roboto';
+}
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value='comic-neue']::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value='comic-neue']::before
+{
+  content: 'Comic Neue';
+  font-family: 'Comic Neue';
+}
+
+/****************************************************
+Set the font-family content used for the HTML content.
+*****************************************************/
+.ql-font-arial {
+  font-family: 'Arial';
+}
+
+.ql-font-times-new-roman {
+  font-family: 'Times New Roman';
+}
+
+.ql-font-roboto {
+  font-family: 'Roboto';
+}
+
+.ql-font-comic-neue {
+  font-family: 'Comic Neue';
+}
+/*********************************************************/

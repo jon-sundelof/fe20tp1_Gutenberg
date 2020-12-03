@@ -1,4 +1,7 @@
-let exEditor = false;
+//Import fonts for quill
+let Font = Quill.import('formats/font');
+Font.whitelist = ['times-new-roman', 'arial', 'roboto', 'comic-neue'];
+Quill.register(Font, true);
 
 //*QUILL OPTIONS
 let toolbarOptions = [
@@ -6,11 +9,10 @@ let toolbarOptions = [
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
+    [{ 'font': ['', 'times-new-roman', 'arial', 'roboto', 'comic-neue'] }],
 ];
 
-
-
-//Generear string för datum  (Snodde från Onur's kod <3 )
+//Generates string for date. Mabye go with "localDateString" instead? 
 const datum = new Date();
 const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
@@ -19,20 +21,25 @@ const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + da
 const notePreview = document.querySelector(".preview-notes");
 
 
-//*Detta är en editorn
+//Variable for the editor. ()
 const note = document.querySelector("#editor")
+const innerText = document.querySelector(".ql-editor")
 
+//Variables for the buttons
 const btnAdd = document.querySelector(".add");
 const btnPrint = document.querySelector(".print");
 
+//Variable for the title input
 const titleInput = document.querySelector("#title-input")
-const innerText = document.querySelector(".ql-editor")
+
+//Variabels for CurrentNoteId and currentNote
+let currentNoteId;
+let currentNote;
 
 
 /************************/
 //******** QUILL ********/
 /************************/
-
 let options = {
     modules: {
         toolbar: toolbarOptions,
@@ -42,11 +49,11 @@ let options = {
     theme: 'bubble'
 }
 
-
 //var Delta = Quill.import('delta'); // provar delta
 let editor = new Quill('#editor', options);
-function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
-const getQuill = editor.root.innerHTML;
+/* function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre */
+const getQuillContents = editor.getContents();
+const getQuillText = editor.getText();
 
 
 
@@ -71,20 +78,16 @@ load = () => {
 //**** NOTE KLASSEN *****/
 /************************/
 class Note {
-    constructor(title, date, text, star, tag) {
-        this.title = title,
+    constructor(title, date, text, star, content = editor.getContents(), tag) {
+            this.title = title,
             this.date = date,
             this.text = text,
             this.star = star,
+            this.content = content,
             this.tag = tag,
             this.id = Date.now()
     }
-
-
-
 }
-
-
 
 //////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,11 +108,12 @@ function buildPreviewWind() {
 function updateArrRebuild() {
     for (let i = 0; i < savedNotes.length; i++) {
         if (currentNoteId == savedNotes[i].id.toString()) {
-            textContent = getQuillHtml()
+            
             savedNotes[i].title = titleInput.value;
             savedNotes[i].date = date;
-            savedNotes[i].text = textContent;
+            savedNotes[i].text = editor.getText();
             savedNotes[i].star = false;
+            savedNotes[i].content = editor.getContents();
 
         }
     }
@@ -117,6 +121,7 @@ function updateArrRebuild() {
     /*  savedNotes.push(newNote); */
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
+    /* De-builds the preview-widow so i can be built up again with regards to updated array */
     let nodes = document.querySelectorAll(".preDiv");
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
@@ -124,105 +129,92 @@ function updateArrRebuild() {
 
     buildPreviewWind();
 
+    previewDiv = document.querySelectorAll('.preDiv');
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function createNote() {
-    textContent = getQuill;
-    let newNote = new Note(titleInput.value, date, textContent, false);
+function createNewNote() {
+
+    titleInput.value = "New Note";
+    editor.setContents();
+
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
 
-    const preDiv = document.createElement("div");
-    preDiv.innerHTML = `<p>${savedNotes[savedNotes.length - 1].date}</p>`;
-    preDiv.setAttribute('class', 'preDiv');
-    preDiv.setAttribute('id', savedNotes[savedNotes.length - 1].id);
-    notePreview.prepend(preDiv);
-
-    titleInput.value = "New Note";
-    editor.setText("");
-
-    currentNote = savedNotes[savedNotes.length - 1];
-    currentNoteId = savedNotes[savedNotes.length - 1].id;
-
+    currentNote = newNote;
+    currentNoteId = newNote.id;
 
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const previewDiv = document.querySelectorAll('.preDiv');
 
-/* let previewDivArray = Array.from(previewDiv);
-console.log(previewDivArray); */
+// Eventlistener for the preview-divs. On-click sets title of clicked id in editor. 
 
-let pressedPreview = false;
-let thisDivIndex;
+let previewDiv = document.querySelectorAll('.preDiv');
 
 
+[...document.querySelectorAll('.preDiv')].forEach(function(item) {
+    item.addEventListener('click', function() {
 
-previewDiv.forEach(item => {
+          for (let i = 0; i < savedNotes.length; i++) {
+           if (item.id == savedNotes[i].id.toString()) {
+                    
+              editor.setContents(savedNotes[i].content);
+              titleInput.value = savedNotes[i].title;
+
+              currentNoteId = item.id;
+              console.log("Current note id: " + currentNoteId)
+ 
+       }
+      } 
+   });
+}); 
+
+
+/*  previewDiv.forEach(item => {
     item.addEventListener('click', event => {
         //handle click
         let thisDivId = event.target.closest('.preDiv').id;
         console.log(thisDivId);
+
         for (let i = 0; i < savedNotes.length; i++) {
             if (thisDivId == savedNotes[i].id.toString()) {
+                
                 console.log(savedNotes[i].id.toString())
-                editor.setText(savedNotes[i].text);
+                
+                editor.setContents(savedNotes[i].content);
                 titleInput.value = savedNotes[i].title;
 
                 currentNoteId = thisDivId;
                 console.log("Current note id: " + currentNoteId)
-                pressedPreview = true;
 
             }
-        }
+        } 
     });
-});
+});  */
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ setInterval(() => {
 
-//Variabel för vilket id den aktiva noten har 
-let currentNoteId;
-let length = savedNotes.length;
-let currentNote;
+        //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
+        if (savedNotes.length <= 0 || currentNoteId == undefined) {
+    
+            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
 
-setInterval(() => {
-
-    if (pressedPreview == false) {
-        // Kollar ifall arrayen är tome eller om noteId inte inte matchar senast skapta ID- I båda fallen skapar den ny note. 
-        if (length <= 0 || savedNotes[savedNotes.length - 1].id !== currentNoteId) {
-            textContent = getQuill;
-            let newNote = new Note(titleInput.value, date, textContent, false);
             savedNotes.push(newNote);
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        
+            currentNote = newNote;
+            currentNoteId = newNote.id;
 
-
-            const preDiv = document.createElement("div");
-            preDiv.innerHTML = `<h3>${savedNotes[savedNotes.length - 1].title}</h3><p>${savedNotes[savedNotes.length - 1].text}</p><p>${savedNotes[savedNotes.length - 1].date}</p>`;
-            preDiv.setAttribute('class', 'preDiv');
-            preDiv.setAttribute('id', savedNotes[savedNotes.length - 1].id);
-            notePreview.prepend(preDiv);
-
-            currentNote = savedNotes[savedNotes.length - 1];
-
+            previewDiv = document.querySelectorAll('.preDiv');
 
         } else {
             updateArrRebuild();
-        }
-
-        if (pressedPreview == false) {
-            currentNoteId = savedNotes[savedNotes.length - 1].id;
-        }
-    } else {
-
-        updateArrRebuild();
-
     }
-
-    length = savedNotes.length;
 }, 4000);
 
 
@@ -257,7 +249,7 @@ window.onload = load();
 
 
 btnAdd.addEventListener("click", () => {
-    createNote();
+    createNewNote();
 })
 
 //*LÄGGA TILL RADERA KNAPPEN I DENNA, DENNA ÄR LITE ÖVER
