@@ -129,7 +129,7 @@ const getQuill = editor.root.innerHTML;
 var change = new Delta();
 const delta = editor.getContents();
 
-var container = editor.addContainer('ql-custom');
+
  editor.on('text-change', function(delta) {
    change = change.compose(delta);
    console.log(change)
