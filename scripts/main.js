@@ -51,7 +51,9 @@ let options = {
 
 //var Delta = Quill.import('delta'); // provar delta
 let editor = new Quill('#editor', options);
-/* function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre */
+function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre 
+
+
 const getQuillContents = editor.getContents();
 const getQuillText = editor.getText();
 
@@ -223,7 +225,7 @@ btnPrint.addEventListener("click", () => {
     //window.print(delta);
     //content = JSON.stringify(quill.getContents());
     //console.log(getQuillHtml());
-    content = getQuillContents;
+    content = getQuillHtml();
     let divContents = content;
     let openWindow = window.open("", "", "width=700, height=900");
     openWindow.document.write('<html>');
