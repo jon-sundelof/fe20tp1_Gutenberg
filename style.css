@@ -408,6 +408,15 @@ left:0;
 }
 /* ==========SEARCH FUNCTION end========== */
 
+/*===============Delete button============ */
+.trash{
+    position: relative;
+    padding: 0.5px;
+    width: 20px;
+    height: 30px;
+    left: 200px;
+    bottom: 40px;
+}
 
 
 /*********************************************************/
