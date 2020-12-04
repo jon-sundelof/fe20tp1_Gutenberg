@@ -10,7 +10,7 @@ let toolbarOptions = [
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
     [{ 'font': ['', 'times-new-roman', 'arial', 'roboto', 'comic-neue'] }],
-    //['image']
+    ['image','link'],
 ];
 
 //Generates string for date. Mabye go with "localDateString" instead? 
