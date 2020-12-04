@@ -99,7 +99,7 @@ class Note {
 function buildPreviewWind() {
     for (let i = 0; i < savedNotes.length; i++) {
         const preDiv = document.createElement("div");
-        preDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 60)}</p><p class="pretime">${savedNotes[i].date}</p>`;
+        preDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 60)}</p><p class="pretime">${savedNotes[i].date}</p> <button class="trash">&#10006;</button>`;
         preDiv.setAttribute('class', 'preDiv');
         preDiv.setAttribute('id', savedNotes[i].id);
         notePreview.prepend(preDiv);
@@ -129,9 +129,9 @@ function updateArrRebuild() {
 
             let selectedDiv = document.getElementById(currentNoteId);
 
-            console.log(selectedDiv);
+            //console.log(selectedDiv);
 
-            selectedDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 60)}</p><p class="pretime">${savedNotes[i].date}</p>`;
+            selectedDiv.innerHTML = `<h3>${savedNotes[i].title.substr(0, 15)}</h3><p>${savedNotes[i].text.substr(0, 60)}</p><p class="pretime">${savedNotes[i].date}</p> <button class="trash">&#10006;</button>`;
 
         }
     }
@@ -173,7 +173,7 @@ let previewDiv = document.querySelectorAll('.preDiv');
 
 [...document.querySelectorAll('.preDiv')].forEach(function (item) {
     item.addEventListener('click', function () {
-        console.log("Click")
+        //console.log("Click")
         for (let i = 0; i < savedNotes.length; i++) {
             if (item.id == savedNotes[i].id.toString()) {
 
@@ -181,7 +181,7 @@ let previewDiv = document.querySelectorAll('.preDiv');
                 titleInput.value = savedNotes[i].title;
 
                 currentNoteId = item.id;
-                console.log("Current note id: " + currentNoteId)
+                //console.log("Current note id: " + currentNoteId)
 
             }
         }
@@ -217,7 +217,7 @@ setInterval(() => {
         updateArrRebuild();
     }
 
-    console.log("SAVED")
+    //console.log("SAVED")
 }, 4000);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -251,19 +251,30 @@ btnPrint.addEventListener("click", () => {
 //*Varje gången sidan refreshas eller besöks så körs "load" functionen
 window.onload = load();
 
+notePreview.addEventListener('click', e => {
+
+    if (e.target.classList.contains('trash')) {
+
+        id = e.target.closest('div').id
+        removeNote(id)
+        e.target.closest('div').remove()
+        //removeFromArr(e.target.closest('.active-div').id)
+    } else if (e.target.classList.contains('like')) {
+        //like(e.target.closest('.active-div').id)
+    }
+
+})
+
+function removeNote(id) {
+    // noteList = noteList.filter(x => x.id != id) //filter för att returnera en array med annorlunda id
+    //htmlRemove(id);
+    index = savedNotes.findIndex(x => x.id == id)
+    savedNotes.splice(index, 1)
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+    console.log(savedNotes)
+}
 
 btnAdd.addEventListener("click", () => {
     createNewNote();
 })
-
-//*LÄGGA TILL RADERA KNAPPEN I DENNA, DENNA ÄR LITE ÖVER
-/*
-preDiv.innerHTML =
-    <button class="like ${noteToBeAdded.fav ? "liked" : ""}" data-id="${noteToBeAdded.id}">&#9733;</button>
-    <button class="trash">&#10006;</button>
-    <h3>${noteToBeAdded.textTitle.substr(0, 15)}</h3>
-    <p>${noteToBeAdded.text.substr(0, 20)}...</p>
-    <p>${noteToBeAdded.datum}</p>; //ger diven innehåll
-    previewNotes.prepend(preDiv); // nya diven blir barn till <section class="preview-notes"> och blir synlig på sidan.
-}
-*/
