@@ -9,7 +9,7 @@ let toolbarOptions = [
 
 
 
-//Generear string för datum  (Snodde från Onur's kod <3 )
+//Generates string for date. Mabye go with "localDateString" instead? 
 const datum = new Date();
 const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
@@ -26,6 +26,10 @@ const btnPrint = document.querySelector(".print");
 
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
+
+//Variabels for CurrentNoteId and currentNote
+let currentNoteId;
+let currentNote;
 
 
 /************************/
@@ -44,9 +48,11 @@ let options = {
 
 //var Delta = Quill.import('delta'); // provar delta
 let editor = new Quill('#editor', options);
-function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
 const getQuill = editor.root.innerHTML;
-
+const getQuillContents = editor.getContents();
+const getQuillText = editor.getText();
+function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //*En array där vi sparar våra notes
@@ -70,16 +76,15 @@ load = () => {
 //**** NOTE KLASSEN *****/
 /************************/
 class Note {
-    constructor(title, date, text, star, tag) {
+    constructor(title, date, text, star, content = editor.getContents(), tag) {
         this.title = title,
             this.date = date,
             this.text = text,
             this.star = star,
+            this.content = content,
             this.tag = tag,
             this.id = Date.now()
     }
-
-
 
 }
 
@@ -101,10 +106,10 @@ function buildPreviewWind(renderedList) {
 function updateArrRebuild() {
     for (let i = 0; i < savedNotes.length; i++) {
         if (currentNoteId == savedNotes[i].id.toString()) {
-            textContent = getQuillHtml()
             savedNotes[i].title = titleInput.value;
             savedNotes[i].date = date;
-            savedNotes[i].text = textContent;
+            savedNotes[i].text = editor.getText();
+            savedNotes[i].content = editor.getContents();
             savedNotes[i].star = savedNotes[i].star;
 
         }
@@ -124,60 +129,21 @@ function updateArrRebuild() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createNote() {
-    textContent = getQuill;
-    let newNote = new Note(titleInput.value, date, textContent, false);
+    titleInput.value = "New Note";
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
-
-    const preDiv = noteTemplate(savedNotes[savedNotes.length - 1])
+    const preDiv = noteTemplate(newNote);
     notePreview.prepend(preDiv);
 
-    titleInput.value = "New Note";
     editor.setText("");
 
-    currentNote = savedNotes[savedNotes.length - 1];
-    currentNoteId = savedNotes[savedNotes.length - 1].id;
-
+    currentNote = newNote;
+    currentNoteId = newNote.id;
 
 }
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const previewDiv = document.querySelectorAll('.preDiv');
-
-/* let previewDivArray = Array.from(previewDiv);
-console.log(previewDivArray); */
-
-let pressedPreview = false;
-let thisDivIndex;
-// previewDiv.forEach(item => {
-//     item.addEventListener('click', event => {
-//         //handle click
-//         let thisDivId = event.target.closest('.preDiv').id;
-//         console.log(thisDivId);
-//         for (let i = 0; i < savedNotes.length; i++) {
-//             if (thisDivId == savedNotes[i].id.toString()) {
-//                 console.log(savedNotes[i].id.toString())
-//                 editor.setText(savedNotes[i].text);
-//                 titleInput.value = savedNotes[i].title;
-
-//                 currentNoteId = thisDivId;
-//                 console.log("Current note id: " + currentNoteId)
-//                 pressedPreview = true;
-
-//             }
-//         }
-//     });
-// });
-
-
-
-//Variabel för vilket id den aktiva noten har 
-let currentNoteId;
-let length = savedNotes.length;
-let currentNote;
 
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
@@ -187,21 +153,18 @@ editor.on('editor-change', () => {
     clearTimeout(autosave)
     autosave = setTimeout(() => {
 
-        if (pressedPreview == false) {
-            // Kollar ifall arrayen är tome eller om noteId inte inte matchar senast skapta ID- I båda fallen skapar den ny note. 
-            if (length <= 0 || savedNotes[savedNotes.length - 1].id !== currentNoteId) {
-                textContent = getQuill;
-                let newNote = new Note(titleInput.value, date, textContent, false);
-                savedNotes.push(newNote);
-                localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-                const preDiv = noteTemplate(savedNotes[savedNotes.length - 1])
-                notePreview.prepend(preDiv);
-                currentNote = savedNotes[savedNotes.length - 1];
+        //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
+        if (savedNotes.length <= 0 || currentNoteId == undefined) {
+            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
 
+            savedNotes.push(newNote);
+            localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
-            } else {
-                updateArrRebuild();
-            }
+            const preDiv = noteTemplate(newNote)
+            notePreview.prepend(preDiv);
+
+            currentNote = newNote;
+            currentNoteId = newNote.id;
 
             if (pressedPreview == false) {
                 currentNoteId = savedNotes[savedNotes.length - 1].id;
@@ -209,10 +172,7 @@ editor.on('editor-change', () => {
         } else {
 
             updateArrRebuild();
-
         }
-
-        length = savedNotes.length;
     }, 2000);
 })
 
@@ -220,9 +180,6 @@ editor.on('editor-change', () => {
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
-    //window.print(delta);
-    //content = JSON.stringify(quill.getContents());
-    //console.log(getQuillHtml());
     content = getQuillHtml();
     let divContents = content;
     let openWindow = window.open("", "", "width=700, height=900");
@@ -253,19 +210,7 @@ btnAdd.addEventListener("click", () => {
 })
 
 //*LÄGGA TILL RADERA KNAPPEN I DENNA, DENNA ÄR LITE ÖVER
-/*
-preDiv.innerHTML =
-    <button class="like ${noteToBeAdded.fav ? "liked" : ""}" data-id="${noteToBeAdded.id}">&#9733;</button>
-    <button class="trash">&#10006;</button>
-    <h3>${noteToBeAdded.textTitle.substr(0, 15)}</h3>
-    <p>${noteToBeAdded.text.substr(0, 20)}...</p>
-    <p>${noteToBeAdded.datum}</p>; //ger diven innehåll
-    previewNotes.prepend(preDiv); // nya diven blir barn till <section class="preview-notes"> och blir synlig på sidan.
-}
-*/
 
-//flyttade ut mallen till en funktion så vi har samma mall överallt 
-//blir enklare att styra och ändra för framtiden
 
 function noteTemplate(note) {
 
@@ -285,8 +230,9 @@ function noteTemplate(note) {
     preDiv.innerHTML = `<h3>${note.title}</h3>
     <div class="button">
     </div>
-            <p>${note.text}</p>
-            <p class="pretime">${note.date}</p>`;
+    <p>${note.text}</p>
+    <p class="pretime">${note.date}</p>
+    <button class="trash"><i class="far fa-trash-alt delete trash"></i></button>`;
     preDiv.querySelector('.button').append(button)
     preDiv.setAttribute('class', 'preDiv');
     preDiv.addEventListener('click', event => {
@@ -302,23 +248,22 @@ function favourite(note) {
 }
 function pushToEditor(event) {
     //handle click
+
     let thisDivId = event.target.closest('.preDiv').id;
-    console.log(thisDivId);
     for (let i = 0; i < savedNotes.length; i++) {
         if (thisDivId == savedNotes[i].id.toString()) {
-            console.log(savedNotes[i].id.toString())
-            editor.root.innerHTML = (savedNotes[i].text);
+
+            editor.setContents(savedNotes[i].content);
             titleInput.value = savedNotes[i].title;
 
             currentNoteId = thisDivId;
-            console.log("Current note id: " + currentNoteId)
-            pressedPreview = true;
-
         }
     }
 }
+
 document.querySelector('.button.favorit').addEventListener('click', () => { filterFav(true) })
 document.querySelector('.button.all').addEventListener('click', () => { filterFav(false) })
+
 function filterFav(onoff) {
     let favList;
     if (onoff) {
@@ -329,3 +274,21 @@ function filterFav(onoff) {
     notePreview.innerHTML = "";
     buildPreviewWind(favList)
 }
+
+notePreview.addEventListener('click', e => {
+
+    if (e.target.classList.contains('trash')) {
+        id = e.target.closest('div').id
+        removeNote(id)
+        e.target.closest('div').remove()
+    }
+
+})
+
+function removeNote(id) {
+    index = savedNotes.findIndex(x => x.id == id)
+    savedNotes.splice(index, 1)
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+    console.log(savedNotes)
+}  
