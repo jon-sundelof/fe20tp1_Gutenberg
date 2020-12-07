@@ -201,7 +201,7 @@ p.pretime{
 }
 nav{
     background-color: #213991;
-    width: 120px;
+    width: 350px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -240,7 +240,7 @@ nav i{
     /* justify-self:; */
     font-size: 2.5rem;
 }
-nav i, .add, .save, .print, .navtools{
+nav i, .add, .save, .print, .template{
     filter: invert();
 }
 /* nav .navtools{
@@ -329,7 +329,7 @@ nav i, .add, .save, .print, .navtools{
     background-color: #ffffff;
     z-index: 1;
 }
-
+s
 #editor {
     /* position: absolute; */
     font-size: 16px;
@@ -425,3 +425,4 @@ left:0;
   cursor: pointer;
 } */
 /* ==========SEARCH FUNCTION end========== */
+
