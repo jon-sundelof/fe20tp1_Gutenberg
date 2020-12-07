@@ -22,7 +22,9 @@ const notePreview = document.querySelector(".preview-notes");
 const note = document.querySelector("#editor")
 
 const btnAdd = document.querySelector(".add");
+const btnTemplate = document.querySelector(".template");
 const btnPrint = document.querySelector(".print");
+const templatesBtn = document.querySelector(".templates");
 
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
@@ -44,6 +46,7 @@ let options = {
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
 }
+
 
 
 //var Delta = Quill.import('delta'); // provar delta
@@ -92,6 +95,44 @@ class Note {
 
 //////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Create note object with desired structure (birthday)
+let templatesArr = [{
+    ops: [
+      { insert: 'Till: Jesper', attributes: { header: 1 } },
+      { insert: ' från ' },
+      { insert: 'Gutenberg ', attributes: { color: '#cccccc' } },
+      { insert: ``, attributes: { color: 'grey' } },
+      { insert: 'Jesper, former employee of Gutenberg', attributes: { color: 'purple' } }
+    ]
+  }];
+
+
+
+
+
+function openTemp() {
+    titleInput.value = "Welcome to a party!";
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
+    savedNotes.push(newNote);
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+    const preDiv = noteTemplate(newNote);
+    notePreview.prepend(preDiv);
+
+    editor.setContents(templatesArr[0]);
+
+    currentNote = newNote;
+    currentNoteId = newNote.id;
+
+}
+
+//Add birthday content to editor
+templatesBtn.addEventListener('click', () => {
+    openTemp();
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function buildPreviewWind(renderedList) {
     for (let i = 0; i < renderedList.length; i++) {
@@ -149,33 +190,37 @@ function createNote() {
 //https://quilljs.com/docs/api/#editor-change
 
 let autosave;
+
 editor.on('editor-change', () => {
-    // clearTimeout(autosave)
-    // autosave = setTimeout(() => {
+    clearTimeout(autosave) 
+    autosave = setTimeout(() => {
 
     //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
-    if (savedNotes.length <= 0 || currentNoteId == undefined) {
+    if (savedNotes.length < 0 || currentNoteId == undefined) {
         let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
 
         savedNotes.push(newNote);
         localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
-        const preDiv = noteTemplate(newNote)
+        const preDiv = noteTemplate(newNote);
         notePreview.prepend(preDiv);
 
         currentNote = newNote;
         currentNoteId = newNote.id;
 
-        if (pressedPreview == false) {
-            currentNoteId = savedNotes[i].id;
-        }
+        
     } else {
 
         updateArrRebuild();
     }
-    // }, 0);
+    }, 10);
 })
 
+let change= new Delta();
+
+editor.on('text-change', function (delta) {
+    change = change.compose(delta);
+});
 
 
 //*PRINT
@@ -288,8 +333,10 @@ notePreview.addEventListener('click', e => {
 function removeNote(id) {
     index = savedNotes.findIndex(x => x.id == id)
     savedNotes.splice(index, 1)
+    editor.setText("");
+    titleInput.value = "New Note";
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
+    
     console.log(savedNotes)
 }
 
@@ -317,4 +364,33 @@ function searchNotes(str, func = function (note) { return note.title.toLowerCase
     return savedNotes.filter(func)
 }
 
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------'
+//annan version av auto save
+//#region  
+// Save periodically
+// setInterval(function () {
+//     if (change.length() > 0) {
+//       if (savedNotes.length <= 0 || currentNoteId == undefined) {
+//             let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
+        
+//             savedNotes.push(newNote);
+//             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        
+//             const preDiv = noteTemplate(newNote)
+//             notePreview.prepend(preDiv);
+        
+//             currentNote = newNote;
+//             currentNoteId = newNote.id;
+        
+//             if (pressedPreview == false) {
+//                 currentNoteId = savedNotes[i].id;
+//                     }
+//                 } 
+//                 else {
+            
+//                     updateArrRebuild();
+//                 }
+//         change = new Delta();
+//     }
+// }, 2 * 1000);
+//#endregion
