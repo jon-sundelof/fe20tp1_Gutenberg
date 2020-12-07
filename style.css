@@ -120,7 +120,7 @@ aside .filter{
 
 .filter label .slider {
     height: 100%;
-    background: #213991;
+    background: #000000;
     width: 65px;
     z-index: 5;
     display: block;
@@ -154,7 +154,7 @@ aside .filter{
     position:absolute;
     right:0;
     padding: 0 15px;
-    color:#213991;
+    color:#000000;
 
 }
 .filter input:checked ~ .button:last-child {
@@ -162,7 +162,7 @@ aside .filter{
     
 }
 .filter input:checked ~ .button.all {
-    color:#213991;
+    color:#000000;
     
 }
 /* ______________________________________ */
@@ -200,24 +200,37 @@ p.pretime{
     /* width: calc(100% - 40px); */
 }
 nav{
-    background-color: #213991;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(182, 182, 182));
     width: 350px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 10px;
+    padding-top: 100px;
+   /*  padding-left: 10px;
+    padding-right: 10px; */
+
+    position: relative;
 }
 nav button{
-    width: 48px;
-    height: 48px;
+    /* width: 48px; */
+    height: 40px;
     margin-bottom: 20px;
-    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    background-color: rgb(0, 0, 0);
+    box-shadow: 10px 10px 10px rgb(213, 213, 213);
     border: none;
-    border-radius: 5px;
-    outline-style: none;
+    border-radius: 20px;
 
+    position: relative;
+    width: 75%;
+    margin-left: 10px;
+}
+nav button:hover{
+    cursor: pointer;
+    background-color: rgb(58, 58, 58);
+    /* color: black; */
 }
 
 nav img{
@@ -236,12 +249,23 @@ nav .logo{
     filter: saturate(1);
 }
 
+/* Add icon */
+.fa-plus{
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    padding-right: 8px;
+}
+.fa-chevron-down{
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    padding-left: 37px;
+}
 nav i{
     /* justify-self:; */
     font-size: 2.5rem;
 }
-nav i, .add, .save, .print, .template{
-    filter: invert();
+nav i, .print, .template{
+    /* filter: invert(); */
 }
 /* nav .navtools{
     width: 32px;
@@ -305,7 +329,7 @@ nav i, .add, .save, .print, .template{
 
 #first-visit-content > button {
     margin: 4% auto;
-    background-color: rgb(0, 83, 146);
+    background-color: rgb(146, 0, 0);
     border: none;
     color: white;
     font-weight: 800;
