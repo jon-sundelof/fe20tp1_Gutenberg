@@ -150,30 +150,30 @@ function createNote() {
 
 let autosave;
 editor.on('editor-change', () => {
-    clearTimeout(autosave)
-    autosave = setTimeout(() => {
+    // clearTimeout(autosave)
+    // autosave = setTimeout(() => {
 
-        //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
-        if (savedNotes.length <= 0 || currentNoteId == undefined) {
-            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
+    //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
+    if (savedNotes.length <= 0 || currentNoteId == undefined) {
+        let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
 
-            savedNotes.push(newNote);
-            localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        savedNotes.push(newNote);
+        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
-            const preDiv = noteTemplate(newNote)
-            notePreview.prepend(preDiv);
+        const preDiv = noteTemplate(newNote)
+        notePreview.prepend(preDiv);
 
-            currentNote = newNote;
-            currentNoteId = newNote.id;
+        currentNote = newNote;
+        currentNoteId = newNote.id;
 
-            if (pressedPreview == false) {
-                currentNoteId = savedNotes[savedNotes.length - 1].id;
-            }
-        } else {
-
-            updateArrRebuild();
+        if (pressedPreview == false) {
+            currentNoteId = savedNotes[i].id;
         }
-    }, 2000);
+    } else {
+
+        updateArrRebuild();
+    }
+    // }, 0);
 })
 
 
@@ -227,10 +227,10 @@ function noteTemplate(note) {
     //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
     //för då följer inte eventlister med som vi har bindat till knappen
     const preDiv = document.createElement("div");
-    preDiv.innerHTML = `<h3>${note.title}</h3>
+    preDiv.innerHTML = `<h3>${note.title.substr(0, 25)}</h3>
     <div class="button">
     </div>
-    <p>${note.text}</p>
+    <p>${note.text.substr(0, 70)} ...</p>
     <p class="pretime">${note.date}</p>
     <button class="trash"><i class="far fa-trash-alt delete trash"></i></button>`;
     preDiv.querySelector('.button').append(button)
@@ -291,4 +291,30 @@ function removeNote(id) {
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
     console.log(savedNotes)
-}  
+}
+
+// ----------------------------------------------------------
+// Sök funktion
+
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', (e) => {
+
+    let searchedWord = e.target.value;
+    console.log(searchedWord);
+    notePreview.innerHTML = "";
+    if (searchedWord.length >= 1) {
+        let foundNotes = searchNotes(searchedWord);
+        buildPreviewWind(foundNotes);
+    } else {
+        // anv har tömt sökrutan
+        buildPreviewWind(savedNotes)
+    }
+
+})
+
+function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) }) {
+    // filtrera och returnera samtliga notes som innehåller str
+    return savedNotes.filter(func)
+}
+
+// ---------------------------------------------------------------
