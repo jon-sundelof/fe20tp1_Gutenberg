@@ -51,7 +51,7 @@ aside{
     user-select: none; /* Standard */   
 }
 aside div{
-    padding: 10px;
+    padding:10px;
     /* border-bottom: 1px solid black; */
 }
 aside .filter{
@@ -87,13 +87,23 @@ aside .filter{
     top: 0px;
     right: 5px;
     color:rgb(124, 124, 124);
-    font-size: 38px;
+    font-size: 25px;
     border:none;
     background:none;
     outline: none;
 }
 .preview-notes .star.starClicked{
     color: orange;
+}
+.preview-notes .trash{
+
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    border:none;
+    background:none;
+    outline: none;
+    
 }
 
 /* Toggle alla-favo--------------------- */
@@ -327,6 +337,7 @@ nav i, .add, .save, .print, .navtools{
     height: auto;
     margin: 30px 0;
     border:none;
+    word-break: normal;
     /* padding: 0 30px; */
     /* margin-left: 500px; */
 }
@@ -343,7 +354,7 @@ left:0;
 }
 
 /* ==========SEARCH FUNCTION start========== */
-.wrapper{
+/* .wrapper{
   min-width: 150px;
   margin: 10px;
 }
@@ -412,5 +423,5 @@ left:0;
   font-size: 20px;
   color: #644bff;
   cursor: pointer;
-}
+} */
 /* ==========SEARCH FUNCTION end========== */
