@@ -128,7 +128,7 @@ function openTemp() {
 }
 
 //Add birthday content to editor
-templatesBtn.addEventListener('click', () => {
+templatesBtn.addEventListener('click', () => {    
     openTemp();
 });
 
