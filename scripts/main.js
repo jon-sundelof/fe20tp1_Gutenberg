@@ -29,6 +29,8 @@ const templatesBtn = document.querySelector(".templates");
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
 
+
+
 //Variabels for CurrentNoteId and currentNote
 let currentNoteId;
 let currentNote;
@@ -112,7 +114,7 @@ let templatesArr = [{
 
 
 function openTemp() {
-    titleInput.value = "Welcome to a party!";
+    titleInput.value = "Meddelande om uppsägning";
     let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
@@ -127,8 +129,8 @@ function openTemp() {
 
 }
 
-//Add birthday content to editor
-templatesBtn.addEventListener('click', () => {
+//Eventlistener for templates click
+templatesBtn.addEventListener('click', () => {    
     openTemp();
 });
 
@@ -148,7 +150,6 @@ function updateArrRebuild() {
     for (let i = 0; i < savedNotes.length; i++) {
         if (currentNoteId == savedNotes[i].id.toString()) {
             savedNotes[i].title = titleInput.value;
-            savedNotes[i].date = date;
             savedNotes[i].text = editor.getText();
             savedNotes[i].content = editor.getContents();
             savedNotes[i].star = savedNotes[i].star;
@@ -201,7 +202,7 @@ editor.on('editor-change', () => {
 
         savedNotes.push(newNote);
         localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
+        
         const preDiv = noteTemplate(newNote);
         notePreview.prepend(preDiv);
 
@@ -215,13 +216,13 @@ editor.on('editor-change', () => {
     }
     }, 10);
 })
-
+/* 
 let change= new Delta();
 
 editor.on('text-change', function (delta) {
     change = change.compose(delta);
 });
-
+ */
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
@@ -236,19 +237,8 @@ btnPrint.addEventListener("click", () => {
     openWindow.print()
 })
 
-/* function printInfo(ele) {
-  var openWindow = window.open("", "title", "attributes");
-  openWindow.document.write(ele.previousSibling.innerHTML);
-  openWindow.document.close();
-  openWindow.focus();
-  openWindow.print();
-  openWindow.close();
-} */
-
-
 //*Varje gången sidan refreshas eller besöks så körs "load" functionen
 window.onload = load();
-
 
 btnAdd.addEventListener("click", () => {
     createNote();
@@ -330,7 +320,7 @@ notePreview.addEventListener('click', e => {
 
 })
 
-function removeNote(id) {
+const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     savedNotes.splice(index, 1)
     editor.setText("");
@@ -394,3 +384,33 @@ function searchNotes(str, func = function (note) { return note.title.toLowerCase
 //     }
 // }, 2 * 1000);
 //#endregion
+
+/* ====================TEMPLATES DROP DOWN start====================*/
+
+//--------------------Variables--------------------
+var btn1 = document.getElementById("dropbtn");
+//--------------------Functions--------------------
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function (event) {
+    if (!event.target.matches('#dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+//--------------------Event listeners--------------------
+btn1.addEventListener("click", myFunction);
+
+/* ====================TEMPLATES DROP DOWN end====================*/

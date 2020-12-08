@@ -25,13 +25,25 @@
 
 <body>
     <nav>
-        <img class="logo" src="pictures/q-letter-single-brand-social-media_icon-icons.com_59312.png" alt="">
-        <button class="add"><img src="pictures/add-document.svg" alt="add-document">Ny anteckning</button>
-        <button><img class="templates" src="pictures/searchmagnifierinterfacesymbol1_79893.png" alt="mall"></button>
-        <button class="print"><img
+        <!-- <img class="logo" src="pictures/q-letter-single-brand-social-media_icon-icons.com_59312.png" alt=""> -->
+        <button class="add"><i class="fas fa-plus"></i>New note</button>
+        <div class="dropdown">
+            <button id="dropbtn">Dropdown</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
+        <button class="templates">Templates
+            <!-- <img class="templates" src="pictures/searchmagnifierinterfacesymbol1_79893.png" alt="mall"> -->
+        </button>
+        <button class="print">Print
+            <!-- <img
                 src="pictures/print-printer-tool-with-printed-paper-outlined-symbol_icon-icons.com_57772.png"
-                alt="save"></button>
-        <button class="info"><i class="fas fa-info"></i></button>
+                alt="save"> --></button>
+        <button class="info">Info
+            <!-- <i class="fas fa-info"></i> --></button>
     </nav>
 
     <aside>
@@ -44,7 +56,7 @@
         </div>
         <!-- SEARCH FUNCTION start -->
         <div class="search-container">
-            <input autofocus placeholder="search" class="form-control" type="text" autocomplete="off" name="search"
+            <input autofocus placeholder="SEARCH..." class="form-control" type="text" autocomplete="off" name="search"
                 id="search">
 
             <ul class="list-group" id="list"></ul>

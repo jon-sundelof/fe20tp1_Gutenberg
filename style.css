@@ -23,8 +23,12 @@ main{
     /* position: relative; */
 }
 
+button {
+    outline: none;
+}
 
-/* ??????????????? */
+
+/* ???????????? */
 .hideMe{
     display: none;
 }
@@ -120,7 +124,7 @@ aside .filter{
 
 .filter label .slider {
     height: 100%;
-    background: #213991;
+    background: #000000;
     width: 65px;
     z-index: 5;
     display: block;
@@ -154,7 +158,7 @@ aside .filter{
     position:absolute;
     right:0;
     padding: 0 15px;
-    color:#213991;
+    color:#000000;
 
 }
 .filter input:checked ~ .button:last-child {
@@ -162,10 +166,16 @@ aside .filter{
     
 }
 .filter input:checked ~ .button.all {
-    color:#213991;
+    color:#000000;
     
 }
 /* ______________________________________ */
+#search{
+    border-radius: 20px;
+    padding: 8px;
+    outline: none;
+}
+
 .preview-notes{
     overflow-y: auto;
     height: 93%;
@@ -200,24 +210,39 @@ p.pretime{
     /* width: calc(100% - 40px); */
 }
 nav{
-    background-color: #213991;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(182, 182, 182));
     width: 350px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 10px;
-}
-nav button{
-    width: 48px;
-    height: 48px;
-    margin-bottom: 20px;
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    border-radius: 5px;
-    outline-style: none;
+    padding-top: 100px;
+   /*  padding-left: 10px;
+    padding-right: 10px; */
 
+    position: relative;
+}
+nav button, #dropbtn{
+    height: 40px;
+    margin-bottom: 20px;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    box-shadow: 10px 10px 10px rgb(213, 213, 213);
+    border: none;
+    border-radius: 20px;
+
+    position: relative;
+    width: 75%;
+    margin-left: 10px;
+}
+#dropbtn{
+    width: 150px;
+}
+nav button:hover, #dropbtn:hover{
+    cursor: pointer;
+    background-color: rgb(58, 58, 58);
+    /* color: black; */
 }
 
 nav img{
@@ -236,12 +261,23 @@ nav .logo{
     filter: saturate(1);
 }
 
+/* Add icon */
+.fa-plus{
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    padding-right: 8px;
+}
+.fa-chevron-down{
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    padding-left: 37px;
+}
 nav i{
     /* justify-self:; */
     font-size: 2.5rem;
 }
-nav i, .add, .save, .print, .template{
-    filter: invert();
+nav i, .print, .template{
+    /* filter: invert(); */
 }
 /* nav .navtools{
     width: 32px;
@@ -250,13 +286,44 @@ nav i, .add, .save, .print, .template{
      */
 
 
+/* ====================TEMPLATES DROP DOWN start====================*/
 
+/* The container <div> - needed to position the dropdown content */
+#dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+/* ====================TEMPLATES DROP DOWN end====================*/
 
 
 /* Following segment is styling for first-time visit information. */
 
 #first-visit-container {
-    width: 100%;
+    width: 75%;
     margin: 0 auto;
     font-size: 24px;
     position: absolute;
@@ -313,6 +380,13 @@ nav i, .add, .save, .print, .template{
     border-radius: 60px;
     padding: 1% 6%;
 }
+
+#first-visit-content > button:hover{
+    cursor: pointer;
+    background-color: rgb(58, 58, 58);
+    /* color: black; */
+}
+
 /* End of segment for styling first-time visit */
 
 #title-input{
@@ -329,7 +403,7 @@ nav i, .add, .save, .print, .template{
     background-color: #ffffff;
     z-index: 1;
 }
-s
+
 #editor {
     /* position: absolute; */
     font-size: 16px;
