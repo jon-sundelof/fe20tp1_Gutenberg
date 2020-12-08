@@ -23,8 +23,12 @@ main{
     /* position: relative; */
 }
 
+button {
+    outline: none;
+}
 
-/* ??????????????? */
+
+/* ???????????? */
 .hideMe{
     display: none;
 }
@@ -166,6 +170,12 @@ aside .filter{
     
 }
 /* ______________________________________ */
+#search{
+    border-radius: 20px;
+    padding: 8px;
+    outline: none;
+}
+
 .preview-notes{
     overflow-y: auto;
     height: 93%;
@@ -213,8 +223,7 @@ nav{
 
     position: relative;
 }
-nav button{
-    /* width: 48px; */
+nav button, #dropbtn{
     height: 40px;
     margin-bottom: 20px;
     color: white;
@@ -227,7 +236,10 @@ nav button{
     width: 75%;
     margin-left: 10px;
 }
-nav button:hover{
+#dropbtn{
+    width: 150px;
+}
+nav button:hover, #dropbtn:hover{
     cursor: pointer;
     background-color: rgb(58, 58, 58);
     /* color: black; */
@@ -274,13 +286,44 @@ nav i, .print, .template{
      */
 
 
+/* ====================TEMPLATES DROP DOWN start====================*/
 
+/* The container <div> - needed to position the dropdown content */
+#dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+/* ====================TEMPLATES DROP DOWN end====================*/
 
 
 /* Following segment is styling for first-time visit information. */
 
 #first-visit-container {
-    width: 100%;
+    width: 75%;
     margin: 0 auto;
     font-size: 24px;
     position: absolute;
@@ -329,7 +372,7 @@ nav i, .print, .template{
 
 #first-visit-content > button {
     margin: 4% auto;
-    background-color: rgb(146, 0, 0);
+    background-color: rgb(0, 83, 146);
     border: none;
     color: white;
     font-weight: 800;
@@ -337,6 +380,13 @@ nav i, .print, .template{
     border-radius: 60px;
     padding: 1% 6%;
 }
+
+#first-visit-content > button:hover{
+    cursor: pointer;
+    background-color: rgb(58, 58, 58);
+    /* color: black; */
+}
+
 /* End of segment for styling first-time visit */
 
 #title-input{
@@ -353,7 +403,7 @@ nav i, .print, .template{
     background-color: #ffffff;
     z-index: 1;
 }
-s
+
 #editor {
     /* position: absolute; */
     font-size: 16px;
