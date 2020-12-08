@@ -96,6 +96,10 @@ aside .filter{
     background:none;
     outline: none;
 }
+.preview-notes .star:hover{
+    font-size: 27px;
+    cursor: pointer;
+}
 .preview-notes .star.starClicked{
     color: orange;
 }
@@ -109,7 +113,10 @@ aside .filter{
     outline: none;
     
 }
-
+.preview-notes .trash:hover{
+    font-size: 15px;
+    cursor: pointer;
+}
 /* Toggle alla-favo--------------------- */
 .filter label {
     justify-self: self-end;
