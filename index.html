@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Najs">
+    <meta name="description" content="Quire! Rich text editor. Note-taking for the 21st century.">
     <title>Quire!</title>
-
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&display=swap"
@@ -18,32 +17,40 @@
     <!-- <script src='https://cloud.tinymce.com/stable/tinymce.min.js' defer></script> -->
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/firstvisit.js" defer></script>
+    <script src="./scripts/templates.js" defer></script>
+    <!-- <script src="./scripts/media.js"></script> -->
     <!-- <script src="./scripts/search.js" defer></script> -->
     <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="media.css"> -->
+
 
 </head>
 
 <body>
+
     <nav>
+        <img src="/pictures/logo-feather.png" alt="logo" class="logo">        
         <!-- <img class="logo" src="pictures/q-letter-single-brand-social-media_icon-icons.com_59312.png" alt=""> -->
-        <button class="add"><i class="fas fa-plus"></i>New note</button>
         <div class="dropdown">
-            <button id="dropbtn">Dropdown</button>
+            <button class="templates"><i class="far fa-file-alt"></i>Templates</button>
             <div id="myDropdown" class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+                <button class="template1">Birthday Invitation</button>
+                <button class="template2">Short Story</button>
+                <!-- <button class="template3">n/a</button> -->
             </div>
         </div>
-        <button class="templates">Templates
+
+
+        
             <!-- <img class="templates" src="pictures/searchmagnifierinterfacesymbol1_79893.png" alt="mall"> -->
-        </button>
-        <button class="print">Print
+        
+        <button class="print"><i class="fas fa-print"></i>Print
             <!-- <img
                 src="pictures/print-printer-tool-with-printed-paper-outlined-symbol_icon-icons.com_57772.png"
                 alt="save"> --></button>
-        <button class="info">Info
+        <button class="info"><i class="fas fa-info"></i>Information
             <!-- <i class="fas fa-info"></i> --></button>
+
     </nav>
 
     <aside>
@@ -51,20 +58,21 @@
             <label>
                 <input type="checkbox">
                 <span class="slider"></span>
-                <span class="button all">ALLA</span><span class="button favorit">FAVORITER</span>
+                <span class="button all">ALL</span><span class="button favorit">FAVOURITES</span>
             </label>
         </div>
         <!-- SEARCH FUNCTION start -->
-        <div class="search-container">
+        <!-- <div class="search-container"> -->
             <input autofocus placeholder="SEARCH..." class="form-control" type="text" autocomplete="off" name="search"
                 id="search">
 
-            <ul class="list-group" id="list"></ul>
-        </div>
+        <!-- </div> -->
         <!-- SEARCH FUNCTION end -->
         <section class="preview-notes">
 
         </section>
+        <button class="add"><i class="fas fa-plus"></i>New note</button>
+
     </aside>
 
     <!-- <div id="....">
@@ -74,7 +82,7 @@
     </div> -->
 
     <main>
-        <section>
+        <div>
             <div id="first-visit-container">
                 <div id="first-visit-content">
                     <h1>Welcome to Quire!</h1>
@@ -84,13 +92,13 @@
                             class="first-visit-span">EVERYTHING</span> is posible. Now, let's take you for
                         spin since this is the first time you visit us.Lay back, buckle up and let's enter the world of
                         <span class="first-visit-span">Quire!</span></p>
-                    <img src="pictures/personal-notebook.png" alt="note-picture">
+                    <img src="pictures/notebook-first-time.png" alt="note-picture">
                     <button>Let's Get Started!</button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <input placeholder="Enter Title Here!" id="title-input" autocomplete="off" spellcheck="false"></input>
+        <input placeholder="Enter Title Here!" id="title-input" autocomplete="off" spellcheck="false">
         <!-- Create the editor container -->
         <div id="editor">
             <div id="toolbar">

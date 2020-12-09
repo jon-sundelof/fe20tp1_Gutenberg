@@ -1,0 +1,15 @@
+
+
+.hamcontainer{
+    display: none;
+}
+
+
+@media (max-width: 500px){
+    /* nav{
+        display: none;
+    } */
+    .hamcontainer{
+        display: block;
+    }
+}

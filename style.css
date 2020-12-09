@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+:root {
+   --color1white: #f2f2f2;
+   --color2orange: #f96d00;
+   --color3grey: #393e46;
+   --color4black: #222831;
+}
+
+
 *{
     box-sizing: border-box;
     padding: 0;
@@ -35,11 +43,11 @@ button {
 /* -------------- */
 
 aside{
-    /* justify-self: center; */
-    padding: 20px 10px;
-    border-top-left-radius: 40px;
+    width: 30%;
+    padding: 20px 0;
+    /* border-top-left-radius: 40px;
+    left: -35px; */
     position: relative;
-    left: -35px;
     z-index: 2;
     border-right: 1px solid rgba(0, 0, 0, 0.301);
     background: #ffffff;
@@ -55,16 +63,25 @@ aside{
     user-select: none; /* Standard */   
 }
 aside div{
-    padding:10px;
+    padding:10px ;
+    /* margin: 0 20px; */
+    /* padding-right: 20px; */
     /* border-bottom: 1px solid black; */
 }
+
 aside .filter{
     margin: 0 auto;
-    padding: 0;
+    padding: 0px;
     width: 180px;
-    height: 7%;
+    /* height: 2; */
     font-family: 'Cairo', sans-serif;
     align-self: flex-start;
+}
+
+.fa-feather-alt{
+    margin: 15% auto;
+    color: var(--color2orange);
+    font-size: 8em;
 }
 
 .preview-notes > div {
@@ -72,23 +89,24 @@ aside .filter{
     position: relative;
     right: 0;
     border-bottom: 1px solid rgb(211, 211, 211);
+    font-size: 14px;
+    width: 100%;
+    word-wrap: break-word;
+    
 }
 .preview-notes > div:hover{
     background-color: rgb(240, 240, 240);
 }
-
-.preview-notes div{
-    font-size: 14px;
-    width: 100%;
-    word-wrap: break-word;
-
-}
 .preview-notes div p{
     padding: 5px 0;
+    color: #808080;
+}
+.preview-notes div h3{
+    color: #4b4b4b;
 }
 .preview-notes .star{
     position: absolute;
-    top: 0px;
+    top: 5px;
     right: 5px;
     color:rgb(124, 124, 124);
     font-size: 25px;
@@ -104,18 +122,20 @@ aside .filter{
     color: orange;
 }
 .preview-notes .trash{
-
+    font-size: 25px;
     position: absolute;
     bottom: 5px;
-    right: 5px;
+    right: 10px;
     border:none;
     background:none;
     outline: none;
-    
+    color: var(--color3grey);
+    /* color: rgb(255, 74, 74); */
 }
 .preview-notes .trash:hover{
-    font-size: 15px;
+    font-size: 30px;
     cursor: pointer;
+    color: rgb(255, 101, 101);
 }
 /* Toggle alla-favo--------------------- */
 .filter label {
@@ -125,13 +145,13 @@ aside .filter{
     overflow: hidden;
     width: 100%;
     display:block;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--color3grey);
     border-radius: 20px;
 }
 
 .filter label .slider {
     height: 100%;
-    background: #000000;
+    background: var(--color2orange);
     width: 65px;
     z-index: 5;
     display: block;
@@ -165,7 +185,7 @@ aside .filter{
     position:absolute;
     right:0;
     padding: 0 15px;
-    color:#000000;
+    color: white;
 
 }
 .filter input:checked ~ .button:last-child {
@@ -173,25 +193,34 @@ aside .filter{
     
 }
 .filter input:checked ~ .button.all {
-    color:#000000;
+    color: white;
     
 }
 /* ______________________________________ */
-#search{
+.search-container{
+width: 100%;
+} 
+#search {
+    margin: 10px auto;
     border-radius: 20px;
     padding: 8px;
     outline: none;
+    border: 1px solid rgba(128, 128, 128, 0.342);
+    height: 40px;
+    width: 80%;
 }
 
 .preview-notes{
     overflow-y: auto;
     height: 93%;
-    width: 300px;
+    width: 100%;
     /* background-color: rgb(255, 255, 255); */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding-bottom: 30px;
+
 
 }
 p.pretime{
@@ -204,88 +233,129 @@ p.pretime{
 }
 
 .preview-notes::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.089); 
+    -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.144); 
     border-radius: 10px;
 }
 
 .preview-notes::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    background-color: var(--color3grey);
+    
 }
 
-.preview-notes div{
-    /* width: calc(100% - 40px); */
+/* .preview-notes div{
+    width: calc(100% - 40px);
+} */
+
+.active{
+    background-color: black !important;
 }
+
 nav{
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(182, 182, 182));
+    background-color: var(--color4black);
     width: 350px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding-top: 100px;
+    /* padding-bottom: 100px; */
    /*  padding-left: 10px;
     padding-right: 10px; */
 
     position: relative;
 }
-nav button, #dropbtn{
-    height: 40px;
-    margin-bottom: 20px;
-    color: white;
-    background-color: rgb(0, 0, 0);
-    box-shadow: 10px 10px 10px rgb(213, 213, 213);
-    border: none;
-    border-radius: 20px;
-
-    position: relative;
-    width: 75%;
-    margin-left: 10px;
+.print, .info, .templates{
+    text-align: start;
+    padding-left: 10px;
 }
-#dropbtn{
-    width: 150px;
+/* Templates icon */
+.fa-file-alt{
+    font-size: 17px;
+    padding-right: 10px;
 }
-nav button:hover, #dropbtn:hover{
-    cursor: pointer;
-    background-color: rgb(58, 58, 58);
-    /* color: black; */
+/* Print icon */
+.fa-print{
+    font-size: 15px;
+    padding-right: 10px;
 }
-
-nav img{
-    width: 32px;
-    height: 32px;
+/* Info icon */
+.fa-info{
+    font-size: 15px;
+    padding-left: 4px;
+    padding-right: 16px;
 }
-
-
-nav .logo{
-    width: auto;
-    height: auto;
-    padding-top: 20px;
-    padding-bottom: 20px ;
-    border-bottom: 1px solid rgb(255, 255, 255);
-    margin-bottom: 20px;
-    filter: saturate(1);
-}
-
 /* Add icon */
 .fa-plus{
     font-size: 15px;
     color: rgb(255, 255, 255);
     padding-right: 8px;
 }
-.fa-chevron-down{
-    font-size: 15px;
-    color: rgb(255, 255, 255);
-    padding-left: 37px;
+.add {
+    position: absolute;
+    color: white;
+    background-color: var(--color2orange);
+    border: none;
+    outline: none;
+    width: 80%;
+    height: 40px;
+    border-radius: 20px;
+    bottom: 20px;
+    transition: width 0.2s, height 0.2s;
+    /* box-shadow:  inset 0 0 10px rgba(0, 0, 0, 0.479); */
 }
+.add:hover{
+    cursor: pointer;
+    width: 85%;
+    height: 45px;
+}
+nav button, .templates{
+    height: 40px;
+    color: white;
+    background-color: var(--color3grey);
+  /*   box-shadow: 10px 10px 10px rgb(213, 213, 213); */
+    border: none;
+    position: relative;
+    width: 100%;
+    margin: 5px auto;
+}
+
+nav button:hover, .templates:hover{
+    cursor: pointer;
+    background-color: rgb(58, 58, 58);
+    /* color: black; */
+}
+/* div#myDropdown.dropdown-content
+{
+    background-color: var(--color3grey);
+}
+ */
+nav img{
+    width: 100%;
+    
+}
+.logo{
+}
+/* 
+nav .logo{
+   width: auto;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px ;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    margin-bottom: 20px;
+    filter: saturate(1); 
+
+    
+}
+ */
 nav i{
     /* justify-self:; */
     font-size: 2.5rem;
 }
-nav i, .print, .template{
-    /* filter: invert(); */
-}
+/* nav > * + *{
+    filter: invert();
+} */
 /* nav .navtools{
     width: 32px;
     height: 32px;
@@ -296,18 +366,19 @@ nav i, .print, .template{
 /* ====================TEMPLATES DROP DOWN start====================*/
 
 /* The container <div> - needed to position the dropdown content */
-#dropdown {
+.dropdown {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
-  position: absolute;
-  background-color: #f1f1f1;
+  position: relative;
+  background-color: var(--color3grey);
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
   z-index: 1;
 }
 
@@ -330,7 +401,7 @@ nav i, .print, .template{
 /* Following segment is styling for first-time visit information. */
 
 #first-visit-container {
-    width: 75%;
+    width: 67.2%;
     margin: 0 auto;
     font-size: 24px;
     position: absolute;
@@ -357,7 +428,7 @@ nav i, .print, .template{
 #first-visit-content > h1 {
     text-align: center;
     width: 100%;
-    color: rgb(0, 83, 146);
+    color: var(--color2orange);
     font-size: 2.5em;
     letter-spacing: 6px;
     margin-bottom: 5%;
@@ -372,14 +443,14 @@ nav i, .print, .template{
 }
 
 .first-visit-span {
-    color: rgb(0, 83, 146);
+    color: var(--color2orange);
     font-weight: bold;
     font-size: 40px;
 }
 
 #first-visit-content > button {
     margin: 4% auto;
-    background-color: rgb(0, 83, 146);
+    background-color: var(--color2orange);
     border: none;
     color: white;
     font-weight: 800;
@@ -390,7 +461,7 @@ nav i, .print, .template{
 
 #first-visit-content > button:hover{
     cursor: pointer;
-    background-color: rgb(58, 58, 58);
+    background-color: #ff6f0093;
     /* color: black; */
 }
 
@@ -402,8 +473,8 @@ nav i, .print, .template{
     top: 0;
     border:none;
     font-size: 25px;
-    padding-top: 30px;
-    padding-bottom: 10px;
+    padding: 15px 30px;
+
     outline: none;
     border:none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.192);
@@ -416,10 +487,10 @@ nav i, .print, .template{
     font-size: 16px;
     width: 100%;
     height: auto;
-    margin: 30px 0;
+    /* margin: 30px 0; */
     border:none;
     word-break: normal;
-    /* padding: 0 30px; */
+    padding: 15px 30px;
     /* margin-left: 500px; */
 }
 .ql-editor{
@@ -431,7 +502,7 @@ nav i, .print, .template{
     z-index: 100 !important;
 }
 .ql-editor.ql-blank::before {
-left:0;
+    left:30px;
 }
 
 /* ==========SEARCH FUNCTION start========== */
