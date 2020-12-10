@@ -20,7 +20,7 @@ body{
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
-
+    /* overflow-y: hidden; */
 
 }
 main{
@@ -29,6 +29,17 @@ main{
     z-index: 10;
     /* overflow: auto; */
     /* position: relative; */
+}
+.back{
+    display: none;
+}
+
+main > button{
+    outline: none;
+    background: none;
+    border: none;
+    font-size: 40px;
+    float: right;
 }
 
 button {
@@ -44,7 +55,9 @@ button {
 
 aside{
     width: 30%;
-    padding: 20px 0;
+    max-width: 350px;
+    min-width: 250px;
+    padding: 40px 0;
     /* border-top-left-radius: 40px;
     left: -35px; */
     position: relative;
@@ -243,9 +256,6 @@ p.pretime{
     
 }
 
-/* .preview-notes div{
-    width: calc(100% - 40px);
-} */
 
 .active{
     background-color: black !important;
@@ -259,12 +269,14 @@ nav{
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+
     /* padding-bottom: 100px; */
-   /*  padding-left: 10px;
-    padding-right: 10px; */
+    padding-left: 10px;
+    padding-right: 10px;
 
     position: relative;
 }
+
 .print, .info, .templates{
     text-align: start;
     padding-left: 10px;
@@ -320,7 +332,7 @@ nav button, .templates{
     margin: 5px auto;
 }
 
-nav button:hover, .templates:hover{
+nav, button:hover, .templates:hover{
     cursor: pointer;
     background-color: rgb(58, 58, 58);
     /* color: black; */
@@ -330,12 +342,15 @@ nav button:hover, .templates:hover{
     background-color: var(--color3grey);
 }
  */
+
+/* nav > button > i{
+    float: left;
+} */
+
 nav img{
     width: 100%;
-    
 }
-.logo{
-}
+
 /* 
 nav .logo{
    width: auto;
@@ -385,7 +400,7 @@ nav i{
 /* Links inside the dropdown */
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
+  padding: 12px 0px;
   text-decoration: none;
   display: block;
 }
@@ -486,7 +501,7 @@ nav i{
     /* position: absolute; */
     font-size: 16px;
     width: 100%;
-    height: auto;
+    /* height: auto; */
     /* margin: 30px 0; */
     border:none;
     word-break: normal;
@@ -503,6 +518,9 @@ nav i{
 }
 .ql-editor.ql-blank::before {
     left:30px;
+}
+.ql-container{
+    height: 90%;
 }
 
 /* ==========SEARCH FUNCTION start========== */

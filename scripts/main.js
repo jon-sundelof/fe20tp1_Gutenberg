@@ -39,6 +39,7 @@ let options = {
     modules: {
         toolbar: toolbarOptions,
     },
+    scrollingContainer: '#scrolling-container',
     placeholder: 'Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
@@ -245,7 +246,7 @@ function favourite(note) {
 }
 function pushToEditor(event) {
     //handle click
-    
+
     let thisDivId = event.target.closest('.preDiv').id;
     for (let i = 0; i < savedNotes.length; i++) {
         if (thisDivId == savedNotes[i].id.toString()) {
@@ -257,7 +258,7 @@ function pushToEditor(event) {
         }
     }
 
-    
+
 }
 
 document.querySelector('.button.favorit').addEventListener('click', () => { filterFav(true) })
@@ -277,7 +278,7 @@ function filterFav(onoff) {
 
 notePreview.addEventListener('click', e => {
 
-    
+
 
     if (e.target.classList.contains('fa-times')) {
         // todo: kolla om vi är i favoritläget
@@ -285,12 +286,12 @@ notePreview.addEventListener('click', e => {
         removeNote(id)
         e.target.closest('div').remove()
 
-    } else if(e.target.closest("div").classList.contains("preDiv")){
+    } else if (e.target.closest("div").classList.contains("preDiv")) {
         active = e.target.closest(".preDiv");
         id = e.target.closest('.preDiv').id
         activeNote(active, id)
     }
-    
+
 })
 
 
@@ -298,7 +299,7 @@ const activeNote = (elem, id) => {
     //*Kanske köra en for loop för att se vilka som har, idk :/
     index = savedNotes.findIndex(x => x.id == id)
     console.log(elem.id, index)
-    
+
 
 }
 

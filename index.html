@@ -18,42 +18,47 @@
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/firstvisit.js" defer></script>
     <script src="./scripts/templates.js" defer></script>
-    <!-- <script src="./scripts/media.js"></script> -->
+    <script src="./scripts/media.js" defer></script>
     <!-- <script src="./scripts/search.js" defer></script> -->
     <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="media.css"> -->
+    <link rel="stylesheet" href="media.css">
 
 
 </head>
 
 <body>
 
+    <div class="hamicon-cont">
+        <div class="hamicon" id="hamicon">
+            <span class="hamline-one"></span>
+            <span class="hamline-two"></span>
+            <span class="hamline-three"></span>
+        </div>
+    </div>
+
     <nav>
-        <img src="/pictures/logo-feather.png" alt="logo" class="logo">        
-        <!-- <img class="logo" src="pictures/q-letter-single-brand-social-media_icon-icons.com_59312.png" alt=""> -->
+        <!-- under 100px @media -->
+        <a id="closebtn" class="closebtn">&times;</a>
+        <!-- under 100px @media-slut -->
+
+
+        <img src="/pictures/logo-feather.png" alt="logo" class="logo">
         <div class="dropdown">
             <button class="templates"><i class="far fa-file-alt"></i>Templates</button>
             <div id="myDropdown" class="dropdown-content">
                 <button class="template1">Birthday Invitation</button>
                 <button class="template2">Short Story</button>
-                <!-- <button class="template3">n/a</button> -->
             </div>
         </div>
 
-
-        
-            <!-- <img class="templates" src="pictures/searchmagnifierinterfacesymbol1_79893.png" alt="mall"> -->
-        
-        <button class="print"><i class="fas fa-print"></i>Print
-            <!-- <img
-                src="pictures/print-printer-tool-with-printed-paper-outlined-symbol_icon-icons.com_57772.png"
-                alt="save"> --></button>
-        <button class="info"><i class="fas fa-info"></i>Information
-            <!-- <i class="fas fa-info"></i> --></button>
+        <button class="print"><i class="fas fa-print"></i>Print</button>
+        <button class="info"><i class="fas fa-info"></i>Information</button>
 
     </nav>
 
+
     <aside>
+
         <div class="filter">
             <label>
                 <input type="checkbox">
@@ -63,8 +68,8 @@
         </div>
         <!-- SEARCH FUNCTION start -->
         <!-- <div class="search-container"> -->
-            <input autofocus placeholder="SEARCH..." class="form-control" type="text" autocomplete="off" name="search"
-                id="search">
+        <input autofocus placeholder="SEARCH..." class="form-control" type="text" autocomplete="off" name="search"
+            id="search">
 
         <!-- </div> -->
         <!-- SEARCH FUNCTION end -->
@@ -97,6 +102,10 @@
                 </div>
             </div>
         </div>
+
+        <!-- under 100px @media -->
+        <button class="back">&#8592;</button>
+
 
         <input placeholder="Enter Title Here!" id="title-input" autocomplete="off" spellcheck="false">
         <!-- Create the editor container -->
