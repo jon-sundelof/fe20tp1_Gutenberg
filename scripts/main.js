@@ -9,14 +9,11 @@ let toolbarOptions = [
 
 
 
-//Generates string for date. Mabye go with "localDateString" instead? 
-const datum = new Date();
-const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
+//Generates string for date. Mabye go with "localDateString" instead? 
 
 //const printscreen = document.querySelector('.printscreen')
 const notePreview = document.querySelector(".preview-notes");
-
 
 //*Detta är en editorn
 const note = document.querySelector("#editor")
@@ -24,17 +21,15 @@ const note = document.querySelector("#editor")
 const btnAdd = document.querySelector(".add");
 const btnTemplate = document.querySelector(".template");
 const btnPrint = document.querySelector(".print");
-const templatesBtn = document.querySelector(".templates");
+const template1Btn = document.querySelector(".template1");
+const template2Btn = document.querySelector(".template2");
 
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
 
-
-
 //Variabels for CurrentNoteId and currentNote
 let currentNoteId;
 let currentNote;
-
 
 /************************/
 //******** QUILL ********/
@@ -44,6 +39,7 @@ let options = {
     modules: {
         toolbar: toolbarOptions,
     },
+    scrollingContainer: '#scrolling-container',
     placeholder: 'Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
@@ -98,44 +94,6 @@ class Note {
 //////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Create note object with desired structure (birthday)
-let templatesArr = [{
-    ops: [
-      { insert: 'Till: Jesper', attributes: { header: 1 } },
-      { insert: ' från ' },
-      { insert: 'Gutenberg ', attributes: { color: '#cccccc' } },
-      { insert: ``, attributes: { color: 'grey' } },
-      { insert: 'Jesper, former employee of Gutenberg', attributes: { color: 'purple' } }
-    ]
-  }];
-
-
-
-
-
-function openTemp() {
-    titleInput.value = "Meddelande om uppsägning";
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
-    savedNotes.push(newNote);
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
-    const preDiv = noteTemplate(newNote);
-    notePreview.prepend(preDiv);
-
-    editor.setContents(templatesArr[0]);
-
-    currentNote = newNote;
-    currentNoteId = newNote.id;
-
-}
-
-//Eventlistener for templates click
-templatesBtn.addEventListener('click', () => {    
-    openTemp();
-});
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function buildPreviewWind(renderedList) {
     for (let i = 0; i < renderedList.length; i++) {
         const preDiv = noteTemplate(renderedList[i])
@@ -171,6 +129,9 @@ function updateArrRebuild() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createNote() {
+    const datum = new Date();
+    const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+
     titleInput.value = "New Note";
     let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
     savedNotes.push(newNote);
@@ -193,27 +154,28 @@ function createNote() {
 let autosave;
 
 editor.on('editor-change', () => {
-    clearTimeout(autosave) 
+    clearTimeout(autosave)
     autosave = setTimeout(() => {
 
-    //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
-    if (savedNotes.length < 0 || currentNoteId == undefined) {
-        let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
+        //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
+        if (savedNotes.length < 0 || currentNoteId == undefined) {
+            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
 
-        savedNotes.push(newNote);
-        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
-        const preDiv = noteTemplate(newNote);
-        notePreview.prepend(preDiv);
+            savedNotes.push(newNote);
+            localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
-        currentNote = newNote;
-        currentNoteId = newNote.id;
+            const preDiv = noteTemplate(newNote);
+            notePreview.prepend(preDiv);
 
-        
-    } else {
+            currentNote = newNote;
+            currentNoteId = newNote.id;
 
-        updateArrRebuild();
-    }
+
+        } else {
+
+
+            updateArrRebuild();
+        }
     }, 10);
 })
 /* 
@@ -226,6 +188,7 @@ editor.on('text-change', function (delta) {
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
+    // https://benfrain.com/create-print-styles-using-css3-media-queries/
     content = getQuillHtml();
     let divContents = content;
     let openWindow = window.open("", "", "width=700, height=900");
@@ -253,7 +216,7 @@ function noteTemplate(note) {
     //ge den klassen starClicked om den har blivit favoriserad innan
     const button = document.createElement('button');
     button.classList.add('star');
-    button.innerHTML = `&#9733;`;
+    button.innerHTML = `<i class="fas fa-star"></i>`;
     button.addEventListener('click', () => favourite(note))
     if (note.star == true) {
         button.classList.add('starClicked')
@@ -267,7 +230,7 @@ function noteTemplate(note) {
     </div>
     <p>${note.text.substr(0, 70)} ...</p>
     <p class="pretime">${note.date}</p>
-    <button class="trash"><i class="far fa-trash-alt delete trash"></i></button>`;
+    <button class="trash"><i class="fas fa-times"></i></i></button>`;
     preDiv.querySelector('.button').append(button)
     preDiv.setAttribute('class', 'preDiv');
     preDiv.addEventListener('click', event => {
@@ -294,6 +257,8 @@ function pushToEditor(event) {
             currentNoteId = thisDivId;
         }
     }
+
+
 }
 
 document.querySelector('.button.favorit').addEventListener('click', () => { filterFav(true) })
@@ -302,7 +267,8 @@ document.querySelector('.button.all').addEventListener('click', () => { filterFa
 function filterFav(onoff) {
     let favList;
     if (onoff) {
-        favList = savedNotes.filter(x => x.star == true)
+        //favList = savedNotes.filter(x => x.star)
+        favList = searchNotes('', x => x.star)
     } else {
         favList = savedNotes;
     }
@@ -312,13 +278,31 @@ function filterFav(onoff) {
 
 notePreview.addEventListener('click', e => {
 
-    if (e.target.classList.contains('trash')) {
+
+
+    if (e.target.classList.contains('fa-times')) {
+        // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
         removeNote(id)
         e.target.closest('div').remove()
+
+    } else if (e.target.closest("div").classList.contains("preDiv")) {
+        active = e.target.closest(".preDiv");
+        id = e.target.closest('.preDiv').id
+        activeNote(active, id)
     }
 
 })
+
+
+const activeNote = (elem, id) => {
+    //*Kanske köra en for loop för att se vilka som har, idk :/
+    index = savedNotes.findIndex(x => x.id == id)
+    console.log(elem.id, index)
+
+
+}
+
 
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
@@ -326,7 +310,7 @@ const removeNote = id => {
     editor.setText("");
     titleInput.value = "New Note";
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-    
+
     console.log(savedNotes)
 }
 
@@ -354,6 +338,8 @@ function searchNotes(str, func = function (note) { return note.title.toLowerCase
     return savedNotes.filter(func)
 }
 
+// searchNotes('', (note) => note.star) -> alla starmarkerade
+// searchNotes('hej') -> alla ntoes med hej i sig
 // ---------------------------------------------------------------'
 //annan version av auto save
 //#region  
@@ -362,22 +348,22 @@ function searchNotes(str, func = function (note) { return note.title.toLowerCase
 //     if (change.length() > 0) {
 //       if (savedNotes.length <= 0 || currentNoteId == undefined) {
 //             let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
-        
+
 //             savedNotes.push(newNote);
 //             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
+
 //             const preDiv = noteTemplate(newNote)
 //             notePreview.prepend(preDiv);
-        
+
 //             currentNote = newNote;
 //             currentNoteId = newNote.id;
-        
+
 //             if (pressedPreview == false) {
 //                 currentNoteId = savedNotes[i].id;
 //                     }
 //                 } 
 //                 else {
-            
+
 //                     updateArrRebuild();
 //                 }
 //         change = new Delta();
@@ -388,18 +374,18 @@ function searchNotes(str, func = function (note) { return note.title.toLowerCase
 /* ====================TEMPLATES DROP DOWN start====================*/
 
 //--------------------Variables--------------------
-var btn1 = document.getElementById("dropbtn");
+var btn1 = document.querySelector(".templates");
 //--------------------Functions--------------------
 
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
-function myFunction() {
+function templateFunc() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function (event) {
-    if (!event.target.matches('#dropbtn')) {
+    if (!event.target.matches('.templates')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
         for (i = 0; i < dropdowns.length; i++) {
@@ -411,6 +397,20 @@ window.onclick = function (event) {
     }
 }
 //--------------------Event listeners--------------------
-btn1.addEventListener("click", myFunction);
+btn1.addEventListener("click", templateFunc);
 
 /* ====================TEMPLATES DROP DOWN end====================*/
+
+/*
+
+let clickedNote = event.target.closest(".preDiv");
+
+    if(clickedNote.classList.contains("active-note")){
+        console.log(clickedNote)
+        clickedNote.classList.remove("active-note")
+    } else{
+        clickedNote.classList.add("active-note")
+        console.log(clickedNote)
+    }
+
+*/
