@@ -1,7 +1,10 @@
-/* ====================TEMPLATES DROP UP start====================*/
-//--------------------Event listeners--------------------
+/* ==================== VARIABLES ====================*/
+//editorTheme points to the currently opened editor
+let editorTheme = editor.root;
+
+/* ==================== EVENT LISTENERS ====================*/
 themesBtn.addEventListener("click", themesFunc);
-formalBtn.addEventListener('click', () =>{
+formalBtn.addEventListener('click', () => {
     let themeNum = 1;
     changeTheme(themeNum)
 });
@@ -10,15 +13,35 @@ playfulBtn.addEventListener('click', () => {
     changeTheme(themeNum)
 });
 
-//--------------------Functions--------------------
+/* ==================== FUNCTIONS ====================*/
+function checkIfNoteHasTheme() {
+    //LÖS DETTA!!!!!!!!!!!!!!!!!!!!!
+};
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
+function changeTheme(themeNum) {
+
+    //Checks what note is in the editor at the moment and changes that notes theme value to what themeNum is assigned to
+    for (let i = 0; i < savedNotes.length; i++) {
+        if (currentNoteId == savedNotes[i].id.toString()) {
+            savedNotes[i].theme = themeNum;
+        }
+    }
+    //If user clicks on formal button, editorTheme gets an id of #formal, hence activating a CSS rule-set
+    if (currentNote.theme == 1) {
+        editorTheme.setAttribute('id', 'formal');
+        //If user clicks on playful button, editorTheme gets an id of #playful, hence activating a CSS rule-set
+    } else if (currentNote.theme == 2) {
+        editorTheme.setAttribute('id', 'playful');
+    };
+};
+
+/* ==================== DROP-UP functions ====================*/
+//When user clicks on the button, toggle between hiding and showing the dropdown content
 function themesFunc() {
     document.getElementById("myDropup").classList.toggle("theme-show");
 }
 
-// Close the dropdown menu if the user clicks outside of it
+// Close the dropdown menu if user clicks outside of it
 window.onclick = function (event) {
     if (!event.target.matches('.themes')) {
         var dropdowns = document.getElementsByClassName("dropup-content");
@@ -31,33 +54,3 @@ window.onclick = function (event) {
         }
     }
 }
-/* ====================TEMPLATES DROP UP end====================*
-
-/* 
-themesBtn.addEventListener('click', () => {
-    changeTheme();
-});
- */
-
-let editorTheme = editor.root;
-
-function checkIfNoteHasTheme () {
-    //LÖS DETTA!!!!!!!!!!!!!!!!!!!!!
-};
-
-function changeTheme (themeNum) {
-    
-//Checks what note is in the editor at the moment and changes that notes theme value to = 1
-  for (let i = 0; i < savedNotes.length; i++) {
-        if (currentNoteId == savedNotes[i].id.toString()) {
-            savedNotes[i].theme = themeNum;       
-        }
-    } 
-    //2. Har currentNote theme = 1? Gör dethär i editorn
-        //CSS-FUNKTIONEN
-    if (currentNote.theme == 1) {
-        editorTheme.setAttribute('id', 'formal');
-    } else if (currentNote.theme == 2){
-        editorTheme.setAttribute('id', 'playful');
-     };
-};
