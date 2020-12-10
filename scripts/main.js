@@ -8,7 +8,7 @@ let toolbarOptions = [
 ];
 
 
-
+/* ============================== VARIABLES ============================== */
 
 //Generates string for date. Mabye go with "localDateString" instead? 
 
@@ -27,6 +27,18 @@ const template2Btn = document.querySelector(".template2");
 const titleInput = document.querySelector("#title-input")
 const innerText = document.querySelector(".ql-editor")
 
+const themesBtn = document.querySelector(".themes");
+
+let checkIfTrue = false;
+
+/* ============================== EVENT LISTENERS ============================== */
+/* Themes button */
+themesBtn.addEventListener('click', evt => {
+    console.log(evt.target.value);
+    changeTheme(evt.target.value);
+});
+
+////////////////////////////////////////////////////////////////////////////////////
 //Variabels for CurrentNoteId and currentNote
 let currentNoteId;
 let currentNote;
@@ -55,7 +67,6 @@ const getQuillText = editor.getText();
 function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 //*En array där vi sparar våra notes
 let savedNotes = [];
 
@@ -70,20 +81,21 @@ if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').le
 //*Hämtar data från local storage
 load = () => {
     let stored = JSON.parse(localStorage.getItem("savedNotes"))
-    console.log(stored)
+    console.log(stored);
 }
 
 /************************/
 //**** NOTE KLASSEN *****/
 /************************/
 class Note {
-    constructor(title, date, text, star, content = editor.getContents(), tag) {
+    constructor(title, date, text, star, content = editor.getContents(), theme, tag) {
         this.title = title,
             this.date = date,
             this.text = text,
             this.star = star,
             this.content = content,
             this.tag = tag,
+            this.theme = theme,
             this.id = Date.now()
     }
 
@@ -93,6 +105,20 @@ class Note {
 
 //////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function changeTheme (themevalue) {
+    if(themevalue == "0"){
+        note.
+        note.style.color = 'red';
+    }
+  /*   for (let i = 0; i < savedNotes.length; i++) {
+        if (currentNoteId == savedNotes[i].id.toString()) {
+            savedNotes[i].theme = themevalue;
+        }
+    } */
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function buildPreviewWind(renderedList) {
     for (let i = 0; i < renderedList.length; i++) {
@@ -133,17 +159,17 @@ function createNote() {
     const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
     titleInput.value = "New Note";
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, null);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+    currentNote = newNote;
+    currentNoteId = newNote.id;
 
     const preDiv = noteTemplate(newNote);
     notePreview.prepend(preDiv);
 
     editor.setText("");
-
-    currentNote = newNote;
-    currentNoteId = newNote.id;
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,14 +183,20 @@ editor.on('editor-change', () => {
     clearTimeout(autosave)
     autosave = setTimeout(() => {
 
+        //|| currentNoteId == undefined 
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
-        if (savedNotes.length < 0 || currentNoteId == undefined) {
+        if (savedNotes.length < 1 && checkIfTrue == false ) {
+            const datum = new Date();
+            const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+
             let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
 
             savedNotes.push(newNote);
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
+           
+            
             const preDiv = noteTemplate(newNote);
+            
             notePreview.prepend(preDiv);
 
             currentNote = newNote;
@@ -176,15 +208,9 @@ editor.on('editor-change', () => {
 
             updateArrRebuild();
         }
-    }, 10);
+    }, 5);
 })
-/* 
-let change= new Delta();
 
-editor.on('text-change', function (delta) {
-    change = change.compose(delta);
-});
- */
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
@@ -230,7 +256,7 @@ function noteTemplate(note) {
     </div>
     <p>${note.text.substr(0, 70)} ...</p>
     <p class="pretime">${note.date}</p>
-    <button class="trash"><i class="fas fa-times"></i></i></button>`;
+    <button class="trash"><i class="fas fa-trash"></i></button>`;
     preDiv.querySelector('.button').append(button)
     preDiv.setAttribute('class', 'preDiv');
     preDiv.addEventListener('click', event => {
@@ -280,28 +306,31 @@ notePreview.addEventListener('click', e => {
 
 
 
-    if (e.target.classList.contains('fa-times')) {
+    if (e.target.classList.contains('fa-trash')) {
         // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
-        removeNote(id)
-        e.target.closest('div').remove()
+        answer = confirm("Do you want to delete?")
+        if(answer == true){
+            checkIfTrue = true;
+            removeNote(id)
+            e.target.closest('div').remove()
+            
+        } else{
+            return null;
+        }
+        
+        setTimeout(() => {
+            checkIfTrue = false;
+        }, 10);
+        
 
-    } else if (e.target.closest("div").classList.contains("preDiv")) {
-        active = e.target.closest(".preDiv");
-        id = e.target.closest('.preDiv').id
-        activeNote(active, id)
+    } 
+    if (e.target.closest(".preDiv")) {
+        console.log(e.target.closest(".preDiv"))
+        e.target.closest(".preDiv").classList.add("active")
     }
 
 })
-
-
-const activeNote = (elem, id) => {
-    //*Kanske köra en for loop för att se vilka som har, idk :/
-    index = savedNotes.findIndex(x => x.id == id)
-    console.log(elem.id, index)
-
-
-}
 
 
 const removeNote = id => {
@@ -310,8 +339,6 @@ const removeNote = id => {
     editor.setText("");
     titleInput.value = "New Note";
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
-    console.log(savedNotes)
 }
 
 // ----------------------------------------------------------
