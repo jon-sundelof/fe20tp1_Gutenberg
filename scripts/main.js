@@ -24,19 +24,22 @@ const btnPrint = document.querySelector(".print");
 const template1Btn = document.querySelector(".template1");
 const template2Btn = document.querySelector(".template2");
 
-const titleInput = document.querySelector("#title-input")
-const innerText = document.querySelector(".ql-editor")
+const titleInput = document.querySelector("#title-input");
+const innerText = document.querySelector(".ql-editor");
 
-const themesBtn = document.querySelector(".themes");
+const themesBtn = document.querySelector('.themes');
+const formalBtn = document.querySelector('.theme-formal');
+const playfulBtn = document.querySelector('.theme-playful');
+
 
 let checkIfTrue = false;
 
 /* ============================== EVENT LISTENERS ============================== */
 /* Themes button */
-themesBtn.addEventListener('click', evt => {
+/* themesBtn.addEventListener('click', evt => {
     console.log(evt.target.value);
     changeTheme(evt.target.value);
-});
+}); */
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Variabels for CurrentNoteId and currentNote
@@ -105,19 +108,6 @@ class Note {
 
 //////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function changeTheme (themevalue) {
-    if(themevalue == "0"){
-        note.
-        note.style.color = 'red';
-    }
-  /*   for (let i = 0; i < savedNotes.length; i++) {
-        if (currentNoteId == savedNotes[i].id.toString()) {
-            savedNotes[i].theme = themevalue;
-        }
-    } */
-};
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function buildPreviewWind(renderedList) {
