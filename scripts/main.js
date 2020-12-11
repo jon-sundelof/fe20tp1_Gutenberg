@@ -1,4 +1,7 @@
-let exEditor = false;
+/***************************************************************************/
+/* ================================ QUILL ================================ */ 
+/***************************************************************************/
+
 //*QUILL OPTIONS
 let toolbarOptions = [
     ['bold', 'italic', 'underline'],
@@ -6,49 +9,6 @@ let toolbarOptions = [
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
 ];
-
-
-/* ============================== VARIABLES ============================== */
-
-//Generates string for date. Mabye go with "localDateString" instead? 
-
-//const printscreen = document.querySelector('.printscreen')
-const notePreview = document.querySelector(".preview-notes");
-
-//*Detta är en editorn
-const note = document.querySelector("#editor")
-
-const btnAdd = document.querySelector(".add");
-const btnTemplate = document.querySelector(".template");
-const btnPrint = document.querySelector(".print");
-const template1Btn = document.querySelector(".template1");
-const template2Btn = document.querySelector(".template2");
-
-const titleInput = document.querySelector("#title-input");
-const innerText = document.querySelector(".ql-editor");
-
-const themesBtn = document.querySelector('.themes');
-const formalBtn = document.querySelector('.theme-formal');
-const playfulBtn = document.querySelector('.theme-playful');
-
-
-let checkIfTrue = false;
-
-/* ============================== EVENT LISTENERS ============================== */
-/* Themes button */
-/* themesBtn.addEventListener('click', evt => {
-    console.log(evt.target.value);
-    changeTheme(evt.target.value);
-}); */
-
-////////////////////////////////////////////////////////////////////////////////////
-//Variabels for CurrentNoteId and currentNote
-let currentNoteId;
-let currentNote;
-
-/************************/
-//******** QUILL ********/
-/************************/
 
 let options = {
     modules: {
@@ -60,15 +20,44 @@ let options = {
     theme: 'bubble'
 }
 
-
-
-//var Delta = Quill.import('delta'); // provar delta
+//*Creates a instance of quill
 let editor = new Quill('#editor', options);
+
 const getQuill = editor.root.innerHTML;
 const getQuillContents = editor.getContents();
 const getQuillText = editor.getText();
-function getQuillHtml() { return editor.root.innerHTML; } //getQuillHtml() tar html texten från quill-editorn |Delta kan vara bättre
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getQuillHtml() { return editor.root.innerHTML; }
+
+
+/***************************************************************************/
+/* ============================== VARIABLES ============================== */ 
+/***************************************************************************/
+
+const notePreview = document.querySelector(".preview-notes");
+
+//*Detta är editorn
+const note = document.querySelector("#editor")
+
+//*Buttons
+const btnAdd = document.querySelector(".add");
+const btnTemplate = document.querySelector(".template");
+const btnPrint = document.querySelector(".print");
+const template1Btn = document.querySelector(".template1");
+const template2Btn = document.querySelector(".template2");
+const themesBtn = document.querySelector('.themes');
+const formalBtn = document.querySelector('.theme-formal');
+const playfulBtn = document.querySelector('.theme-playful');
+const defaultBtn = document.querySelector('.theme-default');
+const xmasBtn = document.querySelector('.theme-xmas');
+
+const titleInput = document.querySelector("#title-input");
+const innerText = document.querySelector(".ql-editor");
+
+let checkIfTrue = false;
+
+//Variabels for CurrentNoteId and currentNote
+let currentNoteId;
+let currentNote;
 
 //*En array där vi sparar våra notes
 let savedNotes = [];
@@ -77,48 +66,50 @@ if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').le
     savedNotes = [];
 } else {
     savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
-
     buildPreviewWind(savedNotes);
 }
 
 //*Hämtar data från local storage
-load = () => {
-    let stored = JSON.parse(localStorage.getItem("savedNotes"))
-    console.log(stored);
+function load(){
+
+    if(savedNotes.length > 0){
+        editor.setContents(savedNotes[savedNotes.length -1].content);
+        titleInput.value = savedNotes[savedNotes.length -1].title;
+        
+        currentNoteId = savedNotes[savedNotes.length -1 ].id;
+        currentNote = savedNotes[savedNotes.length -1];
+
+        //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+        changeTheme(savedNotes[savedNotes.length -1 ].theme);
+    }
+
 }
 
 /************************/
 //**** NOTE KLASSEN *****/
 /************************/
 class Note {
-    constructor(title, date, text, star, content = editor.getContents(), theme, tag) {
+    constructor(title, date, text, star, content = editor.getContents(), theme = 0, tag) {
         this.title = title,
-            this.date = date,
-            this.text = text,
-            this.star = star,
-            this.content = content,
-            this.tag = tag,
-            this.theme = theme,
-            this.id = Date.now()
+        this.date = date,
+        this.text = text,
+        this.star = star,
+        this.content = content,
+        this.theme = theme,
+        this.tag = tag,
+        this.id = Date.now()
     }
-
 }
 
-
-
-//////////////////////////////////////////// FUNKTIONER  //////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/***************************************************************************/
+/* ============================ FUNCTIONS ================================ */ 
+/***************************************************************************/
 function buildPreviewWind(renderedList) {
     for (let i = 0; i < renderedList.length; i++) {
         const preDiv = noteTemplate(renderedList[i])
         notePreview.prepend(preDiv);
     }
-
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function updateArrRebuild() {
     for (let i = 0; i < savedNotes.length; i++) {
@@ -131,7 +122,6 @@ function updateArrRebuild() {
         }
     }
 
-    /*  savedNotes.push(newNote); */
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
     let nodes = document.querySelectorAll(".preDiv");
@@ -140,16 +130,14 @@ function updateArrRebuild() {
     }
 
     buildPreviewWind(savedNotes);
-
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createNote() {
     const datum = new Date();
     const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
     titleInput.value = "New Note";
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, null);
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
@@ -158,11 +146,10 @@ function createNote() {
 
     const preDiv = noteTemplate(newNote);
     notePreview.prepend(preDiv);
-
+    
+    editorTheme.setAttribute('id', '');
     editor.setText("");
-
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
@@ -171,19 +158,20 @@ let autosave;
 
 editor.on('editor-change', () => {
     clearTimeout(autosave)
-    autosave = setTimeout(() => {
+    autosave = setTimeout((eventName) => {
 
-        //|| currentNoteId == undefined 
+        
+
+        //|| currentNoteId == undefined  
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
         if (savedNotes.length < 1 && checkIfTrue == false ) {
             const datum = new Date();
             const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
-            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
+            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0);
 
             savedNotes.push(newNote);
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-           
             
             const preDiv = noteTemplate(newNote);
             
@@ -194,8 +182,6 @@ editor.on('editor-change', () => {
 
 
         } else {
-
-
             updateArrRebuild();
         }
     }, 5);
@@ -216,15 +202,15 @@ btnPrint.addEventListener("click", () => {
     openWindow.print()
 })
 
-//*Varje gången sidan refreshas eller besöks så körs "load" functionen
-window.onload = load();
+//*Varje gången sidan refreshas
+
+window.addEventListener('DOMContentLoaded', () => {
+    load()
+});
 
 btnAdd.addEventListener("click", () => {
     createNote();
 })
-
-//*LÄGGA TILL RADERA KNAPPEN I DENNA, DENNA ÄR LITE ÖVER
-
 
 function noteTemplate(note) {
 
@@ -236,7 +222,7 @@ function noteTemplate(note) {
     button.addEventListener('click', () => favourite(note))
     if (note.star == true) {
         button.classList.add('starClicked')
-    }
+    }   
     //skapa en container för våran preview samt en eventlister för klick som uppdaterar editor meoch sätt inn knappen som
     //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
     //för då följer inte eventlister med som vi har bindat till knappen
@@ -252,35 +238,40 @@ function noteTemplate(note) {
     preDiv.addEventListener('click', event => {
         pushToEditor(event);
     });
+    
+    if (currentNoteId == note.id){
+        preDiv.classList.add("active")
+    }
 
     preDiv.setAttribute('id', note.id);
     return preDiv;
 }
-function favourite(note) {
+const favourite = note => {
     note.star = !note.star;
     updateArrRebuild();
 }
-function pushToEditor(event) {
+const pushToEditor = event => {
     //handle click
-
     let thisDivId = event.target.closest('.preDiv').id;
     for (let i = 0; i < savedNotes.length; i++) {
         if (thisDivId == savedNotes[i].id.toString()) {
 
             editor.setContents(savedNotes[i].content);
             titleInput.value = savedNotes[i].title;
-
+            
             currentNoteId = thisDivId;
+            currentNote = savedNotes[i];
+
+            //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+            changeTheme(savedNotes[i].theme);
         }
     }
-
-
 }
 
 document.querySelector('.button.favorit').addEventListener('click', () => { filterFav(true) })
 document.querySelector('.button.all').addEventListener('click', () => { filterFav(false) })
 
-function filterFav(onoff) {
+const filterFav = onoff => {
     let favList;
     if (onoff) {
         //favList = savedNotes.filter(x => x.star)
@@ -293,9 +284,6 @@ function filterFav(onoff) {
 }
 
 notePreview.addEventListener('click', e => {
-
-
-
     if (e.target.classList.contains('fa-trash')) {
         // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
@@ -304,7 +292,6 @@ notePreview.addEventListener('click', e => {
             checkIfTrue = true;
             removeNote(id)
             e.target.closest('div').remove()
-            
         } else{
             return null;
         }
@@ -312,15 +299,8 @@ notePreview.addEventListener('click', e => {
         setTimeout(() => {
             checkIfTrue = false;
         }, 10);
-        
-
     } 
-    if (e.target.closest(".preDiv")) {
-        console.log(e.target.closest(".preDiv"))
-        e.target.closest(".preDiv").classList.add("active")
-    }
-
-})
+});
 
 
 const removeNote = id => {
@@ -335,7 +315,7 @@ const removeNote = id => {
 // Sök funktion
 
 const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', (e) => {
+searchInput.addEventListener('input', e => {
 
     let searchedWord = e.target.value;
     console.log(searchedWord);
@@ -354,39 +334,6 @@ function searchNotes(str, func = function (note) { return note.title.toLowerCase
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
-
-// searchNotes('', (note) => note.star) -> alla starmarkerade
-// searchNotes('hej') -> alla ntoes med hej i sig
-// ---------------------------------------------------------------'
-//annan version av auto save
-//#region  
-// Save periodically
-// setInterval(function () {
-//     if (change.length() > 0) {
-//       if (savedNotes.length <= 0 || currentNoteId == undefined) {
-//             let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
-
-//             savedNotes.push(newNote);
-//             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
-//             const preDiv = noteTemplate(newNote)
-//             notePreview.prepend(preDiv);
-
-//             currentNote = newNote;
-//             currentNoteId = newNote.id;
-
-//             if (pressedPreview == false) {
-//                 currentNoteId = savedNotes[i].id;
-//                     }
-//                 } 
-//                 else {
-
-//                     updateArrRebuild();
-//                 }
-//         change = new Delta();
-//     }
-// }, 2 * 1000);
-//#endregion
 
 /* ====================TEMPLATES DROP DOWN start====================*/
 
@@ -417,17 +364,3 @@ window.onclick = function (event) {
 btn1.addEventListener("click", templateFunc);
 
 /* ====================TEMPLATES DROP DOWN end====================*/
-
-/*
-
-let clickedNote = event.target.closest(".preDiv");
-
-    if(clickedNote.classList.contains("active-note")){
-        console.log(clickedNote)
-        clickedNote.classList.remove("active-note")
-    } else{
-        clickedNote.classList.add("active-note")
-        console.log(clickedNote)
-    }
-
-*/
