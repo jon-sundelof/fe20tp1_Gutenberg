@@ -53,6 +53,9 @@ const xmasBtn = document.querySelector('.theme-xmas');
 const titleInput = document.querySelector("#title-input");
 const innerText = document.querySelector(".ql-editor");
 
+const favInput = document.querySelector(".checkbox-fav")
+
+
 let checkIfTrue = false;
 
 //Variabels for CurrentNoteId and currentNote
@@ -268,8 +271,14 @@ const pushToEditor = event => {
     }
 }
 
-document.querySelector('.button.favorit').addEventListener('click', () => { filterFav(true) })
-document.querySelector('.button.all').addEventListener('click', () => { filterFav(false) })
+
+favInput.addEventListener("click", () => {
+    if(favInput.checked === true){
+        filterFav(true)
+    } else {
+        filterFav(false)
+    }
+})
 
 const filterFav = onoff => {
     let favList;

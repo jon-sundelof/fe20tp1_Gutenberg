@@ -36,7 +36,7 @@ function restoreNav(x) {
     }
 }
 
-var x = window.matchMedia("(min-width: 1001px)")
+let x = window.matchMedia("(min-width: 1001px)")
 restoreNav(x) // Call listener function at run time
 x.addListener(restoreNav) // Attach listener function on state changes
 
