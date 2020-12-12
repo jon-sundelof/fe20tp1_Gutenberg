@@ -250,7 +250,7 @@ p.pretime{
 
 .active{
 
-    border-left: 20px solid var(--color2orange) !important;
+    border-left: 5px solid var(--color2orange) !important;
     /* transition: all 4s !important; */
   
 }

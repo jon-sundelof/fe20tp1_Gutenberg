@@ -131,7 +131,6 @@ function updateArrRebuild() {
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
-
     buildPreviewWind(savedNotes);
 }
 
@@ -154,11 +153,14 @@ function createNote() {
     editor.setText("");
 }
 
+
+//Kontrollerar ändring i Titeln och sparar
+titleInput.addEventListener("input", updateArrRebuild)
+
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
 
 let autosave;
-
 editor.on('editor-change', () => {
     clearTimeout(autosave)
     autosave = setTimeout((eventName) => {
@@ -189,6 +191,7 @@ editor.on('editor-change', () => {
         }
     }, 5);
 })
+
 
 
 //*PRINT
@@ -230,7 +233,7 @@ function noteTemplate(note) {
     //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
     //för då följer inte eventlister med som vi har bindat till knappen
     const preDiv = document.createElement("div");
-    preDiv.innerHTML = `<h3>${note.title.substr(0, 25)}</h3>
+    preDiv.innerHTML = `<h3>${note.title.substr(0, 20)}</h3>
     <div class="button">
     </div>
     <p>${note.text.substr(0, 70)} ...</p>
@@ -249,6 +252,7 @@ function noteTemplate(note) {
     preDiv.setAttribute('id', note.id);
     return preDiv;
 }
+
 const favourite = note => {
     note.star = !note.star;
     updateArrRebuild();
@@ -320,29 +324,53 @@ const removeNote = id => {
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 }
 
+
+
 // ----------------------------------------------------------
 // Sök funktion
-
-const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', e => {
-
-    let searchedWord = e.target.value;
-    console.log(searchedWord);
-    notePreview.innerHTML = "";
-    if (searchedWord.length >= 1) {
-        let foundNotes = searchNotes(searchedWord);
-        buildPreviewWind(foundNotes);
-    } else {
-        // anv har tömt sökrutan
-        buildPreviewWind(savedNotes)
-    }
-
-})
 
 function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) }) {
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
+
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', e => {
+    
+    let searchedWord = e.target.value;
+    notePreview.innerHTML = "";
+    if (searchedWord.length >= 1) {
+        let foundNotes = searchNotes(searchedWord);
+
+        const rankedSearch = foundNotes.map(noteObj => {
+
+            let points = 0;
+
+            if (noteObj.text.includes(searchedWord)) {
+                points += 4;
+            }
+            if (noteObj.text.startsWith(searchedWord)) {
+                points += 3;
+            }
+            if (noteObj.title.includes(searchedWord)) {
+                points += 2;
+            }
+            if (noteObj.title.startsWith(searchedWord)) {
+                points += 1;
+            }
+            return {...noteObj, points};
+        }).sort((a, b) => b.points - a.points);
+
+        buildPreviewWind(rankedSearch);
+    } else {
+        // anv har tömt sökrutan
+        buildPreviewWind(savedNotes)
+    }
+})
+// -----------------sök-funktion-SLUT--------------------------------
+
+
+
 
 /* ====================TEMPLATES DROP DOWN start====================*/
 
