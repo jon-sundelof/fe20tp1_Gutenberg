@@ -454,12 +454,17 @@ nav i{
     font-weight: 800;
     font-size: 2rem;
     border-radius: 60px;
+    width: 40%;
     padding: 1% 6%;
+    transition: width 0.8s;
 }
 
 #first-visit-content > button:hover{
     cursor: pointer;
     background-color: #ff6f0093;
+    width: 60%;
+    
+    
 }
 
 /* End of segment for styling first-time visit */

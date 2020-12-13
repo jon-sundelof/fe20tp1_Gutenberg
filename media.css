@@ -103,3 +103,68 @@
 
 }
 
+
+
+
+/* For the welcome-page */
+
+@media (max-width: 1900px){
+
+    #first-visit-content > img {
+        display: none;
+    }
+
+    #first-visit-content {
+        flex-direction: column;
+    }
+
+    #first-visit-content > p{
+        width: 80%;
+        margin: 4% auto;
+    }
+    #first-visit-content > button{
+        width: 80%;
+        margin: 4% auto;
+    }
+    #first-visit-content > button:hover{
+        width: 90%;
+    }
+
+    
+
+
+}
+@media (max-width: 1280px){
+
+/*     #first-visit-content {
+        flex-direction: column;
+    } */
+
+    #first-visit-content > p{
+        width: 80%;
+        margin: 4% auto;
+        font-size: 20px;
+        letter-spacing: normal;
+        font-weight: bolder;
+    }
+    #first-visit-content > h1{
+       font-size: 1.5em;
+    }
+    #first-visit-content > button{
+        width: 80%;
+        margin: 4% auto;
+    }
+
+}
+
+
+@media (max-width: 910px){ 
+
+    #first-visit-content > button {
+        font-size: 22px;
+    }
+    .first-visit-span {
+        font-size: 25px;
+    }
+    
+}
