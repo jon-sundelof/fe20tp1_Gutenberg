@@ -54,7 +54,7 @@ const titleInput = document.querySelector("#title-input");
 const innerText = document.querySelector(".ql-editor");
 
 const favInput = document.querySelector(".checkbox-fav")
-
+const els = document.getElementsByClassName('preDiv active');
 
 let checkIfTrue = false;
 
@@ -107,6 +107,16 @@ class Note {
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */ 
 /***************************************************************************/
+
+
+/* Removes the "active" class from preDiv when called*/
+function removeClassActive() {
+  while (els[0]) {
+    els[0].classList.remove('active')
+  }
+}
+
+/****************************************************************************/
 function buildPreviewWind(renderedList) {
     for (let i = 0; i < renderedList.length; i++) {
         const preDiv = noteTemplate(renderedList[i])
@@ -114,6 +124,7 @@ function buildPreviewWind(renderedList) {
     }
 }
 
+/*****************************************************/
 function updateArrRebuild() {
     for (let i = 0; i < savedNotes.length; i++) {
         if (currentNoteId == savedNotes[i].id.toString()) {
@@ -134,6 +145,8 @@ function updateArrRebuild() {
     buildPreviewWind(savedNotes);
 }
 
+/*****************************************************/
+
 function createNote() {
     const datum = new Date();
     const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
@@ -148,7 +161,7 @@ function createNote() {
 
     const preDiv = noteTemplate(newNote);
     notePreview.prepend(preDiv);
-    
+ 
     editorTheme.setAttribute('id', '');
     editor.setText("");
 }
@@ -215,7 +228,9 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 btnAdd.addEventListener("click", () => {
+    removeClassActive();
     createNote();
+
 })
 
 function noteTemplate(note) {
