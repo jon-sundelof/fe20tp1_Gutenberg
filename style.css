@@ -230,9 +230,13 @@ width: 100%;
 }
 #pretag{
     font-size: 10px;
-    margin-left: 5vw;
     font-weight: bolder;
     color: black;
+
+    margin-left: 3.6vw;
+}
+#show-all-notes:hover{
+    background-color: rgb(89, 89, 89);
 }
 
 p.pretime{
@@ -525,6 +529,7 @@ nav i{
     top: 0;
     border:none;
     font-size: 30px;
+    margin-left: 13px;
     
     padding: 15px 30px;
     color: #333;

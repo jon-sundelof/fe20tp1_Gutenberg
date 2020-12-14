@@ -1,13 +1,10 @@
 @media print {
-    @page :footer { 
-        display: none
-    } 
-  
-    @page :header { 
-        display: none
-    } 
-    body * {
+    @page { margin: 0; }
+    body { margin: 1.6cm; }
+
+     body * {
     visibility: hidden;
+    cursor: none;
     }
    
 
@@ -18,8 +15,8 @@
 
     #center-all {
     position: absolute;
-    left: 0px;
-    top: auto;
+    left: 0;
+    top: 0;
     height: inherit;
     
 
