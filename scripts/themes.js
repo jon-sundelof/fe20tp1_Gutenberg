@@ -81,6 +81,16 @@ let tagDivDrop = document.querySelector('.tagDown-content');
 
 tagBtn.addEventListener("click", tagFunc); 
 
+function removeDuplicatesBy(keyFn, array) {
+    let mySet = new Set();
+    return array.filter(function(x) {
+        let key = keyFn(x), isNew = !mySet.has(key);
+        if (isNew) mySet.add(key);
+        return isNew;
+    });
+}
+
+let removedDup;
 
 function tagFunc() {
     let nodes = document.querySelectorAll(".tagBtnClass");
@@ -88,10 +98,13 @@ function tagFunc() {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
 
-    for (let i = 0; i < savedNotes.length; i++) {
-        if(!savedNotes[i].tag == ""){
-        let tagButtons = document.createElement('button');
-        document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + savedNotes[i].tag + '</button>';
+    removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
+    console.log(removedDup[1].tag)
+    
+    for (let i = 0; i < removedDup.length; i++) {
+        if(!removedDup[i].tag == ""){
+
+        document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + removedDup[i].tag + '</button>';
        }
         document.getElementById("myTagDown").classList.toggle("tag-show");
      }
@@ -122,9 +135,8 @@ window.onclick = function (event) {
 
  function runTagInSearch (e){
     let thisButtonId = e.target.closest('.tagDown-content > button').id;
-    let buttonTagText = document.getElementById(thisButtonId).innerHTML;
+    let buttonTagText = document.getElementById(thisButtonId).innerText;
 
-   /*  searchInput.value = buttonTagText; */
    notePreview.innerHTML = "";
    if (buttonTagText.length >= 1) {
        let foundNotes = searchNotes(buttonTagText);
