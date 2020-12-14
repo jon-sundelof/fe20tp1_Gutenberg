@@ -57,6 +57,8 @@ const innerText = document.querySelector(".ql-editor");
 const favInput = document.querySelector(".checkbox-fav")
 const els = document.getElementsByClassName('preDiv active');
 
+let favMode = false;
+
 let checkIfTrue = false;
 
 //Variabels for CurrentNoteId and currentNote
@@ -65,6 +67,7 @@ let currentNote;
 
 //*En array där vi sparar våra notes
 let savedNotes = [];
+let starNotes = [];
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
@@ -128,25 +131,28 @@ function buildPreviewWind(renderedList) {
 
 /*****************************************************/
 function updateArrRebuild() {
+    
     for (let i = 0; i < savedNotes.length; i++) {
-        if (currentNoteId == savedNotes[i].id.toString()) {
+        if (currentNoteId == savedNotes[i].id.toString() ) {
             savedNotes[i].title = titleInput.value;
             savedNotes[i].text = editor.getText();
             savedNotes[i].content = editor.getContents();
             savedNotes[i].star = savedNotes[i].star;
             savedNotes[i].tag = tagInput.value;
-
         }
     }
-
+        
+       
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
+    
     let nodes = document.querySelectorAll(".preDiv");
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
     buildPreviewWind(savedNotes);
 }
+    
+
 
 /*****************************************************/
 
@@ -176,6 +182,20 @@ titleInput.addEventListener("input", updateArrRebuild)
 //Checks for change in tag-input and saves.
 tagInput.addEventListener("input", updateArrRebuild)
 
+const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
+
+function suggestionList (){
+   removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
+   for (let i = 0; i < removedDup.length; i++) {
+       if(!removedDup[i].tag == ""){
+           suggestionListContainer.innerHTML += removedDup[i].tag;
+
+
+      }
+    }
+}
+tagInput.addEventListener("input", suggestionList)
+
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
 
@@ -183,8 +203,6 @@ let autosave;
 editor.on('editor-change', () => {
     clearTimeout(autosave)
     autosave = setTimeout((eventName) => {
-
-        
 
         //|| currentNoteId == undefined  
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
@@ -246,7 +264,10 @@ function noteTemplate(note) {
     const button = document.createElement('button');
     button.classList.add('star');
     button.innerHTML = `<i class="fas fa-star"></i>`;
-    button.addEventListener('click', () => favourite(note))
+    button.addEventListener('click', () => {
+        favourite(note)
+        
+    })
     if (note.star == true) {
         button.classList.add('starClicked')
     }   
@@ -272,6 +293,7 @@ function noteTemplate(note) {
         if (!event.target.classList.contains("fas")) {
             pushToEditor(event);
             moveFrame();
+            console.log("Event inside preDiv")
         }
     });
     

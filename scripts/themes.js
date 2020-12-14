@@ -136,6 +136,10 @@ window.onclick = function (event) {
  function runTagInSearch (e){
     let thisButtonId = e.target.closest('.tagDown-content > button').id;
     let buttonTagText = document.getElementById(thisButtonId).innerText;
+   
+    showAllNotes.classList.add("show-tag-btn");
+    showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " +buttonTagText; 
+
 
    notePreview.innerHTML = "";
    if (buttonTagText.length >= 1) {
@@ -166,3 +170,11 @@ window.onclick = function (event) {
        buildPreviewWind(savedNotes)
    }
  }
+ /**************************************/
+ const showAllNotes = document.querySelector('#show-all-notes');
+ showAllNotes.addEventListener('click', updateArrRebuild);
+ showAllNotes.addEventListener('click', () => {
+    showAllNotes.classList.remove("show-tag-btn");
+ })
+
+ /******************************************************************/
