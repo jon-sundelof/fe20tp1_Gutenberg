@@ -1,0 +1,27 @@
+@media print {
+    @page :footer { 
+        display: none
+    } 
+  
+    @page :header { 
+        display: none
+    } 
+    body * {
+    visibility: hidden;
+    }
+   
+
+    #center-all , #center-all * {
+    visibility: visible;
+    }
+
+
+    #center-all {
+    position: absolute;
+    left: 0px;
+    top: auto;
+    height: inherit;
+    
+
+    }
+    }

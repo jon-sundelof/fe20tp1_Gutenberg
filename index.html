@@ -27,6 +27,7 @@
     <!-- <script src="./scripts/search.js" defer></script> -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="media.css">
+    <link href="print.css" rel="stylesheet" type="text/css" media="print">
     <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.bubble.css">
 
 
@@ -51,6 +52,7 @@
 
 
         <img src="pictures/logo-feather2.png" alt="logo" class="logo">
+        
         <div class="dropdown">
             <button class="templates"><i class="far fa-file-alt"></i>Templates</button>
             <div id="myDropdown" class="dropdown-content">
@@ -71,6 +73,7 @@
         <div class="tag-down">
             <button class="tag-btn"><i id="nav-tag" class="fas fa-tag"></i>Tags</button>
             <div id="myTagDown" class="tagDown-content">
+                
                 
             </div>
            
@@ -97,10 +100,12 @@
 
         <!-- </div> -->
         <!-- SEARCH FUNCTION end -->
+
+        <button id="show-all-notes"></button>
+
         <section class="preview-notes">
 
         </section>
-        
         <button class="add"><i class="fas fa-plus"></i>New note</button>
 
     </aside>
@@ -132,10 +137,18 @@
         <button class="back">&#8592;</button>
 
         <div class="tag-container">
-        <i class="fas fa-tag"></i>
-        <input placeholder="Tag Name..." autocomplete="off" spellcheck="false" id="tag-input">
-        </div>
-        
+            <form>
+                <i class="fas fa-tag"></i>
+            <input placeholder="Tag Name..." spellcheck="false" list="tag-suggestion-datalist" id="tag-input">
+
+              <datalist id="tag-suggestion-datalist">   
+              </datalist>
+
+            </div>
+        </form>
+
+
+
         <div id="center-all">
         <input placeholder="Enter Title Here!" id="title-input" autocomplete="off" spellcheck="false">
         <!-- Create the editor container -->
