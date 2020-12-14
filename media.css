@@ -1,0 +1,192 @@
+
+@media (min-width: 1001px){
+
+    nav{
+        display: flex;
+    }
+    .hamcontainer, .hamicon-cont, .closebtn{
+        display: none;
+    }
+
+
+
+}
+
+
+@media (max-width: 1000px){
+    nav{
+        width:0px;
+        position: absolute;
+        transition: 0.3s;
+        z-index: 500;
+        left: -50px;
+        
+    }
+    
+    .hamicon-cont{
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 30;
+        width: 40px;
+        height: 40px;
+        
+    }
+
+    .hamicon{
+        width: 40px;
+        height: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        flex-flow: row wrap;        
+        writing-mode: vertical-lr; 
+        cursor: pointer;
+    }
+    
+    .hamicon span{
+        background-color: #000000;
+    }
+    .hamicon:hover span{
+        background-color: #f96d00;
+    }   
+    
+    .hamline-one{    
+        width: 40px;
+        height: 2px;
+    }
+    .hamline-two{
+        width: 20px;
+        height: 2px;
+    }
+    .hamline-three{
+        width: 15px;
+        height: 2px;
+    }
+
+    .closebtn {
+        position: absolute;
+        top: -15px;
+        right: 15px;
+        font-size: 60px;
+        cursor: pointer;
+        color: white;
+        z-index: 1000;
+    }
+    
+    aside{
+        z-index: 20;
+    }
+
+    #tag-input {
+        margin-left: 4.6% !important;
+    }
+
+}
+
+@media (max-width: 600px){
+    body{
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+    }
+    aside{
+        min-width:100vw;
+        height: auto;
+    }
+    main{
+        min-width: 100%;
+        height: 90%;
+        /* padding-top: 50px; */
+    }
+    .back{
+        display: block;
+    }
+
+    .fa-tag{
+        bottom: 2%;
+    }
+    #tag-input {
+        bottom: 2%;
+        margin-left: 8% !important;
+    }
+
+}
+
+
+
+
+/* For the welcome-page */
+
+@media (max-width: 1900px){
+
+    #first-visit-content > img {
+        display: none;
+    }
+
+    #first-visit-content {
+        flex-direction: column;
+    }
+
+    #first-visit-content > p{
+        width: 80%;
+        margin: 4% auto;
+    }
+    #first-visit-content > button{
+        width: 80%;
+        margin: 4% auto;
+    }
+    #first-visit-content > button:hover{
+        width: 90%;
+    }
+
+    
+
+
+}
+@media (max-width: 1280px){
+
+    #first-visit-content > p{
+        width: 80%;
+        margin: 4% auto;
+        font-size: 20px;
+        letter-spacing: normal;
+        font-weight: bolder;
+    }
+    #first-visit-content > h1{
+       font-size: 1.5em;
+    }
+    #first-visit-content > button{
+        width: 80%;
+        margin: 4% auto;
+    }
+
+     #tag-input {
+         margin-top: 1%;
+         margin-left: 3%;
+     }
+}
+
+
+@media (max-width: 910px){ 
+
+    #first-visit-content > button {
+        font-size: 22px;
+    }
+    .first-visit-span {
+        font-size: 25px;
+    }
+    
+}
+@media (width: 1650px){ 
+
+    .fa-tag{
+        margin-left: 0.8%;
+    }
+    #tag-input {
+        margin-left: 2.6%;
+    }
+
+    
+}
