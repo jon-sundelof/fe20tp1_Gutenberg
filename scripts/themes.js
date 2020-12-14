@@ -91,7 +91,7 @@ function tagFunc() {
     for (let i = 0; i < savedNotes.length; i++) {
         if(!savedNotes[i].tag == ""){
         let tagButtons = document.createElement('button');
-        document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '">' + savedNotes[i].tag + '</button>';
+        document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + savedNotes[i].tag + '</button>';
        }
         document.getElementById("myTagDown").classList.toggle("tag-show");
      }
