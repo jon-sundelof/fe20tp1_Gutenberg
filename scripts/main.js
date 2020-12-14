@@ -267,8 +267,12 @@ function noteTemplate(note) {
     <button class="trash"><i class="fas fa-trash"></i></button>`;
     preDiv.querySelector('.button').append(button)
     preDiv.setAttribute('class', 'preDiv');
+
     preDiv.addEventListener('click', event => {
-        pushToEditor(event);
+        if (!event.target.classList.contains("fas")) {
+            pushToEditor(event);
+            moveFrame();
+        }
     });
     
     if (currentNoteId == note.id){
