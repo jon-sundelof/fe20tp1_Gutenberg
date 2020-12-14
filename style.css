@@ -227,8 +227,16 @@ width: 100%;
 
 
 }
+.preDivTagCon{
+    display: flex;
+}
+#pretag{
+    font-size: 10px;
+    margin-left: 18px;
+}
+
 p.pretime{
-    padding: 0;
+    padding: 5px;
     font-size: 10px;
     color: rgba(0, 0, 0, 0.582);
 }
@@ -468,6 +476,23 @@ nav i{
 }
 
 /* End of segment for styling first-time visit */
+.fa-tag{
+    position: absolute;
+    color: var(--color3grey);
+    font-size: 1.4em;
+    margin-top: 0.9%;
+    margin-left: 0.8%;
+}
+#tag-input {
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 2.3%;
+    border: none;
+    border-bottom: solid rgba(0, 0, 0, 0.185) 1px;
+    outline-style: none;
+    font-family: poppins;
+    color: #333333cc;
+}
 
 
 #center-all{
@@ -581,5 +606,55 @@ nav i{
 
 #playful {
     font-family: 'Comic Neue';
+    
 }
+
+
+/* ====================TAG-DropDown start====================*/
+
+/* The container <div> - needed to position the dropdown content */
+
+#nav-tag{
+    color: white;
+    font-size: 1.2em;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: relative;
+}
+
+.tag-btn{
+       text-align: start;
+       width: 100%;
+   }
+   
+   .tag-down {
+       position: relative;
+       display: inline-block;
+       width: 100%;
+     }
+     /* Dropdown Content (Hidden by Default) */
+     .tagDown-content {
+       display: none;
+       position: relative;
+       background-color: var(--color3grey);
+       min-width: 160px;
+       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+       z-index: 1;
+     }
+     
+     /* Links inside the dropdown */
+     .tagDown-content a {
+       color: black;
+       padding: 12px 0px;
+       text-decoration: none;
+       display: block;
+     }
+     
+     /* Change color of dropdown links on hover */
+     .tagDown-content a:hover {background-color: #ddd}
+     
+     /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+     .tag-show {display:block;}
+     /* ====================TAG DROPDOWN ENDS====================*/
+   
 

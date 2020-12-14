@@ -50,6 +50,7 @@ const playfulBtn = document.querySelector('.theme-playful');
 const defaultBtn = document.querySelector('.theme-default');
 const xmasBtn = document.querySelector('.theme-xmas');
 
+const tagInput = document.querySelector('#tag-input');
 const titleInput = document.querySelector("#title-input");
 const innerText = document.querySelector(".ql-editor");
 
@@ -78,6 +79,7 @@ function load(){
     if(savedNotes.length > 0){
         editor.setContents(savedNotes[savedNotes.length -1].content);
         titleInput.value = savedNotes[savedNotes.length -1].title;
+        tagInput.value = savedNotes[savedNotes.length -1].tag;
         
         currentNoteId = savedNotes[savedNotes.length -1 ].id;
         currentNote = savedNotes[savedNotes.length -1];
@@ -132,6 +134,7 @@ function updateArrRebuild() {
             savedNotes[i].text = editor.getText();
             savedNotes[i].content = editor.getContents();
             savedNotes[i].star = savedNotes[i].star;
+            savedNotes[i].tag = tagInput.value;
 
         }
     }
@@ -152,7 +155,8 @@ function createNote() {
     const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
     titleInput.value = "New Note";
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0);
+    tagInput.value = "";
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0, tagInput.value);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
@@ -169,6 +173,8 @@ function createNote() {
 
 //Kontrollerar ändring i Titeln och sparar
 titleInput.addEventListener("input", updateArrRebuild)
+//Checks for change in tag-input and saves.
+tagInput.addEventListener("input", updateArrRebuild)
 
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
@@ -249,10 +255,15 @@ function noteTemplate(note) {
     //för då följer inte eventlister med som vi har bindat till knappen
     const preDiv = document.createElement("div");
     preDiv.innerHTML = `<h3>${note.title.substr(0, 20)}</h3>
+    
     <div class="button">
     </div>
     <p>${note.text.substr(0, 70)} ...</p>
+    <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
+    <p id="pretag">${note.tag}</p>
+    </div>
+   
     <button class="trash"><i class="fas fa-trash"></i></button>`;
     preDiv.querySelector('.button').append(button)
     preDiv.setAttribute('class', 'preDiv');
@@ -280,6 +291,7 @@ const pushToEditor = event => {
 
             editor.setContents(savedNotes[i].content);
             titleInput.value = savedNotes[i].title;
+            tagInput.value = savedNotes[i].tag;
             
             currentNoteId = thisDivId;
             currentNote = savedNotes[i];
@@ -344,7 +356,7 @@ const removeNote = id => {
 // ----------------------------------------------------------
 // Sök funktion
 
-function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) }) {
+function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase()) }) {
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
@@ -390,7 +402,7 @@ searchInput.addEventListener('input', e => {
 /* ====================TEMPLATES DROP DOWN start====================*/
 
 //--------------------Variables--------------------
-var btn1 = document.querySelector(".templates");
+let btn1 = document.querySelector(".templates");
 //--------------------Functions--------------------
 
 /* When the user clicks on the button,

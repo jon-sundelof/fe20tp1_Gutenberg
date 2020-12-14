@@ -75,3 +75,82 @@ window.onclick = function (event) {
         }
     }
 }
+///////////////////////////////////////////////////////////////////////
+let tagBtn = document.querySelector(".tag-btn");
+let tagDivDrop = document.querySelector('.tagDown-content');
+
+tagBtn.addEventListener("click", tagFunc); 
+
+
+function tagFunc() {
+    let nodes = document.querySelectorAll(".tagBtnClass");
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].parentNode.removeChild(nodes[i]);
+    }
+
+    for (let i = 0; i < savedNotes.length; i++) {
+        if(!savedNotes[i].tag == ""){
+        let tagButtons = document.createElement('button');
+        document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '">' + savedNotes[i].tag + '</button>';
+       }
+        document.getElementById("myTagDown").classList.toggle("tag-show");
+     }
+    }
+
+// Close the dropdown menu if user clicks outside of it
+window.onclick = function (event) {
+    if (!event.target.matches('.tag-btn')) {
+        var dropdowns = document.getElementsByClassName("tagDown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('tag-show')) {
+                openDropdown.classList.remove('tag-show');
+            }
+        }
+    }
+ }
+
+
+ /******************************************/
+
+
+ let tagListner = document.querySelector('.tagDown-content');
+
+ tagListner.addEventListener('click', runTagInSearch);
+
+
+ function runTagInSearch (e){
+    let thisButtonId = e.target.closest('.tagDown-content > button').id;
+    let buttonTagText = document.getElementById(thisButtonId).innerHTML;
+
+   /*  searchInput.value = buttonTagText; */
+   notePreview.innerHTML = "";
+   if (buttonTagText.length >= 1) {
+       let foundNotes = searchNotes(buttonTagText);
+
+       const rankedSearch = foundNotes.map(noteObj => {
+
+           let points = 0;
+
+           if (noteObj.text.includes(buttonTagText)) {
+               points += 4;
+           }
+           if (noteObj.text.startsWith(buttonTagText)) {
+               points += 3;
+           }
+           if (noteObj.title.includes(buttonTagText)) {
+               points += 2;
+           }
+           if (noteObj.title.startsWith(buttonTagText)) {
+               points += 1;
+           }
+           return {...noteObj, points};
+       }).sort((a, b) => b.points - a.points);
+
+       buildPreviewWind(rankedSearch);
+   } else {
+       // anv har tömt sökrutan
+       buildPreviewWind(savedNotes)
+   }
+ }

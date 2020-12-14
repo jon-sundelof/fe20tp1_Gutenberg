@@ -78,6 +78,10 @@
         z-index: 20;
     }
 
+    #tag-input {
+        margin-left: 4.6% !important;
+    }
+
 }
 
 @media (max-width: 600px){
@@ -100,6 +104,13 @@
         display: block;
     }
 
+    .fa-tag{
+        bottom: 2%;
+    }
+    #tag-input {
+        bottom: 2%;
+        margin-left: 8% !important;
+    }
 
 }
 
@@ -136,10 +147,6 @@
 }
 @media (max-width: 1280px){
 
-/*     #first-visit-content {
-        flex-direction: column;
-    } */
-
     #first-visit-content > p{
         width: 80%;
         margin: 4% auto;
@@ -155,6 +162,10 @@
         margin: 4% auto;
     }
 
+     #tag-input {
+         margin-top: 1%;
+         margin-left: 3%;
+     }
 }
 
 
@@ -166,5 +177,16 @@
     .first-visit-span {
         font-size: 25px;
     }
+    
+}
+@media (width: 1650px){ 
+
+    .fa-tag{
+        margin-left: 0.8%;
+    }
+    #tag-input {
+        margin-left: 2.6%;
+    }
+
     
 }
