@@ -22,7 +22,6 @@ function openNav() {
 function closeNav() {
     document.querySelector("nav").style.width = "0px";
     document.querySelector("nav").style.left = "-50px";
-
 }
 
 function restoreNav(x) {
@@ -41,12 +40,12 @@ restoreNav(x) // Call listener function at run time
 x.addListener(restoreNav) // Attach listener function on state changes
 
 
-function moveFrame() {
-    document.querySelector("body").style.cssText = "left: -100%;"
-}
-function moveBack() {
-    document.querySelector("body").style.cssText = "left: 0;"
-}
+// function moveFrame() {
+//     document.querySelector("body").style.cssText = "left: -100%;"
+// }
+// function moveBack() {
+//     document.querySelector("body").style.cssText = "left: 0;"
+// }
 
 
 

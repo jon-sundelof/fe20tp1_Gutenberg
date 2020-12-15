@@ -63,7 +63,7 @@ function themesFunc() {
 }
 
 // Close the dropdown menu if user clicks outside of it
-window.onclick = function (event) {
+window.addEventListener("click", event => {
     if (!event.target.matches('.themes')) {
         let dropdowns = document.getElementsByClassName("dropup-content");
         let i;
@@ -74,12 +74,12 @@ window.onclick = function (event) {
             }
         }
     }
-}
+})
 ///////////////////////////////////////////////////////////////////////
 let tagBtn = document.querySelector(".tag-btn");
 let tagDivDrop = document.querySelector('.tagDown-content');
 
-tagBtn.addEventListener("click", tagFunc); 
+/* tagBtn.addEventListener("click", tagFunc);  */
 
 function removeDuplicatesBy(keyFn, array) {
     let mySet = new Set();
@@ -131,7 +131,7 @@ window.onclick = function (event) {
 
  let tagListner = document.querySelector('.tagDown-content');
 
- tagListner.addEventListener('click', runTagInSearch);
+/*  tagListner.addEventListener('click', runTagInSearch); */
 
 
  function runTagInSearch (e){

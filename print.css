@@ -8,7 +8,7 @@
     }
    
 
-    #center-all , #center-all * {
+    #center-all, #center-all * {
     visibility: visible;
     }
 
@@ -17,8 +17,16 @@
     position: absolute;
     left: 0;
     top: 0;
-    height: inherit;
-    
+    height: 100vh;
+    width: 100vw;    
 
+    }
+    .ql-toolbar{
+        display: none;
+        visibility: hidden;
+    }
+    .ql-tooltip{
+        display: none;
+        visibility: hidden;
     }
     }
