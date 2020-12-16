@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 :root {
+    --primarycolor: #ffffff;
    --color1white: #f2f2f2;
    --color2orange: #f96d00;
    --color3grey: #393e46;
@@ -15,14 +16,17 @@
 }
 
 body{
+    
     display: flex;
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
+    overflow: hidden;
 
 }
 main{
-    background-color: white;
+    background-color: var(--primarycolor);
+    /* background-color: white; */
     width: 100%;
     height: 100vh;
     z-index: 10;
@@ -274,17 +278,22 @@ p.pretime{
 nav{
     background-color: var(--color4black) !important;
     width: 350px;
+    /* min-width: 250px; */
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
 
     /* padding-bottom: 100px; */
     padding-left: 10px;
     padding-right: 10px;
 
     position: relative;
+}
+
+nav button{
+    border-radius: 3px;
 }
 
 .print, .info, .templates{
@@ -327,8 +336,8 @@ nav{
 }
 .add:hover{
     cursor: pointer;
-    width: 85%;
-    height: 45px;
+    width: 82%;
+    height: 42px;
 }
 nav button, .templates{
     height: 40px;
@@ -339,7 +348,9 @@ nav button, .templates{
     width: 100%;
     margin: 5px auto;
 }
-
+.clear-lc:hover{
+    background-color: #b16161;
+}
 nav, button:hover, .templates:hover, .themes:hover{
     cursor: pointer;
     background-color: rgb(58, 58, 58);
@@ -491,17 +502,19 @@ nav i{
     font-weight: 800;
     font-size: 2rem;
     border-radius: 60px;
-    width: 40%;
+    /* width: 40%; */
     padding: 1% 6%;
-    transition: width 0.8s;
+    transition: 0.2s;
 }
 
 #first-visit-content > button:hover{
     cursor: pointer;
-    background-color: #ff6f0093;
-    width: 60%;
-    
-    
+    background-color: var(--color3grey);
+    /* width: 81%; */
+    /* height: 1.8em; */
+
+   /*  background-color: #ff6f0093;
+    width: 60%; */
 }
 
 /* End of segment for styling first-time visit */
@@ -510,7 +523,7 @@ nav i{
     color: var(--color3grey);
     font-size: 1.4em;
     margin-top: 0.9%;
-    margin-left: 0.8%;
+    margin-left: 0.8%; 
 }
 #tag-input {
     position: absolute;
@@ -524,21 +537,20 @@ nav i{
 }
 
 
-.center-all{
-    display: grid;
-    place-items: center;
-    width: 100%;
-    /* height: 100%; */
-    /* margin-top: 150px; */
+#center-all{
+    width:100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
 }
 
-.title-input{
+#title-input{
     margin-top: 50px;
     width: 100%;
     /* height: 75px; */
     border:none;
     font-size: 30px;
-    margin-left: 13px;
+    
     
     padding: 15px 30px;
     color: #333;
@@ -557,14 +569,18 @@ nav i{
     border:none;
     word-break: normal;
     height: 75vh;
-    width: 100%;
+    width: 90%;
 }
 
 .ql-editor {
+    margin: auto;
+
     width: 100%;
     padding: 20px 30px !important;
     /* height: 710px; */
     height: 98vh;
+    word-break: normal;
+    padding-bottom: 20px;
     /* overflow-y: auto; */
 }
 .title-input{
@@ -615,7 +631,20 @@ nav i{
 /* ====================THEMES DROP up start====================*/
 
 /* The container <div> - needed to position the dropdown content */
+
 .fa-palette{
+ font-size: 1.2em;
+ padding-right: 10px;
+ padding-left: 10px;
+ 
+}
+.fa-chart-bar{
+ font-size: 1.2em;
+ padding-right: 10px;
+ padding-left: 10px;
+ 
+}
+.fa-cogs{
  font-size: 1.2em;
  padding-right: 10px;
  padding-left: 10px;
@@ -657,6 +686,54 @@ nav i{
   /* ====================TEMPLATES DROP DOWN end====================*/
 
 
+
+  /* ====================SETTINGS DROPUP starts====================*/
+.dropuptwo {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  /* Dropdown Content (Hidden by Default) */
+  .dropup-content-two {
+    display: none;
+    position: absolute;
+    bottom: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color3grey);
+    width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+
+  }
+  
+  /* Links inside the dropdown */
+  .dropup-content-two a {
+    color: black;
+    padding: 12px 0px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropup-content-two a:hover {background-color: #ddd}
+  
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .settings-show {display: block;}
+
+  hr{
+      width: 80%;
+      margin: 0 auto;
+  }
+
+  .settings-div{
+      text-align: center;
+      margin-top: 0 auto;
+      color: white;
+  }
+  /* ====================Settings DROPUP end====================*/
+
+
 /* ======================== THEMES ====================== */
 #formal {
     font-family: 'Times New Roman', Times, serif;
@@ -664,8 +741,23 @@ nav i{
 
 #playful {
     font-family: 'Comic Neue';
-    
+    font-weight: bold;
+    font-size: 1.4em;
 }
+
+#playful h1{
+    color: rgba(255, 0, 255, 0.507);
+}
+#playful p{
+    color: rgba(255, 0, 255, 0.507);
+}
+#playful h2 {
+    color: rgba(0, 183, 255, 0.507);
+}
+#playful h3 {
+    color: rgba(9, 255, 0, 0.507);
+}
+
 
 
 /* ====================TAG-DropDown start====================*/

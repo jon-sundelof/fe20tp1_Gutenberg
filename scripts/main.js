@@ -8,6 +8,7 @@ let toolbarOptions = [
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
+    ['image'],
 ];
 
 let options = {
@@ -15,7 +16,7 @@ let options = {
         toolbar: toolbarOptions,
     },
     scrollingContainer: '#scrolling-container',
-    placeholder: '     Compose an epic story...', //placeholder text 
+    placeholder: 'Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
 }
@@ -42,36 +43,36 @@ const note = document.querySelector("#editor")
 const btnAdd = document.querySelector(".add");
 const btnTemplate = document.querySelector(".template");
 const btnPrint = document.querySelector(".print");
-const template1Btn = document.querySelector(".template1");
-const template2Btn = document.querySelector(".template2");
 const themesBtn = document.querySelector('.themes');
 const formalBtn = document.querySelector('.theme-formal');
 const playfulBtn = document.querySelector('.theme-playful');
 const defaultBtn = document.querySelector('.theme-default');
 const xmasBtn = document.querySelector('.theme-xmas');
+//Rensa LC-knapp
+const clearLC = document.querySelector(".clear-lc");
 
 const tagInput = document.querySelector('#tag-input');
 const titleInput = document.querySelector("#title-input");
 const innerText = document.querySelector(".ql-editor");
 
 const favInput = document.querySelector(".checkbox-fav")
-const els = document.getElementsByClassName('preDiv active');
+const favInputChecked = document.querySelector("input:checked")
 
 
 const mediaQuery600 = window.matchMedia('(max-width: 600px)');
-mediaQuery600.addListener(handle600px);
+// mediaQuery600.addEventListener(handle600px);
 
-function handle600px(e){
-    if(e.matches){
-        preDiv.addEventListener("click", ()=>{
-            console.log(e)
-            moveFrame
-        })
+// function handle600px(e){
+//     if(e.matches){
+//         preDiv.addEventListener("click", ()=>{
+//             moveFrame()
+//         })
     
-        }
+//         }
 
-}
+// }
 
+const els = document.getElementsByClassName('preDiv active');
 
 let checkIfTrue = false;
 
@@ -107,6 +108,30 @@ function load(){
 
 }
 
+///////////////COLOR////////////////////
+const themes = {
+    dark: {
+        '--primarycolor:':'#222831',
+        
+    },
+    light: {
+        '--primarycolor:':'#ffffff',
+       
+    },
+
+    xmas: {
+        '--primarycolor:':'#f00a0a',
+    },
+  };
+  [...document.querySelectorAll('.mode')].forEach(el => {
+      el.addEventListener('click', () => {
+          const theme = themes[el.dataset.theme];
+          for (var variable in theme) {
+              document.documentElement.style.setProperty(variable, theme[variable]);
+          };
+      });
+  });
+
 /************************/
 //**** NOTE KLASSEN *****/
 /************************/
@@ -127,6 +152,13 @@ class Note {
 /* ============================ FUNCTIONS ================================ */ 
 /***************************************************************************/
 
+/* Tillfällig clear LC */
+clearLC.addEventListener('click', () => {
+    localStorage.clear();
+    document.location.reload();
+}) 
+    
+/****************************************************************************/
 
 /* Removes the "active" class from preDiv when called*/
 function removeClassActive() {
@@ -146,47 +178,24 @@ function buildPreviewWind(renderedList) {
 /*****************************************************/
 function updateArrRebuild() {
     
-    if(favMode == false){
-        for (let i = 0; i < savedNotes.length; i++) {
-            if (currentNoteId == savedNotes[i].id.toString() ) {
-                savedNotes[i].title = titleInput.value;
-                savedNotes[i].text = editor.getText();
-                savedNotes[i].content = editor.getContents();
-                savedNotes[i].star = savedNotes[i].star;
-                savedNotes[i].tag = tagInput.value;
-            }
+    for (let i = 0; i < savedNotes.length; i++) {
+        if (currentNoteId == savedNotes[i].id.toString() ) {
+            savedNotes[i].title = titleInput.value;
+            savedNotes[i].text = editor.getText();
+            savedNotes[i].content = editor.getContents();
+            savedNotes[i].star = savedNotes[i].star;
+            savedNotes[i].tag = tagInput.value;
         }
-            
-           
-        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
-        let nodes = document.querySelectorAll(".preDiv");
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].parentNode.removeChild(nodes[i]);
-        }
-        buildPreviewWind(savedNotes);
-
-    } else {
-        for (let i = 0; i < favList.length; i++) {
-            if (currentNoteId == favList[i].id.toString() ) {
-                favList[i].title = titleInput.value;
-                favList[i].text = editor.getText();
-                favList[i].content = editor.getContents();
-                favList[i].star = savedNotes[i].star;
-                favList[i].tag = tagInput.value;
-            }
-        }
-            
-           
-        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
-        let nodes = document.querySelectorAll(".preDiv");
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].parentNode.removeChild(nodes[i]);
-        }
-        buildPreviewWind(favList);
     }
-    
+            
+           
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        
+    let nodes = document.querySelectorAll(".preDiv");
+    for (let i = 0; i < nodes.length; i++) {
+        nodes[i].parentNode.removeChild(nodes[i]);
+    }
+    buildPreviewWind(savedNotes);  
 }
     
 
@@ -209,15 +218,18 @@ function createNote() {
     const preDiv = noteTemplate(newNote);
     notePreview.prepend(preDiv);
  
+    changeTheme(newNote.theme);
     editorTheme.setAttribute('id', '');
     editor.setText("");
 }
 
 
-//Kontrollerar ändring i Titeln och sparar
-titleInput.addEventListener("input", updateArrRebuild)
+
 //Checks for change in tag-input and saves.
+titleInput.addEventListener("input", updateArrRebuild)
 tagInput.addEventListener("input", updateArrRebuild)
+
+
 
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
@@ -226,8 +238,6 @@ function suggestionList (){
    for (let i = 0; i < removedDup.length; i++) {
         if(!removedDup[i].tag == ""){
            suggestionListContainer.innerHTML += removedDup[i].tag;
-
-
         }
     }
 }
@@ -239,9 +249,8 @@ tagInput.addEventListener("input", suggestionList)
 let autosave;
 editor.on('editor-change', () => {
     clearTimeout(autosave)
-    autosave = setTimeout((eventName) => {
+    autosave = setTimeout( () => {
 
-        //|| currentNoteId == undefined  
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
         if (savedNotes.length < 1 && checkIfTrue == false ) {
             const datum = new Date();
@@ -264,36 +273,21 @@ editor.on('editor-change', () => {
             updateArrRebuild();
         }
     }, 5);
-})
-
-
+});
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
-    // https://benfrain.com/create-print-styles-using-css3-media-queries/
-    // content = getQuillHtml();
-    // let divContents = content;
-     //let openWindow = window.open("", "", "width=700, height=900");
-    // openWindow.document.write('<html>');
-    // openWindow.document.write('<body>');
-    // openWindow.document.write(divContents);
-    // openWindow.document.write('</body></html>');
-    // openWindow.document.close();
-    //openWindow.print()
     window.print();
 })
-
-//*Varje gången sidan refreshas
 
 window.addEventListener('DOMContentLoaded', () => {
     load()
 });
 
 btnAdd.addEventListener("click", () => {
-    removeClassActive();
     createNote();
-
-})
+    removeClassActive();
+});
 
 function noteTemplate(note) {
 
@@ -302,13 +296,14 @@ function noteTemplate(note) {
     const button = document.createElement('button');
     button.classList.add('star');
     button.innerHTML = `<i class="fas fa-star"></i>`;
-    button.addEventListener('click', () => {
+    button.addEventListener('click', () => {  
         favourite(note)
-        
-    })
+    });
+
     if (note.star == true) {
         button.classList.add('starClicked')
-    }   
+    }
+    
     //skapa en container för våran preview samt en eventlister för klick som uppdaterar editor meoch sätt inn knappen som
     //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
     //för då följer inte eventlister med som vi har bindat till knappen
@@ -320,7 +315,6 @@ function noteTemplate(note) {
     <p>${note.text.substr(0, 70)} ...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
-    <p id="pretag">${note.tag}</p>
     </div>
    
     <button class="trash"><i class="fas fa-trash"></i></button>`;
@@ -330,9 +324,9 @@ function noteTemplate(note) {
     preDiv.addEventListener('click', event => {
         if (!event.target.classList.contains("fas")) {
             pushToEditor(event);
-            moveFrame();
-            console.log("Event inside preDiv")
+            
         }
+        
     });
     
     if (currentNoteId == note.id){
@@ -343,74 +337,63 @@ function noteTemplate(note) {
     return preDiv;
 }
 
+
 const favourite = note => {
+    //console.log("Star button clicked")
     note.star = !note.star;
     updateArrRebuild();
 }
+
+
+
 const pushToEditor = event => {
+    //console.log("Inside push to editor")
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
-    if(favMode == false){
+    // if(favMode == false){
+    if(favInput.checked == false) {
         for (let i = 0; i < savedNotes.length; i++) {
             if (thisDivId == savedNotes[i].id.toString()) {
-    
+        
                 editor.setContents(savedNotes[i].content);
                 titleInput.value = savedNotes[i].title;
                 tagInput.value = savedNotes[i].tag;
-                
+                    
                 currentNoteId = thisDivId;
                 currentNote = savedNotes[i];
-    
+        
                 //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
                 changeTheme(savedNotes[i].theme);
             }
         }
-    } else {
-        for (let i = 0; i < favList.length; i++) {
-            if (thisDivId == favList[i].id.toString()) {
-    
-                editor.setContents(favList[i].content);
-                titleInput.value = favList[i].title;
-                tagInput.value = favList[i].tag;
-                
-                currentNoteId = thisDivId;
-                currentNote = favList[i];
-    
-                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-                changeTheme(favList[i].theme);
-            }
-        }
-    }
-    
+    } 
 }
 
-
 favInput.addEventListener("click", () => {
-    favMode = true;
     if(favInput.checked === true){
         filterFav(true)
     } else {
         filterFav(false)
     }
-})
+});
 
 const filterFav = onoff => {
-    
     if (onoff) {
-        //favList = savedNotes.filter(x => x.star)
-        favList = searchNotes('', x => x.star)
+        favList = savedNotes.filter(x => x.star)
+        //favList = searchNotes('', x => x.star)
     } else {
         favList = savedNotes;
     }
     notePreview.innerHTML = "";
-    buildPreviewWind(favList)
+    buildPreviewWind(favList);
 }
+
 
 notePreview.addEventListener('click', e => {
     if (e.target.classList.contains('fa-trash')) {
         // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
-        answer = confirm("Do you want to delete?")
+        answer = confirm("Are you sure you want to delete this note?")
         if(answer == true){
             checkIfTrue = true;
             removeNote(id)
@@ -429,29 +412,51 @@ notePreview.addEventListener('click', e => {
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     savedNotes.splice(index, 1)
-    editor.setText("");
-    titleInput.value = "New Note";
+    if(currentNoteId == id){
+        editorTheme.setAttribute('id', '');
+        editor.setText("");
+        titleInput.value = "";
+    }
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 }
 
 
 
-// ----------------------------------------------------------
-// Sök funktion
+/***************************************************************************/
+/* ================================= SÖK ================================= */ 
+/***************************************************************************/
 
-function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase()) }) {
+function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase())}) {
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
 
+//Här skapar vi en variabel för sökrutan
 const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', e => {
-    
-    let searchedWord = e.target.value;
-    notePreview.innerHTML = "";
-    if (searchedWord.length >= 1) {
-        let foundNotes = searchNotes(searchedWord);
 
+//Nedan körs när användaren skriver något i sökfältet (input)
+searchInput.addEventListener('input', e => {
+
+    //Gör användarens sökterm till variabeln searchedWord
+    let searchedWord = e.target.value;
+
+    //Trimma mellanslag i början och slutet av inputen
+    searchedWord = searchedWord.trim();
+
+    //Tömmer hela preview-fönstret
+    notePreview.innerHTML = "";
+
+    //Om sökrutan innehåller 1 eller fler bokstäver körs denna if-kille
+    if (searchedWord.length >= 1) {
+        //searchNotes tar in söktermen som argument och gör den + title + text till lowerCase och söker igenom alla notes. 
+        //Den returnerar varje obj i savedNotes som matchar sökningen
+
+        //Här körs searchNotes med sökordet som arg och resultatet o blir variabeln foundNotes. foundNotes är en array med de filtrerade notesen som obj inuti
+        let foundNotes = searchNotes(searchedWord);
+       
+       
+        //map låter dig köra önskad funktion på alla element i en array och returnerar sedan en ny array med "resultatet"
+        //Ju lägre siffra desto längre upp i previewfönstret hamnar noten
         const rankedSearch = foundNotes.map(noteObj => {
 
             let points = 0;
@@ -459,23 +464,23 @@ searchInput.addEventListener('input', e => {
             if (noteObj.text.includes(searchedWord)) {
                 points += 4;
             }
-            if (noteObj.text.startsWith(searchedWord)) {
+            else if (noteObj.text.startsWith(searchedWord)) {
                 points += 3;
             }
-            if (noteObj.title.includes(searchedWord)) {
+            else if (noteObj.title.includes(searchedWord)) {
                 points += 2;
             }
-            if (noteObj.title.startsWith(searchedWord)) {
+            else if (noteObj.title.startsWith(searchedWord)) {
                 points += 1;
             }
-            console.log(noteObj, points);
-            return {...noteObj, points};
-
+            return { ...noteObj, points };
         }).sort((a, b) => b.points - a.points);
 
+        //Här är rankedSearch en uppdaterad array med alla önskade note i sig som obj
+        //Här bygger vi upp previewfönstret med de notes som matchat sökningen
         buildPreviewWind(rankedSearch);
     } else {
-        // anv har tömt sökrutan
+        // Om sökrutans (searchInput) innehålls length är mindre än 1 så bygger vi upp previewfönstret med alla notes (savedNotes) 
         buildPreviewWind(savedNotes)
     }
 })
@@ -497,7 +502,7 @@ function templateFunc() {
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) {
+window.addEventListener('click', event =>  {
     if (!event.target.matches('.templates')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -508,8 +513,11 @@ window.onclick = function (event) {
             }
         }
     }
-}
+})
 //--------------------Event listeners--------------------
 btn1.addEventListener("click", templateFunc);
 
 /* ====================TEMPLATES DROP DOWN end====================*/
+
+
+

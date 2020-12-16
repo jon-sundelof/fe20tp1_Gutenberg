@@ -63,7 +63,7 @@ function themesFunc() {
 }
 
 // Close the dropdown menu if user clicks outside of it
-window.onclick = function (event) {
+window.addEventListener("click", event => {
     if (!event.target.matches('.themes')) {
         let dropdowns = document.getElementsByClassName("dropup-content");
         let i;
@@ -74,7 +74,7 @@ window.onclick = function (event) {
             }
         }
     }
-}
+})
 ///////////////////////////////////////////////////////////////////////
 let tagBtn = document.querySelector(".tag-btn");
 let tagDivDrop = document.querySelector('.tagDown-content');
@@ -179,3 +179,29 @@ window.onclick = function (event) {
  })
 
  /******************************************************************/
+
+
+
+ /*********************** Settings-Drop-Up start ********************/
+
+const settingsBtn = document.querySelector('.settings')
+ settingsBtn.addEventListener("click", settingsFunc);
+
+ function settingsFunc() {
+    document.getElementById("myDropuptwo").classList.toggle("settings-show");
+}
+
+// Close the dropdown menu if user clicks outside of it
+window.addEventListener("click", event => {
+    if (!event.target.matches('.settings')) {
+        let dropdowns = document.getElementsByClassName("dropup-content-two");
+        let i;
+        for (i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('settings-show')) {
+                openDropdown.classList.remove('settings-show');
+            }
+        }
+    }
+})
+///////////////////////////////////////////////////////////////////////
