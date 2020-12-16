@@ -22,22 +22,26 @@ body{
 
 }
 main{
+    background-color: white;
     width: 100%;
     height: 100vh;
     z-index: 10;
+
    
 }
 .back{
     display: none;
-}
-
-main > button{
     outline: none;
     background: none;
     border: none;
     font-size: 40px;
-    float: right;
+    float: left;
+    padding: 5px;
 }
+
+/* main > button{
+
+} */
 
 button {
     outline: none;
@@ -54,7 +58,7 @@ aside{
     width: 30%;
     max-width: 350px;
     min-width: 250px;
-    padding: 40px 0;
+    padding: 10px 0;
     position: relative;
     z-index: 2;
     border-right: 1px solid rgba(0, 0, 0, 0.301);
@@ -495,17 +499,21 @@ nav i{
 }
 
 
-#center-all{
-  margin: 10% 15%;
+.center-all{
+    display: grid;
+    place-items: center;
+    width: 100%;
+    /* height: 100%; */
+    /* margin-top: 150px; */
 }
 
-#title-input{
+.title-input{
+    margin-top: 50px;
     width: 100%;
-    top: 0;
+    /* height: 75px; */
     border:none;
     font-size: 30px;
-    
-    padding: 15px 30px;
+    /* padding-top: 50px; */
     color: #333;
     outline: none;
     border:none;
@@ -513,33 +521,57 @@ nav i{
     z-index: 1;
 }
 
+
 #editor {
     position: relative;
     color: #333;
     font-size: 20px;
-    width:100vh;
+    /* width:100vh; */
     border:none;
     word-break: normal;
-    padding: 15px 30px;
+    height: 75vh;
+    width: 100%;
 }
-.ql-editor {
-    max-width: 620px;
-    padding: 0;
-    /* height: 710px; */
-    height: 70vh;
-    /* overflow-y: auto; */
 
+.ql-editor {
+    width: 100%;
+    padding: 20px 30px !important;
+    /* height: 710px; */
+    height: 98vh;
+    /* overflow-y: auto; */
+}
+.title-input{
+    padding: 20px 30px;
 }
 
 .ql-tooltip{
     z-index: 100 !important;
 }
+
+/* ------Scroll på editorn -START */
 .ql-editor.ql-blank::before {
-    left:30px;
+    padding: 0px 15px;
 } 
-.ql-container{
-    height: 85%;
+
+.ql-editor::-webkit-scrollbar {
+    width: 10px;
 }
+
+.ql-editor::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.144); 
+    border-radius: 10px;
+}
+
+.ql-editor::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--color3grey);
+}
+/* ------Scroll på editorn -SLUT */
+
+
+/* .ql-container{
+    height: 85%;
+} */
 
 
 

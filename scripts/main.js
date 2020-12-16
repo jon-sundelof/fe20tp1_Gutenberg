@@ -57,6 +57,22 @@ const innerText = document.querySelector(".ql-editor");
 const favInput = document.querySelector(".checkbox-fav")
 const els = document.getElementsByClassName('preDiv active');
 
+
+const mediaQuery600 = window.matchMedia('(max-width: 600px)');
+mediaQuery600.addListener(handle600px);
+
+function handle600px(e){
+    if(e.matches){
+        preDiv.addEventListener("click", ()=>{
+            console.log(e)
+            moveFrame
+        })
+    
+        }
+
+}
+
+
 let checkIfTrue = false;
 
 //Variabels for CurrentNoteId and currentNote
@@ -271,7 +287,6 @@ function noteTemplate(note) {
     preDiv.addEventListener('click', event => {
         if (!event.target.classList.contains("fas")) {
             pushToEditor(event);
-            moveFrame();
         }
     });
     
@@ -389,7 +404,9 @@ searchInput.addEventListener('input', e => {
             if (noteObj.title.startsWith(searchedWord)) {
                 points += 1;
             }
+            console.log(noteObj, points);
             return {...noteObj, points};
+
         }).sort((a, b) => b.points - a.points);
 
         buildPreviewWind(rankedSearch);

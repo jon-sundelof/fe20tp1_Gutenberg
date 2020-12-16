@@ -7,8 +7,11 @@
     .hamcontainer, .hamicon-cont, .closebtn{
         display: none;
     }
+    #editor {
+        word-break: normal;
+        width: 100%;
 
-
+    }
 
 }
 
@@ -18,16 +21,24 @@
         width:0px;
         position: absolute;
         transition: 0.3s;
-        z-index: 500;
-        left: -50px;
+        z-index: -330;
+        /* right: -100vw; */
+        overflow: hidden;
         
+    }
+    aside{
+        width:30vw;
+        height: 100vh;
+    }
+    main{
+        width: 70vw;
     }
     
     .hamicon-cont{
         position: fixed;
         top: 10px;
-        left: 10px;
-        z-index: 30;
+        right: 10px;
+        z-index: 100;
         width: 40px;
         height: 40px;
         
@@ -40,7 +51,7 @@
         justify-content: space-between;
         align-content: center;
         flex-flow: row wrap;        
-        writing-mode: vertical-lr; 
+        writing-mode: vertical-rl; 
         cursor: pointer;
     }
     
@@ -77,9 +88,17 @@
     aside{
         z-index: 20;
     }
-
+    
     #tag-input {
         margin-left: 4.6% !important;
+    }
+    .ql-editor {
+        max-width: 100% !important;
+        word-break: normal;
+    }
+    main{
+        overflow: hidden;
+        /* max-width: 70vh !important; */
     }
 
 }
@@ -93,11 +112,11 @@
     }
     aside{
         min-width:100vw;
-        height: auto;
+        height: 100vh;
     }
     main{
-        min-width: 100%;
-        height: 90%;
+        min-width: 100vw;
+        height: 100%;
         /* padding-top: 50px; */
     }
     .back{
@@ -111,6 +130,15 @@
         bottom: 2%;
         margin-left: 8% !important;
     }
+    .title-input{
+        margin-top: 0px;
+    }
+    #editor {
+        /* width: 100vw; */
+        word-break: normal;
+
+    }
+        
 
 }
 
