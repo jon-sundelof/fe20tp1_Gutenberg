@@ -16,7 +16,7 @@ let options = {
         toolbar: toolbarOptions,
     },
     scrollingContainer: '#scrolling-container',
-    placeholder: '     Compose an epic story...', //placeholder text 
+    placeholder: 'Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
 }
@@ -48,6 +48,8 @@ const formalBtn = document.querySelector('.theme-formal');
 const playfulBtn = document.querySelector('.theme-playful');
 const defaultBtn = document.querySelector('.theme-default');
 const xmasBtn = document.querySelector('.theme-xmas');
+//Rensa LC-knapp
+const clearLC = document.querySelector(".clear-lc");
 
 const tagInput = document.querySelector('#tag-input');
 const titleInput = document.querySelector("#title-input");
@@ -58,17 +60,17 @@ const favInputChecked = document.querySelector("input:checked")
 
 
 const mediaQuery600 = window.matchMedia('(max-width: 600px)');
-mediaQuery600.addListener(handle600px);
+// mediaQuery600.addEventListener(handle600px);
 
-function handle600px(e){
-    if(e.matches){
-        preDiv.addEventListener("click", ()=>{
-            moveFrame()
-        })
+// function handle600px(e){
+//     if(e.matches){
+//         preDiv.addEventListener("click", ()=>{
+//             moveFrame()
+//         })
     
-        }
+//         }
 
-}
+// }
 
 const els = document.getElementsByClassName('preDiv active');
 
@@ -95,7 +97,7 @@ function load(){
     if(savedNotes.length > 0){
         editor.setContents(savedNotes[savedNotes.length -1].content);
         titleInput.value = savedNotes[savedNotes.length -1].title;
-      /*   tagInput.value = savedNotes[savedNotes.length -1].tag; */
+        tagInput.value = savedNotes[savedNotes.length -1].tag;
         
         currentNoteId = savedNotes[savedNotes.length -1 ].id;
         currentNote = savedNotes[savedNotes.length -1];
@@ -105,6 +107,30 @@ function load(){
     }
 
 }
+
+///////////////COLOR////////////////////
+const themes = {
+    dark: {
+        '--primarycolor:':'#222831',
+        
+    },
+    light: {
+        '--primarycolor:':'#ffffff',
+       
+    },
+
+    xmas: {
+        '--primarycolor:':'#f00a0a',
+    },
+  };
+  [...document.querySelectorAll('.mode')].forEach(el => {
+      el.addEventListener('click', () => {
+          const theme = themes[el.dataset.theme];
+          for (var variable in theme) {
+              document.documentElement.style.setProperty(variable, theme[variable]);
+          };
+      });
+  });
 
 /************************/
 //**** NOTE KLASSEN *****/
@@ -126,6 +152,13 @@ class Note {
 /* ============================ FUNCTIONS ================================ */ 
 /***************************************************************************/
 
+/* Tillfällig clear LC */
+clearLC.addEventListener('click', () => {
+    localStorage.clear();
+    document.location.reload();
+}) 
+    
+/****************************************************************************/
 
 /* Removes the "active" class from preDiv when called*/
 function removeClassActive() {
@@ -151,7 +184,7 @@ function updateArrRebuild() {
             savedNotes[i].text = editor.getText();
             savedNotes[i].content = editor.getContents();
             savedNotes[i].star = savedNotes[i].star;
-            /* savedNotes[i].tag = tagInput.value; */
+            savedNotes[i].tag = tagInput.value;
         }
     }
             
@@ -159,7 +192,7 @@ function updateArrRebuild() {
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
         
     let nodes = document.querySelectorAll(".preDiv");
-    for (var i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
     buildPreviewWind(savedNotes);  
@@ -174,8 +207,8 @@ function createNote() {
     const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
     titleInput.value = "New Note";
-    /* tagInput.value = ""; */
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0/* , tagInput.value */);
+    tagInput.value = "";
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0, tagInput.value);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
@@ -191,10 +224,12 @@ function createNote() {
 }
 
 
-//Kontrollerar ändring i Titeln och sparar
-titleInput.addEventListener("input", updateArrRebuild)
+
 //Checks for change in tag-input and saves.
-/* tagInput.addEventListener("input", updateArrRebuild) */
+titleInput.addEventListener("input", updateArrRebuild)
+tagInput.addEventListener("input", updateArrRebuild)
+
+
 
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
@@ -206,7 +241,7 @@ function suggestionList (){
         }
     }
 }
-/* tagInput.addEventListener("input", suggestionList) */
+tagInput.addEventListener("input", suggestionList)
 
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
@@ -214,9 +249,8 @@ function suggestionList (){
 let autosave;
 editor.on('editor-change', () => {
     clearTimeout(autosave)
-    autosave = setTimeout((eventName) => {
+    autosave = setTimeout( () => {
 
-        //|| currentNoteId == undefined  
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
         if (savedNotes.length < 1 && checkIfTrue == false ) {
             const datum = new Date();
@@ -239,27 +273,21 @@ editor.on('editor-change', () => {
             updateArrRebuild();
         }
     }, 5);
-})
-
-
+});
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
-
     window.print();
 })
-
-//*Varje gången sidan refreshas
 
 window.addEventListener('DOMContentLoaded', () => {
     load()
 });
 
 btnAdd.addEventListener("click", () => {
-    removeClassActive();
     createNote();
-
-})
+    removeClassActive();
+});
 
 function noteTemplate(note) {
 
@@ -270,10 +298,12 @@ function noteTemplate(note) {
     button.innerHTML = `<i class="fas fa-star"></i>`;
     button.addEventListener('click', () => {  
         favourite(note)
-    })
+    });
+
     if (note.star == true) {
         button.classList.add('starClicked')
-    }   
+    }
+    
     //skapa en container för våran preview samt en eventlister för klick som uppdaterar editor meoch sätt inn knappen som
     //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
     //för då följer inte eventlister med som vi har bindat till knappen
@@ -294,12 +324,9 @@ function noteTemplate(note) {
     preDiv.addEventListener('click', event => {
         if (!event.target.classList.contains("fas")) {
             pushToEditor(event);
-            moveFrame();
             
         }
-        if(favInput.checked === true){
-            filterFav(true);
-        }
+        
     });
     
     if (currentNoteId == note.id){
@@ -324,34 +351,33 @@ const pushToEditor = event => {
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
     // if(favMode == false){
-    for (let i = 0; i < savedNotes.length; i++) {
-        if (thisDivId == savedNotes[i].id.toString()) {
-    
-            editor.setContents(savedNotes[i].content);
-            titleInput.value = savedNotes[i].title;
-            //tagInput.value = savedNotes[i].tag;
-                
-            currentNoteId = thisDivId;
-            currentNote = savedNotes[i];
-    
-            //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-            changeTheme(savedNotes[i].theme);
+    if(favInput.checked == false) {
+        for (let i = 0; i < savedNotes.length; i++) {
+            if (thisDivId == savedNotes[i].id.toString()) {
+        
+                editor.setContents(savedNotes[i].content);
+                titleInput.value = savedNotes[i].title;
+                tagInput.value = savedNotes[i].tag;
+                    
+                currentNoteId = thisDivId;
+                currentNote = savedNotes[i];
+        
+                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+                changeTheme(savedNotes[i].theme);
+            }
         }
-    }
-    
+    } 
 }
 
 favInput.addEventListener("click", () => {
-    //console.log("Switch fav on/off")
     if(favInput.checked === true){
         filterFav(true)
     } else {
         filterFav(false)
     }
-})
+});
 
 const filterFav = onoff => {
-    
     if (onoff) {
         favList = savedNotes.filter(x => x.star)
         //favList = searchNotes('', x => x.star)
@@ -359,12 +385,11 @@ const filterFav = onoff => {
         favList = savedNotes;
     }
     notePreview.innerHTML = "";
-    buildPreviewWind(favList)
+    buildPreviewWind(favList);
 }
 
 
 notePreview.addEventListener('click', e => {
-    console.log("Inside notePreview")
     if (e.target.classList.contains('fa-trash')) {
         // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
@@ -397,10 +422,11 @@ const removeNote = id => {
 
 
 
-// ----------------------------------------------------------
-// Sök funktion
+/***************************************************************************/
+/* ================================= SÖK ================================= */ 
+/***************************************************************************/
 
-function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase())}) {
+function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase())}) {
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
@@ -492,3 +518,6 @@ window.addEventListener('click', event =>  {
 btn1.addEventListener("click", templateFunc);
 
 /* ====================TEMPLATES DROP DOWN end====================*/
+
+
+

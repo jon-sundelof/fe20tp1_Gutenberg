@@ -22,13 +22,14 @@
     <!-- Tiny MCE Script -->
     <!-- <script src='https://cloud.tinymce.com/stable/tinymce.min.js' defer></script> -->
 
-
+    <!-- SCRIPTS -->
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/themes.js" defer></script>
     <script src="./scripts/firstvisit.js" defer></script>
     <script src="./scripts/templates.js" defer></script>
     <script src="./scripts/media.js" defer></script>
-    <!-- <script src="./scripts/search.js" defer></script> -->
+    
+    <!-- STYLES -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="media.css">
     <link href="print.css" rel="stylesheet" type="text/css" media="print">
@@ -50,6 +51,7 @@
 
 
     <nav>
+        <div>
         <!-- under 100px @media -->
         <a id="closebtn" class="closebtn">&times;</a>
         <!-- under 100px @media-slut -->
@@ -72,21 +74,37 @@
                 <button class="theme-default">Default</button>
                 <button class="theme-formal">Formal</button>
                 <button class="theme-playful">Playful</button>
-                <!-- <button class="theme-xmas">X-MAS</button> -->
             </div>
         </div>
-        <!-- 
+        
         <div class="tag-down">
             <button class="tag-btn"><i id="nav-tag" class="fas fa-tag"></i>Tags</button>
                 <div id="myTagDown" class="tagDown-content">   
             </div>  
         </div>
- -->
+
         <button class="print"><i class="fas fa-print"></i>Print</button>
         <button class="info"><i class="fas fa-info"></i>Information</button>
+            
+    </div>
+    <div>
+        <div class="dropuptwo">
+            <div id="myDropuptwo" class="dropup-content-two">
+                <div class="settings-div">Quire Themes</div>
+                <hr></hr>
+                <button class="mode" data-theme = "xmas">X-MAS</button>
+                <button class="mode" data-theme = "dark">Dark Mode</button>
+                <button class="mode" data-theme = "light">Light Mode</button>
+            </div>
+            <button class="settings"><i class="fas fa-cogs"></i>Settings</button>
+        </div>
+
+        <button class="statistics"><i class="fas fa-chart-bar"></i>Statistics</button>
+        <!-- Tillfällig knapp --> 
+        <button class="clear-lc">Clear Local Storage</button>
+    </div>
 
     </nav>
-
 
     <aside>
 
@@ -113,13 +131,7 @@
         <button class="add"><i class="fas fa-plus"></i>New note</button>
 
     </aside>
-    <!-- 
-    <div id="....">
-        <div>
-            content to print
-        </div><a href="#" onclick="printInfo(this)">Print</a>
-    </div>
- -->
+    
     <main>
         <div>
             <div id="first-visit-container">
@@ -139,7 +151,7 @@
         <!-- under 1000px @media -->
         <button class="back">&#8592;</button>
 
-        <!--     <div class="tag-container">
+        <div class="tag-container">
             <form>
                 <i class="fas fa-tag"></i>
             <input placeholder="Tag Name..." spellcheck="false" list="tag-suggestion-datalist" id="tag-input" maxlength = "13">
@@ -148,7 +160,7 @@
               </datalist>
 
             </div>
-        </form> -->
+        </form>
 
 
 

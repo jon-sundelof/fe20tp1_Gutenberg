@@ -1,7 +1,7 @@
 const xbtn = document.getElementById("closebtn").addEventListener("click", closeNav);
 // const hamLink = document.getElementById("ham-bg-content").addEventListener("click", closeNav);
 const hamMenu = document.getElementById("hamicon").addEventListener("click", openNav);
-const addBtn = document.querySelector(".add").addEventListener("click", moveFrame)
+//const addBtn = document.querySelector(".add").addEventListener("click", moveFrame)
 const backBtn = document.querySelector(".back").addEventListener("click", moveBack)
 const navStyle = document.querySelector("nav");
 const mediaPreDiv = document.querySelector(".preDiv");
@@ -10,14 +10,10 @@ const mediaPreDiv = document.querySelector(".preDiv");
 
 
 function openNav() {
-    // if (bodyStyly.style.left == "-100%") {
-        document.querySelector("nav").style.width = "350px";
-        document.querySelector("nav").style.right = "0%";
-        document.querySelector("nav").style.zIndex = "500";
-        document.querySelector("nav").style.display = "flex";
-
-        
-    // }
+    document.querySelector("nav").style.width = "350px";
+    document.querySelector("nav").style.right = "0%";
+    document.querySelector("nav").style.zIndex = "500";
+    document.querySelector("nav").style.display = "flex";
 }
 
 function closeNav() {
@@ -29,9 +25,6 @@ function closeNav() {
     document.querySelector("nav").style.zIndex = "-200";
 
     // document.querySelector("nav").style.cssText = "z-index: -10;";
-
-
-
 }
 
 
@@ -68,7 +61,7 @@ function handle1000px(e) {
 // }
 
 
-mediaQuery.addListener(handle1000px);
+//mediaQuery.addListener(handle1000px);
 // mediaQuery600.addListener(handle600px);
 
 // let x = window.matchMedia("(min-width: 1001px)")
@@ -143,11 +136,11 @@ mediaQuery.addListener(handle1000px);
 // mediaQuery.addListener(handleTabletChange);
 
 
-function moveFrame() {
-    document.querySelector("main").style.position = "absolute";
-    // document.querySelector("main").style.left = "0";
-    document.querySelector("main").style.zIndex = "50";
-}
+// function moveFrame() {
+//     document.querySelector("main").style.position = "absolute";
+//     // document.querySelector("main").style.left = "0";
+//     document.querySelector("main").style.zIndex = "50";
+// }
 function moveBack() {
 
     document.querySelector("aside").style.position = "absolute";
