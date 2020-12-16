@@ -2,11 +2,11 @@
 
 ## Created by
 
-- Karl Gunnarsson
-- Jon Sundelöf
-- Jesper Pettersson
-- Anton L-A
-- Onur Gürsoy
+- Karl Gunnarsson (<https://github.com/KG416>)
+- Jon Sundelöf (<https://github.com/jon-sundelof>)
+- Jesper Pettersson (<https://github.com/JesperKYH>)
+- Anton L-A (<https://github.com/xamnotna>)
+- Onur Gürsoy (<https://github.com/OGurso>)
 
 ### Trello
 
