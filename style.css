@@ -274,6 +274,7 @@ p.pretime{
 nav{
     background-color: var(--color4black) !important;
     width: 350px;
+    /* min-width: 250px; */
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -327,8 +328,8 @@ nav{
 }
 .add:hover{
     cursor: pointer;
-    width: 85%;
-    height: 45px;
+    width: 82%;
+    height: 42px;
 }
 nav button, .templates{
     height: 40px;
@@ -491,17 +492,19 @@ nav i{
     font-weight: 800;
     font-size: 2rem;
     border-radius: 60px;
-    width: 40%;
+    /* width: 40%; */
     padding: 1% 6%;
-    transition: width 0.8s;
+    transition: 0.2s;
 }
 
 #first-visit-content > button:hover{
     cursor: pointer;
-    background-color: #ff6f0093;
-    width: 60%;
-    
-    
+    background-color: var(--color3grey);
+    /* width: 81%; */
+    /* height: 1.8em; */
+
+   /*  background-color: #ff6f0093;
+    width: 60%; */
 }
 
 /* End of segment for styling first-time visit */
@@ -664,8 +667,23 @@ nav i{
 
 #playful {
     font-family: 'Comic Neue';
-    
+    font-weight: bold;
+    font-size: 1.4em;
 }
+
+#playful h1{
+    color: rgba(255, 0, 255, 0.507);
+}
+#playful p{
+    color: rgba(255, 0, 255, 0.507);
+}
+#playful h2 {
+    color: rgba(0, 183, 255, 0.507);
+}
+#playful h3 {
+    color: rgba(9, 255, 0, 0.507);
+}
+
 
 
 /* ====================TAG-DropDown start====================*/

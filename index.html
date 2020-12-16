@@ -14,15 +14,15 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet">
+        rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a71ac1579c.js" crossorigin="anonymous"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js" defer></script>
     <!-- Tiny MCE Script -->
     <!-- <script src='https://cloud.tinymce.com/stable/tinymce.min.js' defer></script> -->
-    
-    
+
+
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/themes.js" defer></script>
     <script src="./scripts/firstvisit.js" defer></script>
@@ -56,12 +56,13 @@
 
 
         <img src="pictures/logo-feather2.png" alt="logo" class="logo">
-        
+
         <div class="dropdown">
             <button class="templates"><i class="far fa-file-alt"></i>Templates</button>
             <div id="myDropdown" class="dropdown-content">
-                <button class="template1">Birthday Invitation</button>
-                <button class="template2">Short Story</button>
+                <button value=0 class="template1">Birthday Invitation</button>
+                <button value=1 class="template2">Short Story</button>
+                <button value=2 class="template3">Poem</button>
             </div>
         </div>
 
@@ -72,15 +73,15 @@
                 <button class="theme-formal">Formal</button>
                 <button class="theme-playful">Playful</button>
                 <!-- <button class="theme-xmas">X-MAS</button> -->
-            </div>  
+            </div>
         </div>
-
+        <!-- 
         <div class="tag-down">
             <button class="tag-btn"><i id="nav-tag" class="fas fa-tag"></i>Tags</button>
                 <div id="myTagDown" class="tagDown-content">   
             </div>  
         </div>
-
+ -->
         <button class="print"><i class="fas fa-print"></i>Print</button>
         <button class="info"><i class="fas fa-info"></i>Information</button>
 
@@ -112,26 +113,25 @@
         <button class="add"><i class="fas fa-plus"></i>New note</button>
 
     </aside>
-
-    <!-- <div id="....">
+    <!-- 
+    <div id="....">
         <div>
             content to print
         </div><a href="#" onclick="printInfo(this)">Print</a>
-    </div> -->
-
+    </div>
+ -->
     <main>
         <div>
             <div id="first-visit-container">
                 <div id="first-visit-content">
                     <h1>Welcome to Quire!</h1>
-                    <p>We are glad to have you here at Quire! The best and most known note app across the globe. You
-                        have
-                        just opended the doors to narnia of note apps. Here, <span
-                            class="first-visit-span">EVERYTHING</span> is posible. Now, let's take you for
-                        spin since this is the first time you visit us.Lay back, buckle up and let's enter the world of
-                        <span class="first-visit-span">Quire!</span></p>
+                    <p>We are glad to have you here at Quire! The best and most known note app across the globe.<span
+                            class="first-visit-span">Create</span>
+                        your first note by pressing the orange button "New note". Expierment with themes and
+                        templates to create your own unique notes. Now, let's buckle up and enter the world of <span
+                            class="first-visit-span">Quire!</span></p>
                     <img src="pictures/notebook-first-time.png" alt="note-picture">
-                    <button>Let's Get Started!</button>
+                    <button class="get-started-btn">Let's Get Started!</button>
                 </div>
             </div>
         </div>
@@ -139,7 +139,7 @@
         <!-- under 1000px @media -->
         <button class="back">&#8592;</button>
 
-        <div class="tag-container">
+        <!--     <div class="tag-container">
             <form>
                 <i class="fas fa-tag"></i>
             <input placeholder="Tag Name..." spellcheck="false" list="tag-suggestion-datalist" id="tag-input" maxlength = "13">
@@ -148,7 +148,7 @@
               </datalist>
 
             </div>
-        </form>
+        </form> -->
 
 
 
@@ -160,7 +160,6 @@
             
             <div id="toolbar">
             </div>
-        </div>
         </div>
     </main>
 

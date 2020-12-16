@@ -8,6 +8,7 @@ let toolbarOptions = [
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     [{ 'header': [1, 2, 3, false] }],
+    ['image'],
 ];
 
 let options = {
@@ -42,8 +43,6 @@ const note = document.querySelector("#editor")
 const btnAdd = document.querySelector(".add");
 const btnTemplate = document.querySelector(".template");
 const btnPrint = document.querySelector(".print");
-const template1Btn = document.querySelector(".template1");
-const template2Btn = document.querySelector(".template2");
 const themesBtn = document.querySelector('.themes');
 const formalBtn = document.querySelector('.theme-formal');
 const playfulBtn = document.querySelector('.theme-playful');
@@ -55,7 +54,7 @@ const titleInput = document.querySelector("#title-input");
 const innerText = document.querySelector(".ql-editor");
 
 const favInput = document.querySelector(".checkbox-fav")
-const els = document.getElementsByClassName('preDiv active');
+const favInputChecked = document.querySelector("input:checked")
 
 
 const mediaQuery600 = window.matchMedia('(max-width: 600px)');
@@ -64,14 +63,14 @@ mediaQuery600.addListener(handle600px);
 function handle600px(e){
     if(e.matches){
         preDiv.addEventListener("click", ()=>{
-            console.log(e)
-            moveFrame
+            moveFrame()
         })
     
         }
 
 }
 
+const els = document.getElementsByClassName('preDiv active');
 
 let checkIfTrue = false;
 
@@ -96,7 +95,7 @@ function load(){
     if(savedNotes.length > 0){
         editor.setContents(savedNotes[savedNotes.length -1].content);
         titleInput.value = savedNotes[savedNotes.length -1].title;
-        tagInput.value = savedNotes[savedNotes.length -1].tag;
+      /*   tagInput.value = savedNotes[savedNotes.length -1].tag; */
         
         currentNoteId = savedNotes[savedNotes.length -1 ].id;
         currentNote = savedNotes[savedNotes.length -1];
@@ -146,47 +145,24 @@ function buildPreviewWind(renderedList) {
 /*****************************************************/
 function updateArrRebuild() {
     
-    if(favMode == false){
-        for (let i = 0; i < savedNotes.length; i++) {
-            if (currentNoteId == savedNotes[i].id.toString() ) {
-                savedNotes[i].title = titleInput.value;
-                savedNotes[i].text = editor.getText();
-                savedNotes[i].content = editor.getContents();
-                savedNotes[i].star = savedNotes[i].star;
-                savedNotes[i].tag = tagInput.value;
-            }
+    for (let i = 0; i < savedNotes.length; i++) {
+        if (currentNoteId == savedNotes[i].id.toString() ) {
+            savedNotes[i].title = titleInput.value;
+            savedNotes[i].text = editor.getText();
+            savedNotes[i].content = editor.getContents();
+            savedNotes[i].star = savedNotes[i].star;
+            /* savedNotes[i].tag = tagInput.value; */
         }
-            
-           
-        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
-        let nodes = document.querySelectorAll(".preDiv");
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].parentNode.removeChild(nodes[i]);
-        }
-        buildPreviewWind(savedNotes);
-
-    } else {
-        for (let i = 0; i < favList.length; i++) {
-            if (currentNoteId == favList[i].id.toString() ) {
-                favList[i].title = titleInput.value;
-                favList[i].text = editor.getText();
-                favList[i].content = editor.getContents();
-                favList[i].star = savedNotes[i].star;
-                favList[i].tag = tagInput.value;
-            }
-        }
-            
-           
-        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
-        let nodes = document.querySelectorAll(".preDiv");
-        for (var i = 0; i < nodes.length; i++) {
-            nodes[i].parentNode.removeChild(nodes[i]);
-        }
-        buildPreviewWind(favList);
     }
-    
+            
+           
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        
+    let nodes = document.querySelectorAll(".preDiv");
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].parentNode.removeChild(nodes[i]);
+    }
+    buildPreviewWind(savedNotes);  
 }
     
 
@@ -198,8 +174,8 @@ function createNote() {
     const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
     titleInput.value = "New Note";
-    tagInput.value = "";
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0, tagInput.value);
+    /* tagInput.value = ""; */
+    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0/* , tagInput.value */);
     savedNotes.push(newNote);
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
@@ -209,6 +185,7 @@ function createNote() {
     const preDiv = noteTemplate(newNote);
     notePreview.prepend(preDiv);
  
+    changeTheme(newNote.theme);
     editorTheme.setAttribute('id', '');
     editor.setText("");
 }
@@ -217,7 +194,7 @@ function createNote() {
 //Kontrollerar ändring i Titeln och sparar
 titleInput.addEventListener("input", updateArrRebuild)
 //Checks for change in tag-input and saves.
-tagInput.addEventListener("input", updateArrRebuild)
+/* tagInput.addEventListener("input", updateArrRebuild) */
 
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
@@ -226,12 +203,10 @@ function suggestionList (){
    for (let i = 0; i < removedDup.length; i++) {
         if(!removedDup[i].tag == ""){
            suggestionListContainer.innerHTML += removedDup[i].tag;
-
-
         }
     }
 }
-tagInput.addEventListener("input", suggestionList)
+/* tagInput.addEventListener("input", suggestionList) */
 
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
@@ -270,16 +245,7 @@ editor.on('editor-change', () => {
 
 //*PRINT
 btnPrint.addEventListener("click", () => {
-    // https://benfrain.com/create-print-styles-using-css3-media-queries/
-    // content = getQuillHtml();
-    // let divContents = content;
-     //let openWindow = window.open("", "", "width=700, height=900");
-    // openWindow.document.write('<html>');
-    // openWindow.document.write('<body>');
-    // openWindow.document.write(divContents);
-    // openWindow.document.write('</body></html>');
-    // openWindow.document.close();
-    //openWindow.print()
+
     window.print();
 })
 
@@ -302,9 +268,8 @@ function noteTemplate(note) {
     const button = document.createElement('button');
     button.classList.add('star');
     button.innerHTML = `<i class="fas fa-star"></i>`;
-    button.addEventListener('click', () => {
+    button.addEventListener('click', () => {  
         favourite(note)
-        
     })
     if (note.star == true) {
         button.classList.add('starClicked')
@@ -320,7 +285,6 @@ function noteTemplate(note) {
     <p>${note.text.substr(0, 70)} ...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
-    <p id="pretag">${note.tag}</p>
     </div>
    
     <button class="trash"><i class="fas fa-trash"></i></button>`;
@@ -331,7 +295,10 @@ function noteTemplate(note) {
         if (!event.target.classList.contains("fas")) {
             pushToEditor(event);
             moveFrame();
-            console.log("Event inside preDiv")
+            
+        }
+        if(favInput.checked === true){
+            filterFav(true);
         }
     });
     
@@ -343,50 +310,39 @@ function noteTemplate(note) {
     return preDiv;
 }
 
+
 const favourite = note => {
+    //console.log("Star button clicked")
     note.star = !note.star;
     updateArrRebuild();
 }
+
+
+
 const pushToEditor = event => {
+    //console.log("Inside push to editor")
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
-    if(favMode == false){
-        for (let i = 0; i < savedNotes.length; i++) {
-            if (thisDivId == savedNotes[i].id.toString()) {
+    // if(favMode == false){
+    for (let i = 0; i < savedNotes.length; i++) {
+        if (thisDivId == savedNotes[i].id.toString()) {
     
-                editor.setContents(savedNotes[i].content);
-                titleInput.value = savedNotes[i].title;
-                tagInput.value = savedNotes[i].tag;
+            editor.setContents(savedNotes[i].content);
+            titleInput.value = savedNotes[i].title;
+            //tagInput.value = savedNotes[i].tag;
                 
-                currentNoteId = thisDivId;
-                currentNote = savedNotes[i];
+            currentNoteId = thisDivId;
+            currentNote = savedNotes[i];
     
-                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-                changeTheme(savedNotes[i].theme);
-            }
-        }
-    } else {
-        for (let i = 0; i < favList.length; i++) {
-            if (thisDivId == favList[i].id.toString()) {
-    
-                editor.setContents(favList[i].content);
-                titleInput.value = favList[i].title;
-                tagInput.value = favList[i].tag;
-                
-                currentNoteId = thisDivId;
-                currentNote = favList[i];
-    
-                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-                changeTheme(favList[i].theme);
-            }
+            //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+            changeTheme(savedNotes[i].theme);
         }
     }
     
 }
 
-
 favInput.addEventListener("click", () => {
-    favMode = true;
+    //console.log("Switch fav on/off")
     if(favInput.checked === true){
         filterFav(true)
     } else {
@@ -397,8 +353,8 @@ favInput.addEventListener("click", () => {
 const filterFav = onoff => {
     
     if (onoff) {
-        //favList = savedNotes.filter(x => x.star)
-        favList = searchNotes('', x => x.star)
+        favList = savedNotes.filter(x => x.star)
+        //favList = searchNotes('', x => x.star)
     } else {
         favList = savedNotes;
     }
@@ -406,11 +362,13 @@ const filterFav = onoff => {
     buildPreviewWind(favList)
 }
 
+
 notePreview.addEventListener('click', e => {
+    console.log("Inside notePreview")
     if (e.target.classList.contains('fa-trash')) {
         // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
-        answer = confirm("Do you want to delete?")
+        answer = confirm("Are you sure you want to delete this note?")
         if(answer == true){
             checkIfTrue = true;
             removeNote(id)
@@ -429,8 +387,11 @@ notePreview.addEventListener('click', e => {
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     savedNotes.splice(index, 1)
-    editor.setText("");
-    titleInput.value = "New Note";
+    if(currentNoteId == id){
+        editorTheme.setAttribute('id', '');
+        editor.setText("");
+        titleInput.value = "";
+    }
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 }
 
@@ -439,19 +400,37 @@ const removeNote = id => {
 // ----------------------------------------------------------
 // Sök funktion
 
-function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase()) }) {
+function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase())}) {
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
 
+//Här skapar vi en variabel för sökrutan
 const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', e => {
-    
-    let searchedWord = e.target.value;
-    notePreview.innerHTML = "";
-    if (searchedWord.length >= 1) {
-        let foundNotes = searchNotes(searchedWord);
 
+//Nedan körs när användaren skriver något i sökfältet (input)
+searchInput.addEventListener('input', e => {
+
+    //Gör användarens sökterm till variabeln searchedWord
+    let searchedWord = e.target.value;
+
+    //Trimma mellanslag i början och slutet av inputen
+    searchedWord = searchedWord.trim();
+
+    //Tömmer hela preview-fönstret
+    notePreview.innerHTML = "";
+
+    //Om sökrutan innehåller 1 eller fler bokstäver körs denna if-kille
+    if (searchedWord.length >= 1) {
+        //searchNotes tar in söktermen som argument och gör den + title + text till lowerCase och söker igenom alla notes. 
+        //Den returnerar varje obj i savedNotes som matchar sökningen
+
+        //Här körs searchNotes med sökordet som arg och resultatet o blir variabeln foundNotes. foundNotes är en array med de filtrerade notesen som obj inuti
+        let foundNotes = searchNotes(searchedWord);
+       
+       
+        //map låter dig köra önskad funktion på alla element i en array och returnerar sedan en ny array med "resultatet"
+        //Ju lägre siffra desto längre upp i previewfönstret hamnar noten
         const rankedSearch = foundNotes.map(noteObj => {
 
             let points = 0;
@@ -459,23 +438,23 @@ searchInput.addEventListener('input', e => {
             if (noteObj.text.includes(searchedWord)) {
                 points += 4;
             }
-            if (noteObj.text.startsWith(searchedWord)) {
+            else if (noteObj.text.startsWith(searchedWord)) {
                 points += 3;
             }
-            if (noteObj.title.includes(searchedWord)) {
+            else if (noteObj.title.includes(searchedWord)) {
                 points += 2;
             }
-            if (noteObj.title.startsWith(searchedWord)) {
+            else if (noteObj.title.startsWith(searchedWord)) {
                 points += 1;
             }
-            console.log(noteObj, points);
-            return {...noteObj, points};
-
+            return { ...noteObj, points };
         }).sort((a, b) => b.points - a.points);
 
+        //Här är rankedSearch en uppdaterad array med alla önskade note i sig som obj
+        //Här bygger vi upp previewfönstret med de notes som matchat sökningen
         buildPreviewWind(rankedSearch);
     } else {
-        // anv har tömt sökrutan
+        // Om sökrutans (searchInput) innehålls length är mindre än 1 så bygger vi upp previewfönstret med alla notes (savedNotes) 
         buildPreviewWind(savedNotes)
     }
 })
@@ -497,7 +476,7 @@ function templateFunc() {
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) {
+window.addEventListener('click', event =>  {
     if (!event.target.matches('.templates')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -508,7 +487,7 @@ window.onclick = function (event) {
             }
         }
     }
-}
+})
 //--------------------Event listeners--------------------
 btn1.addEventListener("click", templateFunc);
 
