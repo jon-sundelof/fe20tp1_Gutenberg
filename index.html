@@ -31,6 +31,7 @@
     <!-- <script src="./scripts/search.js" defer></script> -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="media.css">
+    <link href="print.css" rel="stylesheet" type="text/css" media="print">
     <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.bubble.css">
 
 
@@ -55,6 +56,7 @@
 
 
         <img src="pictures/logo-feather2.png" alt="logo" class="logo">
+        
         <div class="dropdown">
             <button class="templates"><i class="far fa-file-alt"></i>Templates</button>
             <div id="myDropdown" class="dropdown-content">
@@ -62,6 +64,7 @@
                 <button class="template2">Short Story</button>
             </div>
         </div>
+
         <div class="dropup">
             <button class="themes"><i class="fas fa-palette"></i>Themes</button>
             <div id="myDropup" class="dropup-content">
@@ -69,16 +72,15 @@
                 <button class="theme-formal">Formal</button>
                 <button class="theme-playful">Playful</button>
                 <!-- <button class="theme-xmas">X-MAS</button> -->
-            </div>
-           
+            </div>  
         </div>
+
         <div class="tag-down">
             <button class="tag-btn"><i id="nav-tag" class="fas fa-tag"></i>Tags</button>
-            <div id="myTagDown" class="tagDown-content">
-                
-            </div>
-           
+                <div id="myTagDown" class="tagDown-content">   
+            </div>  
         </div>
+
         <button class="print"><i class="fas fa-print"></i>Print</button>
         <button class="info"><i class="fas fa-info"></i>Information</button>
 
@@ -101,10 +103,12 @@
 
         <!-- </div> -->
         <!-- SEARCH FUNCTION end -->
+
+        <button id="show-all-notes"></button>
+
         <section class="preview-notes">
 
         </section>
-        
         <button class="add"><i class="fas fa-plus"></i>New note</button>
 
     </aside>
@@ -136,12 +140,20 @@
         <button class="back">&#8592;</button>
 
         <div class="tag-container">
-        <i class="fas fa-tag"></i>
-        <input placeholder="Tag Name..." autocomplete="off" spellcheck="false" id="tag-input">
-        </div>
-        
-        <div id="center-all" class="center-all">
-        <input placeholder="Enter Title Here!" class="title-input" id="title-input" autocomplete="off" spellcheck="false">
+            <form>
+                <i class="fas fa-tag"></i>
+            <input placeholder="Tag Name..." spellcheck="false" list="tag-suggestion-datalist" id="tag-input" maxlength = "13">
+
+              <datalist id="tag-suggestion-datalist">   
+              </datalist>
+
+            </div>
+        </form>
+
+
+
+        <div id="center-all">
+        <input placeholder="Enter Title Here!" id="title-input" autocomplete="off" spellcheck="false">
         <!-- Create the editor container -->
         <!-- <div autofocus id="editor" style='height: 80vh; width: 100%;'> -->
         <div autofocus id="editor">
@@ -150,18 +162,6 @@
             </div>
         </div>
         </div>
-   
-
-
-
-  <!--       <div class="dropup">
-            <div id="myDropup" class="dropup-content">
-                <button class="theme-formal">Formal</button>
-                <button class="theme-playful">Playful</button>
-            </div>
-            <button class="themes">Themes</button>
-        </div> -->
-      <!--   <button class="themes">Themes</button> -->
     </main>
 
 </body>

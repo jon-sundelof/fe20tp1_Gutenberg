@@ -228,15 +228,19 @@ width: 100%;
     justify-content: flex-start;
     align-items: center;
     padding-bottom: 30px;
-
-
 }
 .preDivTagCon{
     display: flex;
 }
 #pretag{
     font-size: 10px;
-    margin-left: 18px;
+    font-weight: bolder;
+    color: black;
+
+    margin-left: 3.6vw;
+}
+#show-all-notes:hover{
+    background-color: rgb(89, 89, 89);
 }
 
 p.pretime{
@@ -339,6 +343,27 @@ nav button, .templates{
 nav, button:hover, .templates:hover, .themes:hover{
     cursor: pointer;
     background-color: rgb(58, 58, 58);
+}
+
+.show-tag-btn{
+    display: block !important;
+}
+
+#show-all-notes {
+    display: none;
+    color: white;
+    background-color: rgb(124, 124, 124);
+    border-radius: 20px;
+    border: none;
+    position: relative;
+    padding: 7px;
+    max-width: 15vw;
+    max-height: 10vh;
+    margin: 5px auto;
+}
+.fa-times-circle{
+    font-size: 15px;
+    margin-right: 0.3vw;
 }
 /* div#myDropdown.dropdown-content
 {
@@ -513,7 +538,9 @@ nav i{
     /* height: 75px; */
     border:none;
     font-size: 30px;
-    /* padding-top: 50px; */
+    margin-left: 13px;
+    
+    padding: 15px 30px;
     color: #333;
     outline: none;
     border:none;
@@ -572,7 +599,6 @@ nav i{
 /* .ql-container{
     height: 85%;
 } */
-
 
 
 /* Specify our own scrolling container */
@@ -666,6 +692,8 @@ nav i{
        width: 100%;
    }
    
+
+
    .tag-down {
        position: relative;
        display: inline-block;
@@ -696,4 +724,3 @@ nav i{
      .tag-show {display:block;}
      /* ====================TAG DROPDOWN ENDS====================*/
    
-

@@ -15,7 +15,7 @@ let options = {
         toolbar: toolbarOptions,
     },
     scrollingContainer: '#scrolling-container',
-    placeholder: 'Compose an epic story...', //placeholder text 
+    placeholder: '     Compose an epic story...', //placeholder text 
     readOnly: false, // kan bara läsa texten om true, kanske är so preview?
     theme: 'bubble'
 }
@@ -81,6 +81,7 @@ let currentNote;
 
 //*En array där vi sparar våra notes
 let savedNotes = [];
+let favList = [];
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
@@ -144,25 +145,51 @@ function buildPreviewWind(renderedList) {
 
 /*****************************************************/
 function updateArrRebuild() {
-    for (let i = 0; i < savedNotes.length; i++) {
-        if (currentNoteId == savedNotes[i].id.toString()) {
-            savedNotes[i].title = titleInput.value;
-            savedNotes[i].text = editor.getText();
-            savedNotes[i].content = editor.getContents();
-            savedNotes[i].star = savedNotes[i].star;
-            savedNotes[i].tag = tagInput.value;
-
+    
+    if(favMode == false){
+        for (let i = 0; i < savedNotes.length; i++) {
+            if (currentNoteId == savedNotes[i].id.toString() ) {
+                savedNotes[i].title = titleInput.value;
+                savedNotes[i].text = editor.getText();
+                savedNotes[i].content = editor.getContents();
+                savedNotes[i].star = savedNotes[i].star;
+                savedNotes[i].tag = tagInput.value;
+            }
         }
-    }
+            
+           
+        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        
+        let nodes = document.querySelectorAll(".preDiv");
+        for (var i = 0; i < nodes.length; i++) {
+            nodes[i].parentNode.removeChild(nodes[i]);
+        }
+        buildPreviewWind(savedNotes);
 
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-
-    let nodes = document.querySelectorAll(".preDiv");
-    for (var i = 0; i < nodes.length; i++) {
-        nodes[i].parentNode.removeChild(nodes[i]);
+    } else {
+        for (let i = 0; i < favList.length; i++) {
+            if (currentNoteId == favList[i].id.toString() ) {
+                favList[i].title = titleInput.value;
+                favList[i].text = editor.getText();
+                favList[i].content = editor.getContents();
+                favList[i].star = savedNotes[i].star;
+                favList[i].tag = tagInput.value;
+            }
+        }
+            
+           
+        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        
+        let nodes = document.querySelectorAll(".preDiv");
+        for (var i = 0; i < nodes.length; i++) {
+            nodes[i].parentNode.removeChild(nodes[i]);
+        }
+        buildPreviewWind(favList);
     }
-    buildPreviewWind(savedNotes);
+    
 }
+    
+
 
 /*****************************************************/
 
@@ -192,6 +219,20 @@ titleInput.addEventListener("input", updateArrRebuild)
 //Checks for change in tag-input and saves.
 tagInput.addEventListener("input", updateArrRebuild)
 
+const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
+
+function suggestionList (){
+   removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
+   for (let i = 0; i < removedDup.length; i++) {
+        if(!removedDup[i].tag == ""){
+           suggestionListContainer.innerHTML += removedDup[i].tag;
+
+
+        }
+    }
+}
+tagInput.addEventListener("input", suggestionList)
+
 //om förändring sker reseta timer för autosave
 //https://quilljs.com/docs/api/#editor-change
 
@@ -199,8 +240,6 @@ let autosave;
 editor.on('editor-change', () => {
     clearTimeout(autosave)
     autosave = setTimeout((eventName) => {
-
-        
 
         //|| currentNoteId == undefined  
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
@@ -232,15 +271,16 @@ editor.on('editor-change', () => {
 //*PRINT
 btnPrint.addEventListener("click", () => {
     // https://benfrain.com/create-print-styles-using-css3-media-queries/
-    content = getQuillHtml();
-    let divContents = content;
-    let openWindow = window.open("", "", "width=700, height=900");
-    openWindow.document.write('<html>');
-    openWindow.document.write('<body>');
-    openWindow.document.write(divContents);
-    openWindow.document.write('</body></html>');
-    openWindow.document.close();
-    openWindow.print()
+    // content = getQuillHtml();
+    // let divContents = content;
+     //let openWindow = window.open("", "", "width=700, height=900");
+    // openWindow.document.write('<html>');
+    // openWindow.document.write('<body>');
+    // openWindow.document.write(divContents);
+    // openWindow.document.write('</body></html>');
+    // openWindow.document.close();
+    //openWindow.print()
+    window.print();
 })
 
 //*Varje gången sidan refreshas
@@ -262,7 +302,10 @@ function noteTemplate(note) {
     const button = document.createElement('button');
     button.classList.add('star');
     button.innerHTML = `<i class="fas fa-star"></i>`;
-    button.addEventListener('click', () => favourite(note))
+    button.addEventListener('click', () => {
+        favourite(note)
+        
+    })
     if (note.star == true) {
         button.classList.add('starClicked')
     }   
@@ -287,6 +330,8 @@ function noteTemplate(note) {
     preDiv.addEventListener('click', event => {
         if (!event.target.classList.contains("fas")) {
             pushToEditor(event);
+            moveFrame();
+            console.log("Event inside preDiv")
         }
     });
     
@@ -305,24 +350,43 @@ const favourite = note => {
 const pushToEditor = event => {
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
-    for (let i = 0; i < savedNotes.length; i++) {
-        if (thisDivId == savedNotes[i].id.toString()) {
-
-            editor.setContents(savedNotes[i].content);
-            titleInput.value = savedNotes[i].title;
-            tagInput.value = savedNotes[i].tag;
-            
-            currentNoteId = thisDivId;
-            currentNote = savedNotes[i];
-
-            //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-            changeTheme(savedNotes[i].theme);
+    if(favMode == false){
+        for (let i = 0; i < savedNotes.length; i++) {
+            if (thisDivId == savedNotes[i].id.toString()) {
+    
+                editor.setContents(savedNotes[i].content);
+                titleInput.value = savedNotes[i].title;
+                tagInput.value = savedNotes[i].tag;
+                
+                currentNoteId = thisDivId;
+                currentNote = savedNotes[i];
+    
+                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+                changeTheme(savedNotes[i].theme);
+            }
+        }
+    } else {
+        for (let i = 0; i < favList.length; i++) {
+            if (thisDivId == favList[i].id.toString()) {
+    
+                editor.setContents(favList[i].content);
+                titleInput.value = favList[i].title;
+                tagInput.value = favList[i].tag;
+                
+                currentNoteId = thisDivId;
+                currentNote = favList[i];
+    
+                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+                changeTheme(favList[i].theme);
+            }
         }
     }
+    
 }
 
 
 favInput.addEventListener("click", () => {
+    favMode = true;
     if(favInput.checked === true){
         filterFav(true)
     } else {
@@ -331,7 +395,7 @@ favInput.addEventListener("click", () => {
 })
 
 const filterFav = onoff => {
-    let favList;
+    
     if (onoff) {
         //favList = savedNotes.filter(x => x.star)
         favList = searchNotes('', x => x.star)

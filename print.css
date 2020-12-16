@@ -1,0 +1,24 @@
+@media print {
+    @page { margin: 0; }
+    body { margin: 1.6cm; }
+
+     body * {
+    visibility: hidden;
+    cursor: none;
+    }
+   
+
+    #center-all , #center-all * {
+    visibility: visible;
+    }
+
+
+    #center-all {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: inherit;
+    
+
+    }
+    }

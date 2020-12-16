@@ -65,10 +65,10 @@ function themesFunc() {
 // Close the dropdown menu if user clicks outside of it
 window.onclick = function (event) {
     if (!event.target.matches('.themes')) {
-        var dropdowns = document.getElementsByClassName("dropup-content");
-        var i;
+        let dropdowns = document.getElementsByClassName("dropup-content");
+        let i;
         for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
+            let openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('theme-show')) {
                 openDropdown.classList.remove('theme-show');
             }
@@ -94,12 +94,11 @@ let removedDup;
 
 function tagFunc() {
     let nodes = document.querySelectorAll(".tagBtnClass");
-    for (var i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
-
+    
     removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
-    console.log(removedDup[1].tag)
     
     for (let i = 0; i < removedDup.length; i++) {
         if(!removedDup[i].tag == ""){
@@ -108,16 +107,18 @@ function tagFunc() {
        }
         document.getElementById("myTagDown").classList.toggle("tag-show");
      }
-    }
+}
 
 // Close the dropdown menu if user clicks outside of it
+
 window.onclick = function (event) {
     if (!event.target.matches('.tag-btn')) {
-        var dropdowns = document.getElementsByClassName("tagDown-content");
-        var i;
+        let dropdowns = document.getElementsByClassName("tagDown-content");
+        let i;
         for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
+            let openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('tag-show')) {
+                
                 openDropdown.classList.remove('tag-show');
             }
         }
@@ -136,6 +137,10 @@ window.onclick = function (event) {
  function runTagInSearch (e){
     let thisButtonId = e.target.closest('.tagDown-content > button').id;
     let buttonTagText = document.getElementById(thisButtonId).innerText;
+   
+    showAllNotes.classList.add("show-tag-btn");
+    showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " +buttonTagText; 
+
 
    notePreview.innerHTML = "";
    if (buttonTagText.length >= 1) {
@@ -166,3 +171,11 @@ window.onclick = function (event) {
        buildPreviewWind(savedNotes)
    }
  }
+ /**************************************/
+ const showAllNotes = document.querySelector('#show-all-notes');
+ showAllNotes.addEventListener('click', updateArrRebuild);
+ showAllNotes.addEventListener('click', () => {
+    showAllNotes.classList.remove("show-tag-btn");
+ })
+
+ /******************************************************************/
