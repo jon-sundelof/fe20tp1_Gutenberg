@@ -48,6 +48,8 @@ const formalBtn = document.querySelector('.theme-formal');
 const playfulBtn = document.querySelector('.theme-playful');
 const defaultBtn = document.querySelector('.theme-default');
 const xmasBtn = document.querySelector('.theme-xmas');
+const statsBtn = document.querySelector('.statistics');
+const exitStatsBtn = document.querySelector('.exit-stats');
 //Rensa LC-knapp
 const clearLC = document.querySelector(".clear-lc");
 
@@ -147,6 +149,20 @@ class Note {
         this.id = Date.now()
     }
 }
+/***************************************************************************/
+/* ============================ EVENTLISTENERS! ================================ */ 
+/***************************************************************************/
+
+statsBtn.addEventListener('click', () => {
+    let statsCon = document.querySelector('.stats-container');
+
+    statsCon.classList.add('show-stats')
+})
+exitStatsBtn.addEventListener('click', () => {
+    let statsCon = document.querySelector('.stats-container');
+
+    statsCon.classList.remove('show-stats')
+})
 
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */ 
