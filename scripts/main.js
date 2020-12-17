@@ -78,7 +78,7 @@ const mediaQuery600 = window.matchMedia('(max-width: 600px)');
 const els = document.getElementsByClassName('preDiv active');
 
 let checkIfTrue = false;
-
+let deleted = false;
 //Variabels for CurrentNoteId and currentNote
 let currentNoteId;
 let currentNote;
@@ -90,15 +90,22 @@ let favList = [];
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
-    deletedNotes = [];
 } else {
     savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
-    deletedNotes = JSON.parse(localStorage.getItem('deletedNotes'));
+
     buildPreviewWind(savedNotes);
+}
+
+
+if (!localStorage.getItem('deletedNotes') || localStorage.getItem('deletedNotes').length < 0) {
+    deletedNotes = [];
+} else {
+    deletedNotes = JSON.parse(localStorage.getItem('deletedNotes'));
 }
 
 //*Hämtar data från local storage
 function load(){
+    
 
     if(savedNotes.length > 0){
         editor.setContents(savedNotes[savedNotes.length -1].content);
@@ -116,18 +123,24 @@ function load(){
 
 ///////////////COLOR////////////////////
 const themes = {
+    xmas: {
+        '--primarycolor':'#ffffff',
+        '--secondarycolor': '#000000',
+        '--color2orange':'#ee0909',
+    },
     dark: {
-        '--primarycolor:':'#222831',
+        '--primarycolor':'#222831',
+        '--secondarycolor': '#ffffff',
+        '--color2orange':'#f96d00',
         
     },
     light: {
-        '--primarycolor:':'#ffffff',
+        '--primarycolor':'#ffffff',
+        '--secondarycolor': '#000000',
+        '--color2orange':'#f96d00',
        
     },
 
-    xmas: {
-        '--primarycolor:':'#f00a0a',
-    },
   };
   [...document.querySelectorAll('.mode')].forEach(el => {
       el.addEventListener('click', () => {
@@ -176,6 +189,7 @@ exitStatsBtn.addEventListener('click', () => {
 trashNavBtn.addEventListener('click', () => {
     notePreview.innerHTML = "";
     buildPreviewWind(deletedNotes);
+    deleted = true;
 })
 
 
@@ -228,7 +242,14 @@ function updateArrRebuild() {
     for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
-    buildPreviewWind(savedNotes);  
+    if(favInput == false && deleted == false){
+        buildPreviewWind(savedNotes);  
+    } else if (favInput == true) {
+        buildPreviewWind(favList); 
+    } else if (deleted == true){
+        buildPreviewWind(deletedNotes)
+    }
+    
 }
     
 
@@ -329,8 +350,15 @@ function noteTemplate(note) {
     const button = document.createElement('button');
     button.classList.add('star');
     button.innerHTML = `<i class="fas fa-star"></i>`;
-    button.addEventListener('click', () => {  
+    button.addEventListener('click', (e) => {  
         favourite(note)
+        if(favInput.checked == true && note.star == false){
+            id = e.target.closest(".preDiv").id
+            index = favList.findIndex(x => x.id == id)
+            favList.splice(index, 1)
+            buildPreviewWind(favList)
+            updateArrRebuild();
+        }
     });
 
     if (note.star == true) {
@@ -348,6 +376,7 @@ function noteTemplate(note) {
     <p>${note.text.substr(0, 70)} ...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
+    <p class="preTag">${note.tag}</p>
     </div>
    
     <button class="trash"><i class="fas fa-trash"></i></button>`;
@@ -356,7 +385,12 @@ function noteTemplate(note) {
 
     preDiv.addEventListener('click', event => {
         if (!event.target.classList.contains("fas")) {
-            pushToEditor(event);
+            if(favInput.checked == false){
+                pushToEditor(event, savedNotes);
+            } else {
+                pushToEditor(event, favList);
+            }
+            
             
         }
         
@@ -379,30 +413,31 @@ const favourite = note => {
 
 
 
-const pushToEditor = event => {
+const pushToEditor = (event, arr )=> {
     //console.log("Inside push to editor")
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
-    // if(favMode == false){
-    if(favInput.checked == false) {
-        for (let i = 0; i < savedNotes.length; i++) {
-            if (thisDivId == savedNotes[i].id.toString()) {
+    
+    // if(favInput.checked == false) {
+        for (let i = 0; i < arr.length; i++) {
+            if (thisDivId == arr[i].id.toString()) {
         
-                editor.setContents(savedNotes[i].content);
-                titleInput.value = savedNotes[i].title;
-                tagInput.value = savedNotes[i].tag;
+                editor.setContents(arr[i].content);
+                titleInput.value = arr[i].title;
+                tagInput.value = arr[i].tag;
                     
                 currentNoteId = thisDivId;
-                currentNote = savedNotes[i];
+                currentNote = arr[i];
         
                 //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-                changeTheme(savedNotes[i].theme);
+                changeTheme(arr[i].theme);
             }
         }
-    } 
+    // } 
 }
 
 favInput.addEventListener("click", () => {
+    
     if(favInput.checked === true){
         filterFav(true)
     } else {
