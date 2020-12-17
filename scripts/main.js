@@ -50,6 +50,7 @@ const defaultBtn = document.querySelector('.theme-default');
 const xmasBtn = document.querySelector('.theme-xmas');
 const statsBtn = document.querySelector('.statistics');
 const exitStatsBtn = document.querySelector('.exit-stats');
+const trashNavBtn = document.querySelector('.trash-nav');
 //Rensa LC-knapp
 const clearLC = document.querySelector(".clear-lc");
 
@@ -84,12 +85,15 @@ let currentNote;
 
 //*En array där vi sparar våra notes
 let savedNotes = [];
+let deletedNotes = [];
 let favList = [];
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
+    deletedNotes = [];
 } else {
     savedNotes = JSON.parse(localStorage.getItem('savedNotes'));
+    deletedNotes = JSON.parse(localStorage.getItem('deletedNotes'));
     buildPreviewWind(savedNotes);
 }
 
@@ -157,12 +161,25 @@ statsBtn.addEventListener('click', () => {
     let statsCon = document.querySelector('.stats-container');
 
     statsCon.classList.add('show-stats')
+
+    document.querySelector('#total-notes-stat').innerHTML = savedNotes.length;
+    document.querySelector('#data-stat').innerHTML = localStorageSpace();
+
+
 })
 exitStatsBtn.addEventListener('click', () => {
     let statsCon = document.querySelector('.stats-container');
 
     statsCon.classList.remove('show-stats')
 })
+
+trashNavBtn.addEventListener('click', () => {
+    notePreview.innerHTML = "";
+    buildPreviewWind(deletedNotes);
+})
+
+
+
 
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */ 
@@ -427,13 +444,16 @@ notePreview.addEventListener('click', e => {
 
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
-    savedNotes.splice(index, 1)
+    deletedNotes.push(savedNotes[index]);
+    savedNotes.splice(index, 1);
+
     if(currentNoteId == id){
         editorTheme.setAttribute('id', '');
         editor.setText("");
         titleInput.value = "";
     }
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+    localStorage.setItem("deletedNotes", JSON.stringify(deletedNotes));
 }
 
 
@@ -536,4 +556,17 @@ btn1.addEventListener("click", templateFunc);
 /* ====================TEMPLATES DROP DOWN end====================*/
 
 
+/* Calculates the  */
+let localStorageSpace = function(){
+    let data = '';
+    for(let key in window.localStorage){
 
+        if(window.localStorage.hasOwnProperty(key)){
+            data += window.localStorage[key];
+        }
+
+    }
+
+    return data ? ((data.length * 16)/(8 * 1024)).toFixed(2) + ' KB' : 'Empty (0 KB)';
+  /*  return data ? (5120 - ((data.length * 16)/(8 * 1024)).toFixed(2)) + ' KB' : '5 MB'; */
+};
