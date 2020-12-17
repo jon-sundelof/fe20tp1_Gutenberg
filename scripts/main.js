@@ -34,6 +34,7 @@ function getQuillHtml() { return editor.root.innerHTML; }
 /* ============================== VARIABLES ============================== */ 
 /***************************************************************************/
 
+const body = document.querySelector("body");
 const notePreview = document.querySelector(".preview-notes");
 
 //*Detta är editorn
@@ -47,7 +48,9 @@ const themesBtn = document.querySelector('.themes');
 const formalBtn = document.querySelector('.theme-formal');
 const playfulBtn = document.querySelector('.theme-playful');
 const defaultBtn = document.querySelector('.theme-default');
-const xmasBtn = document.querySelector('.theme-xmas');
+const xmasBtn = document.querySelector('.mode');
+const darkBtn = document.querySelector("#dark");
+const lightBtn = document.querySelector("#light");
 const statsBtn = document.querySelector('.statistics');
 const exitStatsBtn = document.querySelector('.exit-stats');
 const trashNavBtn = document.querySelector('.trash-nav');
@@ -106,6 +109,7 @@ if (!localStorage.getItem('deletedNotes') || localStorage.getItem('deletedNotes'
 //*Hämtar data från local storage
 function load(){
     
+    buildPreviewWind(savedNotes)
 
     if(savedNotes.length > 0){
         editor.setContents(savedNotes[savedNotes.length -1].content);
@@ -127,18 +131,27 @@ const themes = {
         '--primarycolor':'#ffffff',
         '--secondarycolor': '#000000',
         '--color2orange':'#ee0909',
+        '--visblogo': 'none',
+        '--xmasvisblogo': 'block',
+        '--hovercolor': '#f32f2f',
     },
     dark: {
         '--primarycolor':'#222831',
         '--secondarycolor': '#ffffff',
         '--color2orange':'#f96d00',
+        '--visblogo': 'block',
+        '--xmasvisblogo': 'none',
+        '--hovercolor': '#5e5e7e',
+        /* '--hovercolor': '#393e46' */
         
     },
     light: {
         '--primarycolor':'#ffffff',
         '--secondarycolor': '#000000',
         '--color2orange':'#f96d00',
-       
+        '--visblogo': 'block',
+        '--xmasvisblogo': 'none',
+        '--hovercolor': '#f0f0f0',
     },
 
   };
@@ -167,7 +180,7 @@ class Note {
     }
 }
 /***************************************************************************/
-/* ============================ EVENTLISTENERS! ================================ */ 
+/* ============================ EVENTLISTENERS! ===========================*/ 
 /***************************************************************************/
 
 statsBtn.addEventListener('click', () => {
@@ -179,21 +192,18 @@ statsBtn.addEventListener('click', () => {
     document.querySelector('#data-stat').innerHTML = localStorageSpace();
 
 
-})
+});
 exitStatsBtn.addEventListener('click', () => {
     let statsCon = document.querySelector('.stats-container');
 
     statsCon.classList.remove('show-stats')
-})
+});
 
 trashNavBtn.addEventListener('click', () => {
     notePreview.innerHTML = "";
     buildPreviewWind(deletedNotes);
     deleted = true;
-})
-
-
-
+});
 
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */ 
@@ -204,8 +214,6 @@ clearLC.addEventListener('click', () => {
     localStorage.clear();
     document.location.reload();
 }) 
-    
-/****************************************************************************/
 
 /* Removes the "active" class from preDiv when called*/
 function removeClassActive() {
@@ -214,7 +222,6 @@ function removeClassActive() {
   }
 }
 
-/****************************************************************************/
 function buildPreviewWind(renderedList) {
     for (let i = 0; i < renderedList.length; i++) {
         const preDiv = noteTemplate(renderedList[i])
@@ -222,7 +229,6 @@ function buildPreviewWind(renderedList) {
     }
 }
 
-/*****************************************************/
 function updateArrRebuild() {
     
     for (let i = 0; i < savedNotes.length; i++) {
@@ -242,19 +248,16 @@ function updateArrRebuild() {
     for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
-    if(favInput == false && deleted == false){
-        buildPreviewWind(savedNotes);  
-    } else if (favInput == true) {
-        buildPreviewWind(favList); 
-    } else if (deleted == true){
-        buildPreviewWind(deletedNotes)
+  
+
+    if(favInput.checked == true){
+        buildPreviewWind(favList);
+    } else if(deleted == true) {
+        buildPreviewWind(deletedNotes);
+    } else {
+        buildPreviewWind(savedNotes);
     }
-    
 }
-    
-
-
-/*****************************************************/
 
 function createNote() {
     const datum = new Date();
@@ -277,13 +280,9 @@ function createNote() {
     editor.setText("");
 }
 
-
-
 //Checks for change in tag-input and saves.
 titleInput.addEventListener("input", updateArrRebuild)
 tagInput.addEventListener("input", updateArrRebuild)
-
-
 
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
@@ -297,14 +296,10 @@ function suggestionList (){
 }
 tagInput.addEventListener("input", suggestionList)
 
-//om förändring sker reseta timer för autosave
-//https://quilljs.com/docs/api/#editor-change
-
 let autosave;
 editor.on('editor-change', () => {
     clearTimeout(autosave)
     autosave = setTimeout( () => {
-
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
         if (savedNotes.length < 1 && checkIfTrue == false ) {
             const datum = new Date();
@@ -322,20 +317,19 @@ editor.on('editor-change', () => {
             currentNote = newNote;
             currentNoteId = newNote.id;
 
-
         } else {
             updateArrRebuild();
         }
     }, 5);
 });
 
-//*PRINT
 btnPrint.addEventListener("click", () => {
     window.print();
 })
 
 window.addEventListener('DOMContentLoaded', () => {
     load()
+    
 });
 
 btnAdd.addEventListener("click", () => {
@@ -390,10 +384,7 @@ function noteTemplate(note) {
             } else {
                 pushToEditor(event, favList);
             }
-            
-            
         }
-        
     });
     
     if (currentNoteId == note.id){
@@ -404,14 +395,11 @@ function noteTemplate(note) {
     return preDiv;
 }
 
-
 const favourite = note => {
     //console.log("Star button clicked")
     note.star = !note.star;
     updateArrRebuild();
 }
-
-
 
 const pushToEditor = (event, arr )=> {
     //console.log("Inside push to editor")
@@ -456,7 +444,6 @@ const filterFav = onoff => {
     buildPreviewWind(favList);
 }
 
-
 notePreview.addEventListener('click', e => {
     if (e.target.classList.contains('fa-trash')) {
         // todo: kolla om vi är i favoritläget
@@ -476,7 +463,6 @@ notePreview.addEventListener('click', e => {
     } 
 });
 
-
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     deletedNotes.push(savedNotes[index]);
@@ -490,8 +476,6 @@ const removeNote = id => {
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
     localStorage.setItem("deletedNotes", JSON.stringify(deletedNotes));
 }
-
-
 
 /***************************************************************************/
 /* ================================= SÖK ================================= */ 
@@ -557,9 +541,6 @@ searchInput.addEventListener('input', e => {
 })
 // -----------------sök-funktion-SLUT--------------------------------
 
-
-
-
 /* ====================TEMPLATES DROP DOWN start====================*/
 
 //--------------------Variables--------------------
@@ -575,10 +556,10 @@ function templateFunc() {
 // Close the dropdown menu if the user clicks outside of it
 window.addEventListener('click', event =>  {
     if (!event.target.matches('.templates')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
+        let dropdowns = document.getElementsByClassName("dropdown-content");
+        let i;
         for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
+            let openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('show')) {
                 openDropdown.classList.remove('show');
             }
@@ -595,13 +576,66 @@ btn1.addEventListener("click", templateFunc);
 let localStorageSpace = function(){
     let data = '';
     for(let key in window.localStorage){
-
         if(window.localStorage.hasOwnProperty(key)){
             data += window.localStorage[key];
         }
-
     }
 
     return data ? ((data.length * 16)/(8 * 1024)).toFixed(2) + ' KB' : 'Empty (0 KB)';
   /*  return data ? (5120 - ((data.length * 16)/(8 * 1024)).toFixed(2)) + ' KB' : '5 MB'; */
-};
+}
+
+
+/***************************************************************************/
+/* ================================= XMAS ================================ */ 
+/***************************************************************************/
+
+let xmasMode = false;
+
+xmasBtn.addEventListener("click", () => {
+    xmasMode = true;
+    if(xmasMode == true){
+        setInterval(createSnowFlake, 50)
+    }
+});
+
+lightBtn.addEventListener("click", () => {
+    xmasMode = false;
+    createSnowFlake();
+});
+
+darkBtn.addEventListener("click", () => {
+    xmasMode = false;
+    createSnowFlake();
+});
+
+function createSnowFlake() {
+    
+    if(xmasMode == true) {
+        const snow_flake = document.createElement('i');
+        // Adding the required classes for the FontAwesome icon to show up
+        snow_flake.classList.add('fas');
+        snow_flake.classList.add('fa-snowflake');
+        
+        // Randomly generate the width to be between 10 and 20 px
+        snow_flake.style.width = Math.random() * 10 + 10 + 'px';
+        
+        // Randomly generate the left position to be between 0 and the innerWidth of the screen
+        snow_flake.style.left = Math.random() * window.innerWidth + 'px';
+        
+        // Randomly generate the animationDuration - between 2 and 5 seconds
+        snow_flake.style.animationDuration = Math.random() * 3 + 2 + 's';
+        
+        // Randomly add an opacity - between 0 and 1
+        snow_flake.style.opacity = Math.random();
+        
+        // Add the newly created <i> tag inside the <body> tag
+        body.appendChild(snow_flake);
+        
+        // Set a timeout to remove the snow_flake from the DOM after 5 seconds
+        // as we don't want it to overload the page
+        setTimeout(() => {
+            snow_flake.remove();
+        }, 5000);
+    }	
+}
