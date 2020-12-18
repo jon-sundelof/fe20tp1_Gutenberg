@@ -7,24 +7,22 @@ const navStyle = document.querySelector("nav");
 const mediaPreDiv = document.querySelector(".preDiv");
 // let max600px;
 
-
-
 function openNav() {
-    document.querySelector("nav").style.width = "350px";
-    document.querySelector("nav").style.right = "0%";
-    document.querySelector("nav").style.zIndex = "500";
-    document.querySelector("nav").style.display = "flex";
+  document.querySelector("nav").style.width = "350px";
+  document.querySelector("nav").style.right = "0%";
+  document.querySelector("nav").style.zIndex = "500";
+  document.querySelector("nav").style.display = "flex";
 }
 
 function closeNav() {
     
-    document.querySelector("nav").style.width = "0px";
-    document.querySelector("nav").style.display = "none";
-    document.querySelector("nav").style.right = "0";
+  document.querySelector("nav").style.width = "0px";
+  document.querySelector("nav").style.display = "none";
+  document.querySelector("nav").style.right = "0";
 
-    document.querySelector("nav").style.zIndex = "-200";
+  document.querySelector("nav").style.zIndex = "-200";
 
-    // document.querySelector("nav").style.cssText = "z-index: -10;";
+  // document.querySelector("nav").style.cssText = "z-index: -10;";
 }
 
 
@@ -39,9 +37,8 @@ function handle1000px(e) {
 
     
   }else{
-      document.querySelector("nav").style.cssText = "display: none; z-index: 10;";
-      closeNav()
-
+    document.querySelector("nav").style.cssText = "display: none; z-index: 10;";
+    closeNav()
   }
 }
 
@@ -142,11 +139,8 @@ function handle1000px(e) {
 //     document.querySelector("main").style.zIndex = "50";
 // }
 function moveBack() {
-
-    document.querySelector("aside").style.position = "absolute";
-    document.querySelector("aside").style.left = "0";
-    document.querySelector("aside").style.zIndex = "50";
-    document.querySelector("main").style.zIndex = "-50";
-
-
+  document.querySelector("aside").style.position = "absolute";
+  document.querySelector("aside").style.left = "0";
+  document.querySelector("aside").style.zIndex = "50";
+  document.querySelector("main").style.zIndex = "-50";
 }

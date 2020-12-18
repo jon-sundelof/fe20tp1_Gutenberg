@@ -1,6 +1,6 @@
 ![Quire logo](pictures/logo-feather2.png)
 
-*by Gutenberg*
+# *by Gutenberg*
 
 A rich text editor where you can create, customize and save notes.
 

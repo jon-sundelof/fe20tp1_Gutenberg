@@ -1,4 +1,3 @@
-
 //Create note object with desired structure
 let templatesArr = [{
     ops: [
@@ -50,16 +49,6 @@ function openTemp(value) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
 function buildPreviewWindDel(renderedList) {
     notePreview.innerHTML = "";
     for (let i = 0; i < renderedList.length; i++) {
@@ -69,9 +58,6 @@ function buildPreviewWindDel(renderedList) {
 }
 
 function noteTemplateDel(note) {
-    //skapa en container för våran preview samt en eventlister för klick som uppdaterar editor meoch sätt inn knappen som
-    //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
-    //för då följer inte eventlister med som vi har bindat till knappen
     const preDivDel = document.createElement("div");
     preDivDel.innerHTML = `<div class="title-input-cont"><h3>${note.title.substr(0, 20)}</h3>
     <input type="checkbox" name="del-checkbox" class="del-checkbox">
@@ -84,46 +70,13 @@ function noteTemplateDel(note) {
     </div>`;
     preDivDel.setAttribute('class', 'preDivDel');
 
-  /*   preDiv.addEventListener('click', event => {
-        if (!event.target.classList.contains("fas")) {
-            if(favInput.checked == false){
-                pushToEditor(event, savedNotes);
-            } else {
-                pushToEditor(event, favList);
-            }
-        }
-    });
-     */
-/*     if (currentNoteId == note.id){
-        preDiv.classList.add("active")
-    } */
-
     preDivDel.setAttribute('id', note.id);
     return preDivDel;
 }
 
-
-
-
-/* const delCheckboxInput = document.querySelectorAll('.del-checkbox'); */
-/* const delCheckboxInput = document.querySelectorAll('input[name="del-checkbox"]:checked') */
-
-/* let delChecked = []; */
-
-/*     function lookForCheckboxes(name){
-        delChecked = [];
-
-        delCheckboxInput.forEach((checkbox) => {
-        delChecked.push(checkbox.value);
-        return delChecked;
-    })  }; */
-
-/* const ckb = document.querySelectorAll(".preDivDel input[type=checkbox]:checked"); */
-
 function boxSetStyle() {
 const ckb = document.querySelectorAll(".preDivDel input[type=checkbox]:checked");
 [...ckb].forEach( el => {
-
     if( el.checked ) {
       // Is checked!
       console.log( el.value )
@@ -132,10 +85,13 @@ const ckb = document.querySelectorAll(".preDivDel input[type=checkbox]:checked")
       // ... do something else
     /*   el.closest("label").style.background = "gray"; */
     }
-  
   })
 };
 
+
+//////////////////////////////////
+//HAR INTE RÖRT NÅGOT HÄR UNDER :3
+//////////////////////////////////
 
 /* function getSelectedCheckboxValues() {
     const checkboxes = document.querySelectorAll(`input[name="del-checkbox"]:checked`);
