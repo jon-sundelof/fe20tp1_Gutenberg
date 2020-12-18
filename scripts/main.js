@@ -54,6 +54,7 @@ const lightBtn = document.querySelector("#light");
 const statsBtn = document.querySelector('.statistics');
 const exitStatsBtn = document.querySelector('.exit-stats');
 const trashNavBtn = document.querySelector('.trash-nav');
+const delAllNotesBtn = document.querySelector('#delAllNotesBtn');
 //Rensa LC-knapp
 const clearLC = document.querySelector(".clear-lc");
 
@@ -145,6 +146,14 @@ const themes = {
         /* '--hovercolor': '#393e46' */
         
     },
+    deletehide: {
+        '--delhidetop': 'none',
+        '--delhide': 'block'
+    },
+    deleteshow: {
+        '--delhidetop': 'block',
+        '--delhide': 'none'
+    },
     light: {
         '--primarycolor':'#ffffff',
         '--secondarycolor': '#000000',
@@ -189,7 +198,11 @@ statsBtn.addEventListener('click', () => {
     statsCon.classList.add('show-stats')
 
     document.querySelector('#total-notes-stat').innerHTML = savedNotes.length;
+    document.querySelector('#total-notes-ever-stat').innerHTML = savedNotes.length + deletedNotes.length;
     document.querySelector('#data-stat').innerHTML = localStorageSpace();
+    document.querySelector('#characters-stat').innerHTML = allText();
+    document.querySelector('#words-writen-stat').innerHTML = avrWords();
+    document.querySelector('#avr-words-stat').innerHTML = avrWordsNote();
 
 
 });
@@ -200,10 +213,38 @@ exitStatsBtn.addEventListener('click', () => {
 });
 
 trashNavBtn.addEventListener('click', () => {
-    notePreview.innerHTML = "";
-    buildPreviewWind(deletedNotes);
+    if(deletedNotes.length <= 0){
+        let warSpan = document.createElement('span');
+        warSpan.setAttribute('class', 'no-notes-warning')
+        warSpan.innerHTML = " No Notes";
+        trashNavBtn.append(warSpan);
+        setTimeout(function(){
+        trashNavBtn.removeChild(warSpan);
+        },3000);
+        return;
+    } else{
+    buildPreviewWindDel(deletedNotes);
+    const theme = themes[trashNavBtn.dataset.theme];
+          for (var variable in theme) {
+              document.documentElement.style.setProperty(variable, theme[variable]);
+          };
     deleted = true;
+    favInput.checked = false;
+    }
 });
+
+delAllNotesBtn.addEventListener('click', () => {
+  /*   notePreview.innerHTML = ""; */
+    /* buildPreviewWind(savedNotes); */
+    const theme = themes[delAllNotesBtn.dataset.theme];
+          for (var variable in theme) {
+              document.documentElement.style.setProperty(variable, theme[variable]);
+          };
+    deleted = false;
+    notePreview.innerHTML = "";
+    buildPreviewWind(savedNotes);
+    /* updateArrRebuild() */
+})
 
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */ 
@@ -249,13 +290,18 @@ function updateArrRebuild() {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
   
-
+/* 
     if(favInput.checked == true){
         buildPreviewWind(favList);
-    } else if(deleted == true) {
-        buildPreviewWind(deletedNotes);
-    } else {
+    } else if {
         buildPreviewWind(savedNotes);
+    } */
+     if(favInput.checked == true){
+        buildPreviewWind(favList);
+    } else if(deleted == !true) {
+        buildPreviewWind(savedNotes);
+    } else {
+        buildPreviewWindDel(deletedNotes);
     }
 }
 
@@ -316,8 +362,9 @@ editor.on('editor-change', () => {
 
             currentNote = newNote;
             currentNoteId = newNote.id;
-
+            console.log('hola')
         } else {
+            console.log('hola')
             updateArrRebuild();
         }
     }, 5);
@@ -572,7 +619,7 @@ btn1.addEventListener("click", templateFunc);
 /* ====================TEMPLATES DROP DOWN end====================*/
 
 
-/* Calculates the  */
+/* Calculates the space used */
 let localStorageSpace = function(){
     let data = '';
     for(let key in window.localStorage){
@@ -584,6 +631,13 @@ let localStorageSpace = function(){
     return data ? ((data.length * 16)/(8 * 1024)).toFixed(2) + ' KB' : 'Empty (0 KB)';
   /*  return data ? (5120 - ((data.length * 16)/(8 * 1024)).toFixed(2)) + ' KB' : '5 MB'; */
 }
+
+/* Calculates total characters writen*/
+let allText = function () {return savedNotes.map(e => e.text).join(",").length};
+let avrWords = function () {return Math.ceil(savedNotes.map(e => e.text).join(",").length / 4.7)};
+let avrWordsNote = function() {if(savedNotes.length == 0){return 0}else{return Math.ceil((savedNotes.map(e => e.text).join(",").length / 4.7)/savedNotes.length)}};
+
+
 
 
 /***************************************************************************/

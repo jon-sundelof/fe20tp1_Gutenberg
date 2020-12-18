@@ -11,6 +11,8 @@
    --color4black: #222831;
    --visblogo: block;
    --xmasvisblogo: none;
+   --delhidetop: block;
+   --delhide: none;
    
    
 }
@@ -90,6 +92,7 @@ aside .filter{
     /* height: 2; */
     font-family: 'Cairo', sans-serif;
     align-self: flex-start;
+    display: var(--delhidetop);
 }
 
 .fa-feather-alt{
@@ -224,6 +227,7 @@ width: 100%;
     border: 1px solid rgba(128, 128, 128, 0.342);
     height: 40px;
     width: 80%;
+    display: var(--delhidetop);
 }
 
 .preview-notes{
@@ -351,6 +355,7 @@ nav button{
     border-radius: 20px;
     bottom: 20px;
     transition: width 0.2s, height 0.2s;
+    display: var(--delhidetop);
 }
 .add:hover{
     cursor: pointer;
@@ -830,7 +835,7 @@ nav i{
 
 
      /* SATS-WIDOW */
-     
+
      .exit-stats{
          border: none;
          width: 150px;
@@ -846,6 +851,19 @@ nav i{
          font-size: 5em;
          color: white;
      }
+    
+     .stats-header-con{
+      display: flex;
+     /*  align-items: center; */
+ 
+     }
+
+  .exit-stats , .stats-header-con h1{
+      align-content: center;
+    
+     }
+
+    
      
      .show-stats{
          display: flex !important;
@@ -893,8 +911,8 @@ nav i{
      }
 
      .stats-content h1 {
-         font-size: 3.2em;
-         margin-bottom: 10%;
+        font-size: 3.2em;
+        margin-bottom: 10%;
      }
      
      .stats-item-con{
@@ -921,4 +939,82 @@ nav i{
         to {
             transform: translateY(105vh);
         }
+    }
+
+    input[type='checkbox']{
+        width:20px;
+        height:20px;
+        outline-style: none;
+        cursor: pointer;
+    }
+  
+    .deleted-div{
+        display: var(--delhide);
+        margin-top: 0;
+        height: 200px;
+    }
+    .deleted-div button{
+        outline-style: none;
+        border: none;
+        background: none;
+    }
+
+    .deleted-div h3{
+        color: var(--color2orange);
+        font-weight: bold;
+        font-size: 2em;
+        text-align: center;
+    }
+    .fa-minus-circle{
+        font-size: 1.5rem;
+        color: rgba(255, 60, 60, 0.829);
+    }
+    .fa-recycle{
+        font-size: 1.5rem;
+        color: rgba(53, 194, 95, 0.829);
+    }
+    .fa-caret-square-left{
+      /*   font-size: 2em; */
+        color: var(--color2orange);
+    }
+
+    .recyc-del{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .recyc-del button, i{
+        display: flex;
+        align-items: center;
+    }
+
+    .title-input-cont{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .del-all-notes{
+        display: flex;
+        justify-content: center;
+    }
+    
+    .del-all-notes button, i{
+        display: flex;
+        align-items: center;
+        color: var(--color4blac);
+        font-size: 1.3em;
+    }
+    .del-all-notes i{
+        margin-right: 10px;
+    }
+    }
+    .del-all-notes button{
+        margin-right: 10px;
+    }
+
+    .no-notes-warning{
+        color: rgb(238, 160, 160);
+        font-family: poppins;
+        font-weight: normal;
     }

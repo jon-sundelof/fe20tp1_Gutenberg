@@ -74,7 +74,7 @@
 
         <button class="print"><i class="fas fa-print"></i>Print</button>
         <button class="info"><i class="fas fa-info"></i>Information</button>
-        <button class="trash-nav"><i id="trash-nav" class="fas fa-trash"></i>Deleted Notes</button>
+        <button class="trash-nav" data-theme="deletehide"><i id="trash-nav" class="fas fa-trash"></i>Deleted Notes</button>
 
 
         <img class="xmaslogo" src="pictures/snowman-snowflake2.svg" alt="">
@@ -115,6 +115,16 @@
 
         <button id="show-all-notes"></button>
 
+        <div class="deleted-div">
+            <div class="del-all-notes">
+            <button data-theme="deleteshow" id="delAllNotesBtn"><i class="fas fa-caret-square-left"></i>ALL NOTES</button>
+            </div>
+            <h3>Deleted Notes</h3>
+            <div class="recyc-del">
+            <button><i class="fas fa-recycle"></i>RESTORE</button>
+            <button><i class="fas fa-minus-circle"></i>DELETE</button>
+            </div>
+        </div>
         <section class="preview-notes">
 
         </section>
@@ -141,23 +151,34 @@
 
         <div class="stats-container">
             <div class="stats-content">
-              <h1><button class="exit-stats"><i class="fas fa-angle-double-left"></i></button>Statistics</h1>
+
+            <div class="stats-header-con">
+              <button class="exit-stats"><i class="fas fa-angle-double-left"></i></button><h1>Statistics</h1>
+            </div>
               <div class="stats-table">
                 <div class="stats-item-con">
                 <i class="fas fa-chart-pie"><h4>Total Notes</h4></i>
                 <p id="total-notes-stat"></p>      
                 </div>
                 <div class="stats-item-con">
-                <i class="fas fa-chart-pie"><h4>Space Used</h4></i>
-                <p id="data-stat"></p></p>   
-                </div>
-                <div class="stats-item-con">
                 <i class="fas fa-chart-pie"><h4>Total Notes Ever</h4></i>
                 <p id="total-notes-ever-stat"></p>   
                 </div>
                 <div class="stats-item-con">
-                <i class="fas fa-chart-pie"><h4>Median Words/Note</h4></i>
-                <p id="median-words-stat"></p>   
+                    <i class="fas fa-chart-pie"><h4>Space Used</h4></i>
+                    <p id="data-stat"></p></p>   
+                </div>
+                <div class="stats-item-con">
+                <i class="fas fa-chart-pie"><h4>Characters writen</h4></i>
+                <p id="characters-stat"></p>   
+                </div>
+                <div class="stats-item-con">
+                <i class="fas fa-chart-pie"><h4>Words writen</h4></i>
+                <p id="words-writen-stat"></p>   
+                </div>
+                <div class="stats-item-con">
+                <i class="fas fa-chart-pie"><h4>Avr word/Note</h4></i>
+                <p id="avr-words-stat"></p>   
                 </div>
             </div>
             </div>
