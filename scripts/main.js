@@ -33,7 +33,7 @@ function getQuillHtml() { return editor.root.innerHTML; }
 /***************************************************************************/
 /* ============================== VARIABLES ============================== */ 
 /***************************************************************************/
-
+let btn1 = document.querySelector(".templates");
 const body = document.querySelector("body");
 const notePreview = document.querySelector(".preview-notes");
 
@@ -107,7 +107,6 @@ if (!localStorage.getItem('deletedNotes') || localStorage.getItem('deletedNotes'
     deletedNotes = JSON.parse(localStorage.getItem('deletedNotes'));
 }
 
-//*Hämtar data från local storage
 function load(){
     
     buildPreviewWind(savedNotes)
@@ -123,10 +122,8 @@ function load(){
         //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
         changeTheme(savedNotes[savedNotes.length -1 ].theme);
     }
-
 }
 
-///////////////COLOR////////////////////
 const themes = {
     xmas: {
         '--primarycolor':'#ffffff',
@@ -188,6 +185,7 @@ class Note {
         this.id = Date.now()
     }
 }
+
 /***************************************************************************/
 /* ============================ EVENTLISTENERS! ===========================*/ 
 /***************************************************************************/
@@ -245,6 +243,68 @@ delAllNotesBtn.addEventListener('click', () => {
     buildPreviewWind(savedNotes);
     /* updateArrRebuild() */
 })
+
+titleInput.addEventListener("input", updateArrRebuild);
+tagInput.addEventListener("input", updateArrRebuild);
+
+btnPrint.addEventListener("click", () => {
+    window.print();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    load()
+});
+
+btnAdd.addEventListener("click", () => {
+    createNote();
+    removeClassActive();
+});
+
+tagInput.addEventListener("input", suggestionList);
+
+favInput.addEventListener("click", () => {
+    
+    if(favInput.checked === true){
+        filterFav(true)
+    } else {
+        filterFav(false)
+    }
+});
+
+notePreview.addEventListener('click', e => {
+    if (e.target.classList.contains('fa-trash')) {
+        // todo: kolla om vi är i favoritläget
+        id = e.target.closest('div').id
+        answer = confirm("Are you sure you want to delete this note?")
+        if(answer == true){
+            checkIfTrue = true;
+            removeNote(id)
+            e.target.closest('div').remove()
+        } else{
+            return null;
+        }
+        
+        setTimeout(() => {
+            checkIfTrue = false;
+        }, 10);
+    } 
+});
+
+// Close the dropdown menu if the user clicks outside of it
+window.addEventListener('click', event =>  {
+    if (!event.target.matches('.templates')) {
+        let dropdowns = document.getElementsByClassName("dropdown-content");
+        let i;
+        for (i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+})
+
+btn1.addEventListener("click", templateFunc);
 
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */ 
@@ -327,8 +387,7 @@ function createNote() {
 }
 
 //Checks for change in tag-input and saves.
-titleInput.addEventListener("input", updateArrRebuild)
-tagInput.addEventListener("input", updateArrRebuild)
+
 
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
@@ -340,7 +399,7 @@ function suggestionList (){
         }
     }
 }
-tagInput.addEventListener("input", suggestionList)
+
 
 let autosave;
 editor.on('editor-change', () => {
@@ -362,27 +421,13 @@ editor.on('editor-change', () => {
 
             currentNote = newNote;
             currentNoteId = newNote.id;
-            console.log('hola')
-        } else {
-            console.log('hola')
+        } else { 
             updateArrRebuild();
         }
     }, 5);
 });
 
-btnPrint.addEventListener("click", () => {
-    window.print();
-})
 
-window.addEventListener('DOMContentLoaded', () => {
-    load()
-    
-});
-
-btnAdd.addEventListener("click", () => {
-    createNote();
-    removeClassActive();
-});
 
 function noteTemplate(note) {
 
@@ -453,32 +498,21 @@ const pushToEditor = (event, arr )=> {
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
     
-    // if(favInput.checked == false) {
-        for (let i = 0; i < arr.length; i++) {
-            if (thisDivId == arr[i].id.toString()) {
+    for (let i = 0; i < arr.length; i++) {
+        if (thisDivId == arr[i].id.toString()) {
         
-                editor.setContents(arr[i].content);
-                titleInput.value = arr[i].title;
-                tagInput.value = arr[i].tag;
+            editor.setContents(arr[i].content);
+            titleInput.value = arr[i].title;
+            tagInput.value = arr[i].tag;
                     
-                currentNoteId = thisDivId;
-                currentNote = arr[i];
+            currentNoteId = thisDivId;
+            currentNote = arr[i];
         
-                //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-                changeTheme(arr[i].theme);
-            }
+            //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+            changeTheme(arr[i].theme);
         }
-    // } 
-}
-
-favInput.addEventListener("click", () => {
-    
-    if(favInput.checked === true){
-        filterFav(true)
-    } else {
-        filterFav(false)
     }
-});
+}
 
 const filterFav = onoff => {
     if (onoff) {
@@ -491,24 +525,7 @@ const filterFav = onoff => {
     buildPreviewWind(favList);
 }
 
-notePreview.addEventListener('click', e => {
-    if (e.target.classList.contains('fa-trash')) {
-        // todo: kolla om vi är i favoritläget
-        id = e.target.closest('div').id
-        answer = confirm("Are you sure you want to delete this note?")
-        if(answer == true){
-            checkIfTrue = true;
-            removeNote(id)
-            e.target.closest('div').remove()
-        } else{
-            return null;
-        }
-        
-        setTimeout(() => {
-            checkIfTrue = false;
-        }, 10);
-    } 
-});
+
 
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
@@ -585,39 +602,13 @@ searchInput.addEventListener('input', e => {
         // Om sökrutans (searchInput) innehålls length är mindre än 1 så bygger vi upp previewfönstret med alla notes (savedNotes) 
         buildPreviewWind(savedNotes)
     }
-})
-// -----------------sök-funktion-SLUT--------------------------------
-
-/* ====================TEMPLATES DROP DOWN start====================*/
-
-//--------------------Variables--------------------
-let btn1 = document.querySelector(".templates");
-//--------------------Functions--------------------
+});
 
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
 function templateFunc() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
-
-// Close the dropdown menu if the user clicks outside of it
-window.addEventListener('click', event =>  {
-    if (!event.target.matches('.templates')) {
-        let dropdowns = document.getElementsByClassName("dropdown-content");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-})
-//--------------------Event listeners--------------------
-btn1.addEventListener("click", templateFunc);
-
-/* ====================TEMPLATES DROP DOWN end====================*/
-
 
 /* Calculates the space used */
 let localStorageSpace = function(){
@@ -636,9 +627,6 @@ let localStorageSpace = function(){
 let allText = function () {return savedNotes.map(e => e.text).join(",").length};
 let avrWords = function () {return Math.ceil(savedNotes.map(e => e.text).join(",").length / 4.7)};
 let avrWordsNote = function() {if(savedNotes.length == 0){return 0}else{return Math.ceil((savedNotes.map(e => e.text).join(",").length / 4.7)/savedNotes.length)}};
-
-
-
 
 /***************************************************************************/
 /* ================================= XMAS ================================ */ 
