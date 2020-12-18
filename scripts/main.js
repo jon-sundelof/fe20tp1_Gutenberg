@@ -310,10 +310,15 @@ btn1.addEventListener("click", templateFunc);
 /* ============================ FUNCTIONS ================================ */
 /***************************************************************************/
 
-/* Tillfällig clear LC */
+/* Clear LC */
 clearLC.addEventListener('click', () => {
-    localStorage.clear();
-    document.location.reload();
+    answer = confirm("Clear local storage? This will permanently remove all your saved notes.")
+    if (answer == true) {
+        localStorage.clear();
+        document.location.reload();
+    } else {
+        return null;
+    }
 })
 
 /* Removes the "active" class from preDiv when called*/

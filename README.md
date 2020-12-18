@@ -28,7 +28,7 @@ This is a school assignment we did when studying at kyh in Stockholm.
 
 ### Screenshots
 
-![Quire logo](pictures/quireScreenshot.png)
+![Screenshot of Quire](pictures/quireScreenshot18dec.png)
 
 ### Trello
 
