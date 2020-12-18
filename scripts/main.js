@@ -1,5 +1,5 @@
 /***************************************************************************/
-/* ================================ QUILL ================================ */ 
+/* ================================ QUILL ================================ */
 /***************************************************************************/
 
 //*QUILL OPTIONS
@@ -31,7 +31,7 @@ function getQuillHtml() { return editor.root.innerHTML; }
 
 
 /***************************************************************************/
-/* ============================== VARIABLES ============================== */ 
+/* ============================== VARIABLES ============================== */
 /***************************************************************************/
 let btn1 = document.querySelector(".templates");
 const body = document.querySelector("body");
@@ -74,7 +74,7 @@ const mediaQuery600 = window.matchMedia('(max-width: 600px)');
 //         preDiv.addEventListener("click", ()=>{
 //             moveFrame()
 //         })
-    
+
 //         }
 
 // }
@@ -107,41 +107,41 @@ if (!localStorage.getItem('deletedNotes') || localStorage.getItem('deletedNotes'
     deletedNotes = JSON.parse(localStorage.getItem('deletedNotes'));
 }
 
-function load(){
-    
+function load() {
+
     buildPreviewWind(savedNotes)
 
-    if(savedNotes.length > 0){
-        editor.setContents(savedNotes[savedNotes.length -1].content);
-        titleInput.value = savedNotes[savedNotes.length -1].title;
-        tagInput.value = savedNotes[savedNotes.length -1].tag;
-        
-        currentNoteId = savedNotes[savedNotes.length -1 ].id;
-        currentNote = savedNotes[savedNotes.length -1];
+    if (savedNotes.length > 0) {
+        editor.setContents(savedNotes[savedNotes.length - 1].content);
+        titleInput.value = savedNotes[savedNotes.length - 1].title;
+        tagInput.value = savedNotes[savedNotes.length - 1].tag;
+
+        currentNoteId = savedNotes[savedNotes.length - 1].id;
+        currentNote = savedNotes[savedNotes.length - 1];
 
         //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-        changeTheme(savedNotes[savedNotes.length -1 ].theme);
+        changeTheme(savedNotes[savedNotes.length - 1].theme);
     }
 }
 
 const themes = {
     xmas: {
-        '--primarycolor':'#ffffff',
+        '--primarycolor': '#ffffff',
         '--secondarycolor': '#000000',
-        '--color2orange':'#ee0909',
+        '--color2orange': '#ee0909',
         '--visblogo': 'none',
         '--xmasvisblogo': 'block',
         '--hovercolor': '#f32f2f',
     },
     dark: {
-        '--primarycolor':'#222831',
+        '--primarycolor': '#222831',
         '--secondarycolor': '#ffffff',
-        '--color2orange':'#f96d00',
+        '--color2orange': '#f96d00',
         '--visblogo': 'block',
         '--xmasvisblogo': 'none',
         '--hovercolor': '#5e5e7e',
         /* '--hovercolor': '#393e46' */
-        
+
     },
     deletehide: {
         '--delhidetop': 'none',
@@ -152,23 +152,23 @@ const themes = {
         '--delhide': 'none'
     },
     light: {
-        '--primarycolor':'#ffffff',
+        '--primarycolor': '#ffffff',
         '--secondarycolor': '#000000',
-        '--color2orange':'#f96d00',
+        '--color2orange': '#f96d00',
         '--visblogo': 'block',
         '--xmasvisblogo': 'none',
         '--hovercolor': '#f0f0f0',
     },
 
-  };
-  [...document.querySelectorAll('.mode')].forEach(el => {
-      el.addEventListener('click', () => {
-          const theme = themes[el.dataset.theme];
-          for (var variable in theme) {
-              document.documentElement.style.setProperty(variable, theme[variable]);
-          };
-      });
-  });
+};
+[...document.querySelectorAll('.mode')].forEach(el => {
+    el.addEventListener('click', () => {
+        const theme = themes[el.dataset.theme];
+        for (var variable in theme) {
+            document.documentElement.style.setProperty(variable, theme[variable]);
+        };
+    });
+});
 
 /************************/
 //**** NOTE KLASSEN *****/
@@ -176,18 +176,18 @@ const themes = {
 class Note {
     constructor(title, date, text, star, content = editor.getContents(), theme = 0, tag) {
         this.title = title,
-        this.date = date,
-        this.text = text,
-        this.star = star,
-        this.content = content,
-        this.theme = theme,
-        this.tag = tag,
-        this.id = Date.now()
+            this.date = date,
+            this.text = text,
+            this.star = star,
+            this.content = content,
+            this.theme = theme,
+            this.tag = tag,
+            this.id = Date.now()
     }
 }
 
 /***************************************************************************/
-/* ============================ EVENTLISTENERS! ===========================*/ 
+/* ============================ EVENTLISTENERS! ===========================*/
 /***************************************************************************/
 
 statsBtn.addEventListener('click', () => {
@@ -211,33 +211,33 @@ exitStatsBtn.addEventListener('click', () => {
 });
 
 trashNavBtn.addEventListener('click', () => {
-    if(deletedNotes.length <= 0){
+    if (deletedNotes.length <= 0) {
         let warSpan = document.createElement('span');
         warSpan.setAttribute('class', 'no-notes-warning')
         warSpan.innerHTML = " No Notes";
         trashNavBtn.append(warSpan);
-        setTimeout(function(){
-        trashNavBtn.removeChild(warSpan);
-        },3000);
+        setTimeout(function () {
+            trashNavBtn.removeChild(warSpan);
+        }, 3000);
         return;
-    } else{
-    buildPreviewWindDel(deletedNotes);
-    const theme = themes[trashNavBtn.dataset.theme];
-          for (var variable in theme) {
-              document.documentElement.style.setProperty(variable, theme[variable]);
-          };
-    deleted = true;
-    favInput.checked = false;
+    } else {
+        buildPreviewWindDel(deletedNotes);
+        const theme = themes[trashNavBtn.dataset.theme];
+        for (var variable in theme) {
+            document.documentElement.style.setProperty(variable, theme[variable]);
+        };
+        deleted = true;
+        favInput.checked = false;
     }
 });
 
 delAllNotesBtn.addEventListener('click', () => {
-  /*   notePreview.innerHTML = ""; */
+    /*   notePreview.innerHTML = ""; */
     /* buildPreviewWind(savedNotes); */
     const theme = themes[delAllNotesBtn.dataset.theme];
-          for (var variable in theme) {
-              document.documentElement.style.setProperty(variable, theme[variable]);
-          };
+    for (var variable in theme) {
+        document.documentElement.style.setProperty(variable, theme[variable]);
+    };
     deleted = false;
     notePreview.innerHTML = "";
     buildPreviewWind(savedNotes);
@@ -263,8 +263,8 @@ btnAdd.addEventListener("click", () => {
 tagInput.addEventListener("input", suggestionList);
 
 favInput.addEventListener("click", () => {
-    
-    if(favInput.checked === true){
+
+    if (favInput.checked === true) {
         filterFav(true)
     } else {
         filterFav(false)
@@ -276,22 +276,22 @@ notePreview.addEventListener('click', e => {
         // todo: kolla om vi är i favoritläget
         id = e.target.closest('div').id
         answer = confirm("Are you sure you want to delete this note?")
-        if(answer == true){
+        if (answer == true) {
             checkIfTrue = true;
             removeNote(id)
             e.target.closest('div').remove()
-        } else{
+        } else {
             return null;
         }
-        
+
         setTimeout(() => {
             checkIfTrue = false;
         }, 10);
-    } 
+    }
 });
 
 // Close the dropdown menu if the user clicks outside of it
-window.addEventListener('click', event =>  {
+window.addEventListener('click', event => {
     if (!event.target.matches('.templates')) {
         let dropdowns = document.getElementsByClassName("dropdown-content");
         let i;
@@ -307,20 +307,20 @@ window.addEventListener('click', event =>  {
 btn1.addEventListener("click", templateFunc);
 
 /***************************************************************************/
-/* ============================ FUNCTIONS ================================ */ 
+/* ============================ FUNCTIONS ================================ */
 /***************************************************************************/
 
 /* Tillfällig clear LC */
 clearLC.addEventListener('click', () => {
     localStorage.clear();
     document.location.reload();
-}) 
+})
 
 /* Removes the "active" class from preDiv when called*/
 function removeClassActive() {
-  while (els[0]) {
-    els[0].classList.remove('active')
-  }
+    while (els[0]) {
+        els[0].classList.remove('active')
+    }
 }
 
 function buildPreviewWind(renderedList) {
@@ -331,9 +331,9 @@ function buildPreviewWind(renderedList) {
 }
 
 function updateArrRebuild() {
-    
+
     for (let i = 0; i < savedNotes.length; i++) {
-        if (currentNoteId == savedNotes[i].id.toString() ) {
+        if (currentNoteId == savedNotes[i].id.toString()) {
             savedNotes[i].title = titleInput.value;
             savedNotes[i].text = editor.getText();
             savedNotes[i].content = editor.getContents();
@@ -341,24 +341,17 @@ function updateArrRebuild() {
             savedNotes[i].tag = tagInput.value;
         }
     }
-            
-           
+
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-        
+
     let nodes = document.querySelectorAll(".preDiv");
     for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
-  
-/* 
-    if(favInput.checked == true){
+
+    if (favInput.checked == true) {
         buildPreviewWind(favList);
-    } else if {
-        buildPreviewWind(savedNotes);
-    } */
-     if(favInput.checked == true){
-        buildPreviewWind(favList);
-    } else if(deleted == !true) {
+    } else if (deleted == !true) {
         buildPreviewWind(savedNotes);
     } else {
         buildPreviewWindDel(deletedNotes);
@@ -366,24 +359,50 @@ function updateArrRebuild() {
 }
 
 function createNote() {
-    const datum = new Date();
-    const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+    if (favInput.checked == false) {
+        const datum = new Date();
+        const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
-    titleInput.value = "New Note";
-    tagInput.value = "";
-    let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0, tagInput.value);
-    savedNotes.push(newNote);
-    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+        titleInput.value = "New Note";
+        tagInput.value = "";
+        let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0, tagInput.value);
+        savedNotes.push(newNote);
+        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
 
-    currentNote = newNote;
-    currentNoteId = newNote.id;
+        currentNote = newNote;
+        currentNoteId = newNote.id;
 
-    const preDiv = noteTemplate(newNote);
-    notePreview.prepend(preDiv);
- 
-    changeTheme(newNote.theme);
-    editorTheme.setAttribute('id', '');
-    editor.setText("");
+        const preDiv = noteTemplate(newNote);
+        notePreview.prepend(preDiv);
+
+        changeTheme(newNote.theme);
+        editorTheme.setAttribute('id', '');
+        editor.setText("");
+
+        //updateArrRebuild()
+    }
+    else if (favInput.checked == true) {
+        const datum = new Date();
+        const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+
+        titleInput.value = "New Note";
+        tagInput.value = "";
+        let newNote = new Note(titleInput.value, date, getQuillText, true, getQuillContents, 0, tagInput.value);
+        savedNotes.push(newNote);
+        localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+
+        currentNote = newNote;
+        currentNoteId = newNote.id;
+
+        const preDiv = noteTemplate(newNote);
+        notePreview.prepend(preDiv);
+
+        changeTheme(newNote.theme);
+        editorTheme.setAttribute('id', '');
+        editor.setText("");
+
+        //updateArrRebuild()
+    }
 }
 
 //Checks for change in tag-input and saves.
@@ -391,11 +410,11 @@ function createNote() {
 
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
-function suggestionList (){
-   removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
-   for (let i = 0; i < removedDup.length; i++) {
-        if(!removedDup[i].tag == ""){
-           suggestionListContainer.innerHTML += removedDup[i].tag;
+function suggestionList() {
+    removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
+    for (let i = 0; i < removedDup.length; i++) {
+        if (!removedDup[i].tag == "") {
+            suggestionListContainer.innerHTML += removedDup[i].tag;
         }
     }
 }
@@ -404,9 +423,9 @@ function suggestionList (){
 let autosave;
 editor.on('editor-change', () => {
     clearTimeout(autosave)
-    autosave = setTimeout( () => {
+    autosave = setTimeout(() => {
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
-        if (savedNotes.length < 1 && checkIfTrue == false ) {
+        if (savedNotes.length < 1 && checkIfTrue == false) {
             const datum = new Date();
             const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 
@@ -414,20 +433,18 @@ editor.on('editor-change', () => {
 
             savedNotes.push(newNote);
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
-            
+
             const preDiv = noteTemplate(newNote);
-            
+
             notePreview.prepend(preDiv);
 
             currentNote = newNote;
             currentNoteId = newNote.id;
-        } else { 
+        } else {
             updateArrRebuild();
         }
     }, 5);
 });
-
-
 
 function noteTemplate(note) {
 
@@ -436,9 +453,9 @@ function noteTemplate(note) {
     const button = document.createElement('button');
     button.classList.add('star');
     button.innerHTML = `<i class="fas fa-star"></i>`;
-    button.addEventListener('click', (e) => {  
+    button.addEventListener('click', (e) => {
         favourite(note)
-        if(favInput.checked == true && note.star == false){
+        if (favInput.checked == true && note.star == false) {
             id = e.target.closest(".preDiv").id
             index = favList.findIndex(x => x.id == id)
             favList.splice(index, 1)
@@ -450,7 +467,7 @@ function noteTemplate(note) {
     if (note.star == true) {
         button.classList.add('starClicked')
     }
-    
+
     //skapa en container för våran preview samt en eventlister för klick som uppdaterar editor meoch sätt inn knappen som
     //vi skapade innan med tillhörande eventlisters, vi kan inte använda innerhtml/outerhtml
     //för då följer inte eventlister med som vi har bindat till knappen
@@ -471,15 +488,15 @@ function noteTemplate(note) {
 
     preDiv.addEventListener('click', event => {
         if (!event.target.classList.contains("fas")) {
-            if(favInput.checked == false){
+            if (favInput.checked == false) {
                 pushToEditor(event, savedNotes);
             } else {
                 pushToEditor(event, favList);
             }
         }
     });
-    
-    if (currentNoteId == note.id){
+
+    if (currentNoteId == note.id) {
         preDiv.classList.add("active")
     }
 
@@ -493,21 +510,21 @@ const favourite = note => {
     updateArrRebuild();
 }
 
-const pushToEditor = (event, arr )=> {
+const pushToEditor = (event, arr) => {
     //console.log("Inside push to editor")
     //handle click
     let thisDivId = event.target.closest('.preDiv').id;
-    
+
     for (let i = 0; i < arr.length; i++) {
         if (thisDivId == arr[i].id.toString()) {
-        
+
             editor.setContents(arr[i].content);
             titleInput.value = arr[i].title;
             tagInput.value = arr[i].tag;
-                    
+
             currentNoteId = thisDivId;
             currentNote = arr[i];
-        
+
             //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
             changeTheme(arr[i].theme);
         }
@@ -532,7 +549,7 @@ const removeNote = id => {
     deletedNotes.push(savedNotes[index]);
     savedNotes.splice(index, 1);
 
-    if(currentNoteId == id){
+    if (currentNoteId == id) {
         editorTheme.setAttribute('id', '');
         editor.setText("");
         titleInput.value = "";
@@ -542,10 +559,10 @@ const removeNote = id => {
 }
 
 /***************************************************************************/
-/* ================================= SÖK ================================= */ 
+/* ================================= SÖK ================================= */
 /***************************************************************************/
 
-function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase())}) {
+function searchNotes(str, func = function (note) { return note.title.toLowerCase().includes(str.toLowerCase()) || note.text.toLowerCase().includes(str.toLowerCase()) || note.tag.toLowerCase().includes(str.toLowerCase()) }) {
     // filtrera och returnera samtliga notes som innehåller str
     return savedNotes.filter(func)
 }
@@ -572,8 +589,8 @@ searchInput.addEventListener('input', e => {
 
         //Här körs searchNotes med sökordet som arg och resultatet o blir variabeln foundNotes. foundNotes är en array med de filtrerade notesen som obj inuti
         let foundNotes = searchNotes(searchedWord);
-       
-       
+
+
         //map låter dig köra önskad funktion på alla element i en array och returnerar sedan en ny array med "resultatet"
         //Ju lägre siffra desto längre upp i previewfönstret hamnar noten
         const rankedSearch = foundNotes.map(noteObj => {
@@ -611,32 +628,32 @@ function templateFunc() {
 }
 
 /* Calculates the space used */
-let localStorageSpace = function(){
+let localStorageSpace = function () {
     let data = '';
-    for(let key in window.localStorage){
-        if(window.localStorage.hasOwnProperty(key)){
+    for (let key in window.localStorage) {
+        if (window.localStorage.hasOwnProperty(key)) {
             data += window.localStorage[key];
         }
     }
 
-    return data ? ((data.length * 16)/(8 * 1024)).toFixed(2) + ' KB' : 'Empty (0 KB)';
-  /*  return data ? (5120 - ((data.length * 16)/(8 * 1024)).toFixed(2)) + ' KB' : '5 MB'; */
+    return data ? ((data.length * 16) / (8 * 1024)).toFixed(2) + ' KB' : 'Empty (0 KB)';
+    /*  return data ? (5120 - ((data.length * 16)/(8 * 1024)).toFixed(2)) + ' KB' : '5 MB'; */
 }
 
 /* Calculates total characters writen*/
-let allText = function () {return savedNotes.map(e => e.text).join(",").length};
-let avrWords = function () {return Math.ceil(savedNotes.map(e => e.text).join(",").length / 4.7)};
-let avrWordsNote = function() {if(savedNotes.length == 0){return 0}else{return Math.ceil((savedNotes.map(e => e.text).join(",").length / 4.7)/savedNotes.length)}};
+let allText = function () { return savedNotes.map(e => e.text).join(",").length };
+let avrWords = function () { return Math.ceil(savedNotes.map(e => e.text).join(",").length / 4.7) };
+let avrWordsNote = function () { if (savedNotes.length == 0) { return 0 } else { return Math.ceil((savedNotes.map(e => e.text).join(",").length / 4.7) / savedNotes.length) } };
 
 /***************************************************************************/
-/* ================================= XMAS ================================ */ 
+/* ================================= XMAS ================================ */
 /***************************************************************************/
 
 let xmasMode = false;
 
 xmasBtn.addEventListener("click", () => {
     xmasMode = true;
-    if(xmasMode == true){
+    if (xmasMode == true) {
         setInterval(createSnowFlake, 50)
     }
 });
@@ -652,32 +669,32 @@ darkBtn.addEventListener("click", () => {
 });
 
 function createSnowFlake() {
-    
-    if(xmasMode == true) {
+
+    if (xmasMode == true) {
         const snow_flake = document.createElement('i');
         // Adding the required classes for the FontAwesome icon to show up
         snow_flake.classList.add('fas');
         snow_flake.classList.add('fa-snowflake');
-        
+
         // Randomly generate the width to be between 10 and 20 px
         snow_flake.style.width = Math.random() * 10 + 10 + 'px';
-        
+
         // Randomly generate the left position to be between 0 and the innerWidth of the screen
         snow_flake.style.left = Math.random() * window.innerWidth + 'px';
-        
+
         // Randomly generate the animationDuration - between 2 and 5 seconds
         snow_flake.style.animationDuration = Math.random() * 3 + 2 + 's';
-        
+
         // Randomly add an opacity - between 0 and 1
         snow_flake.style.opacity = Math.random();
-        
+
         // Add the newly created <i> tag inside the <body> tag
         body.appendChild(snow_flake);
-        
+
         // Set a timeout to remove the snow_flake from the DOM after 5 seconds
         // as we don't want it to overload the page
         setTimeout(() => {
             snow_flake.remove();
         }, 5000);
-    }	
+    }
 }

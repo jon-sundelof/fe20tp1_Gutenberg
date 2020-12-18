@@ -21,10 +21,10 @@ let templatesArr = [{
         { insert: '\nPowered by TinyMCE!', attributes: { color: 'purple' } }
     ]}];
 
-    function templateClick (e){
+function templateClick (e){
     let tmpBtnValue = e.target.closest('.dropdown-content > button').value;
     openTemp(tmpBtnValue)
- }
+}
 
 
 const tempBtn = document.querySelector('#myDropdown');
