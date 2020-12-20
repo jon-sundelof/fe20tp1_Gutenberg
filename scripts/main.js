@@ -55,6 +55,7 @@ const statsBtn = document.querySelector('.statistics');
 const exitStatsBtn = document.querySelector('.exit-stats');
 const trashNavBtn = document.querySelector('.trash-nav');
 const delAllNotesBtn = document.querySelector('#delAllNotesBtn');
+
 //Rensa LC-knapp
 const clearLC = document.querySelector(".clear-lc");
 
@@ -66,20 +67,14 @@ const favInput = document.querySelector(".checkbox-fav")
 const favInputChecked = document.querySelector("input:checked")
 
 
-const mediaQuery600 = window.matchMedia('(max-width: 600px)');
-// mediaQuery600.addEventListener(handle600px);
-
-// function handle600px(e){
-//     if(e.matches){
-//         preDiv.addEventListener("click", ()=>{
-//             moveFrame()
-//         })
-
-//         }
-
-// }
 
 const els = document.getElementsByClassName('preDiv active');
+
+//Eventlisteners-----
+document.querySelector('.recyc-del button:last-child').addEventListener("click",permanentlyRemoveNote)
+document.querySelector('.recyc-del button:first-child').addEventListener("click",restoreDeletedNote)
+
+//Eventlisteners-Slut----
 
 let checkIfTrue = false;
 let deleted = false;
@@ -244,6 +239,9 @@ delAllNotesBtn.addEventListener('click', () => {
     /* updateArrRebuild() */
 })
 
+
+
+
 titleInput.addEventListener("input", updateArrRebuild);
 tagInput.addEventListener("input", updateArrRebuild);
 
@@ -279,7 +277,12 @@ notePreview.addEventListener('click', e => {
         if (answer == true) {
             checkIfTrue = true;
             removeNote(id)
+
             e.target.closest('div').remove()
+            if(savedNotes.length > 0)
+            pushToEditor(savedNotes[(savedNotes.length - 1)].id)
+        
+            //
         } else {
             return null;
         }
@@ -329,6 +332,7 @@ function removeClassActive() {
 }
 
 function buildPreviewWind(renderedList) {
+    
     for (let i = 0; i < renderedList.length; i++) {
         const preDiv = noteTemplate(renderedList[i])
         notePreview.prepend(preDiv);
@@ -336,7 +340,8 @@ function buildPreviewWind(renderedList) {
 }
 
 function updateArrRebuild() {
-
+    // console.log("updateArrrebuild")
+    savedNotes.sort((a,b)=> a.id - b.id );
     for (let i = 0; i < savedNotes.length; i++) {
         if (currentNoteId == savedNotes[i].id.toString()) {
             savedNotes[i].title = titleInput.value;
@@ -362,6 +367,8 @@ function updateArrRebuild() {
         buildPreviewWindDel(deletedNotes);
     }
 }
+
+
 
 function createNote() {
     if (favInput.checked == false) {
@@ -412,7 +419,6 @@ function createNote() {
 
 //Checks for change in tag-input and saves.
 
-
 const suggestionListContainer = document.querySelector('#tag-suggestion-datalist');
 
 function suggestionList() {
@@ -448,7 +454,7 @@ editor.on('editor-change', () => {
         } else {
             updateArrRebuild();
         }
-    }, 5);
+    }, 100);
 });
 
 function noteTemplate(note) {
@@ -492,11 +498,13 @@ function noteTemplate(note) {
     preDiv.setAttribute('class', 'preDiv');
 
     preDiv.addEventListener('click', event => {
+        
         if (!event.target.classList.contains("fas")) {
+            toggleMain()
             if (favInput.checked == false) {
-                pushToEditor(event, savedNotes);
+                pushToEditor(event.target.closest('.preDiv').id);
             } else {
-                pushToEditor(event, favList);
+                pushToEditor(event.target.closest('.preDiv').id);
             }
         }
     });
@@ -515,25 +523,20 @@ const favourite = note => {
     updateArrRebuild();
 }
 
-const pushToEditor = (event, arr) => {
+const pushToEditor = (thisDivId) => {
     //console.log("Inside push to editor")
     //handle click
-    let thisDivId = event.target.closest('.preDiv').id;
+    
+    index = savedNotes.findIndex(x => x.id == thisDivId)
+    editor.setContents(savedNotes[index].content);
+    titleInput.value = savedNotes[index].title;
+    tagInput.value = savedNotes[index].tag;
 
-    for (let i = 0; i < arr.length; i++) {
-        if (thisDivId == arr[i].id.toString()) {
+    currentNoteId = thisDivId;
+    currentNote = savedNotes[index];
 
-            editor.setContents(arr[i].content);
-            titleInput.value = arr[i].title;
-            tagInput.value = arr[i].tag;
-
-            currentNoteId = thisDivId;
-            currentNote = arr[i];
-
-            //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
-            changeTheme(arr[i].theme);
-        }
-    }
+    //Kolla om noten som laddas har ett theme-värde. Isåfall, kör den aktuella theme-funktionen
+    changeTheme(savedNotes[index].theme);
 }
 
 const filterFav = onoff => {
@@ -548,7 +551,27 @@ const filterFav = onoff => {
 }
 
 
+function permanentlyRemoveNote() {
+    document.querySelectorAll('.del-checkbox:checked').forEach(deleteItem => {
+        index = deletedNotes.findIndex(x => x.id == deleteItem.closest('.preDivDel').id)
+        deletedNotes.splice(index, 1);
+    })
 
+    localStorage.setItem("deletedNotes", JSON.stringify(deletedNotes));
+    updateArrRebuild();
+}
+function restoreDeletedNote() {
+    document.querySelectorAll('.del-checkbox:checked').forEach(deleteItem => {
+        index = deletedNotes.findIndex(x => x.id == deleteItem.closest('.preDivDel').id)
+
+        savedNotes.push(deletedNotes[index]);
+        deletedNotes.splice(index, 1);
+
+    })
+    localStorage.setItem("deletedNotes", JSON.stringify(deletedNotes));
+    localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
+    updateArrRebuild();
+}
 const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     deletedNotes.push(savedNotes[index]);
@@ -603,19 +626,20 @@ searchInput.addEventListener('input', e => {
             let points = 0;
 
             if (noteObj.text.includes(searchedWord)) {
-                points += 4;
+                points += 50;
             }
             else if (noteObj.text.startsWith(searchedWord)) {
-                points += 3;
+                points += 20;
             }
             else if (noteObj.title.includes(searchedWord)) {
-                points += 2;
+                points += 5;
             }
             else if (noteObj.title.startsWith(searchedWord)) {
                 points += 1;
             }
             return { ...noteObj, points };
         }).sort((a, b) => b.points - a.points);
+
 
         //Här är rankedSearch en uppdaterad array med alla önskade note i sig som obj
         //Här bygger vi upp previewfönstret med de notes som matchat sökningen

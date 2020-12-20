@@ -59,15 +59,15 @@ function buildPreviewWindDel(renderedList) {
 
 function noteTemplateDel(note) {
     const preDivDel = document.createElement("div");
-    preDivDel.innerHTML = `<div class="title-input-cont"><h3>${note.title.substr(0, 20)}</h3>
-    <input type="checkbox" name="del-checkbox" class="del-checkbox">
+    preDivDel.innerHTML = `<label for="check-${note.id}"><div class="title-input-cont"><h3>${note.title.substr(0, 20)}</h3>
+    <input type="checkbox" name="del-checkbox" id="check-${note.id}" class="del-checkbox">
     </div>
     <div class="button">
     </div>
     <p>${note.text.substr(0, 70)} ...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
-    </div>`;
+    </div></label>`;
     preDivDel.setAttribute('class', 'preDivDel');
 
     preDivDel.setAttribute('id', note.id);
