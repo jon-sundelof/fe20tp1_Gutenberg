@@ -826,7 +826,9 @@ nav i{
      .tagDown-content a:hover {background-color: #ddd}
      
      /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-     .tag-show {display:block;}
+     .tag-show {
+        display: block !important;
+    }
      /* ====================TAG DROPDOWN ENDS====================*/
    
 
@@ -837,6 +839,8 @@ nav i{
      /* SATS-WIDOW */
 
      .exit-stats{
+        margin-top: 1.4vh;
+
          border: none;
          width: 150px;
          height: 30px;
@@ -926,7 +930,9 @@ nav i{
          margin-top: 5%;
          font-size: 1.6em;
      }
-
+     .exit-stats .fa-caret-square-left{
+         font-size: 4em;
+     }
 
      .fa-snowflake {
         color: #fff;
@@ -1011,6 +1017,10 @@ nav i{
     
     .del-all-notes button{
         margin-right: 10px;
+        padding: 4px 15px 4px 15px;
+        border-radius: 10px;
+        color: white;
+        background-color: var(--color3grey);
     }
 
     .no-notes-warning{
