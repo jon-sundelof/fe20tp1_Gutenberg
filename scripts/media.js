@@ -17,7 +17,7 @@ function openNav() {
 }
 
 function closeNav() {
-    
+
   document.querySelector("nav").style.width = "0px";
   document.querySelector("nav").style.display = "none";
   document.querySelector("nav").style.right = "0";
@@ -32,15 +32,18 @@ function handle1000px(e) {
   if (e.matches) {
     document.querySelector("aside").style.cssText = "position: relative; left: 0px; z-index: 10;";
     document.querySelector("main").style.cssText = "position: static; z-index: 10;";
-    document.querySelector("nav").style.cssText = "position: static; left: 0px; z-index: 10; display: flex;";
+    document.querySelector("nav").style.cssText = "position: relative; left: 0px; z-index: 10; display: flex;";
 
-    
-  }else{
+
+  } else {
     document.querySelector("nav").style.cssText = "display: none; z-index: 10;";
     closeNav()
   }
 }
+mediaQuery.addListener(handle1000px);
 
-function toggleMain(){
+
+
+function toggleMain() {
   document.querySelector("main").classList.toggle('mobile-main')
 }
