@@ -804,15 +804,6 @@ nav i{
        display: inline-block;
        width: 100%;
      }
-     /* Dropdown Content (Hidden by Default) */
-     .tagDown-content {
-       display: none;
-       position: relative;
-       background-color: var(--color3grey);
-       min-width: 160px;
-       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-       z-index: 1;
-     }
      
      /* Links inside the dropdown */
      .tagDown-content a {
@@ -826,9 +817,21 @@ nav i{
      .tagDown-content a:hover {background-color: #ddd}
      
      /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+     
+     .show-tags{
+         display: block !important;
+     }
+
      .tag-show {
-        display: block !important;
+        display: none;
+        position: relative;
+        background-color: var(--color3grey);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1;
     }
+
+  
      /* ====================TAG DROPDOWN ENDS====================*/
    
 

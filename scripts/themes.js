@@ -5,8 +5,8 @@
 //editorTheme points to the currently opened editor
 let editorTheme = editor.root;
 let tagBtn = document.querySelector(".tag-btn");
-let tagDivDrop = document.querySelector('.tagDown-content');
-let tagListner = document.querySelector('.tagDown-content');
+let tagDivDrop = document.querySelector('#myTagDown');
+let tagListner = document.querySelector('#myTagDown');
 let removedDup;
 const showAllNotes = document.querySelector('#show-all-notes');
 const settingsBtn = document.querySelector('.settings');
@@ -15,6 +15,9 @@ const settingsBtn = document.querySelector('.settings');
 /***************************************************************************/
 /* ============================ EVENTLISTENERS! ===========================*/
 /***************************************************************************/
+function settingsFunc() {
+    document.getElementById("myDropuptwo").classList.toggle("settings-show");
+}
 
 themesBtn.addEventListener("click", themesFunc);
 formalBtn.addEventListener('click', () => {
@@ -47,7 +50,6 @@ window.addEventListener("click", event => {
 });
 
 
-tagListner.addEventListener('click', runTagInSearch);
 
 showAllNotes.addEventListener('click', updateArrRebuild);
 showAllNotes.addEventListener('click', () => {
@@ -68,16 +70,16 @@ window.addEventListener("click", event => {
             }
         }
     }
-});
+}); 
 
 
 /***************************************************************************/
 /* ============================ FUNCTIONS ================================ */
 /***************************************************************************/
 
-function checkIfNoteHasTheme() {
-    //LÖS DETTA!!!!!!!!!!!!!!!!!!!!!
-};
+// function checkIfNoteHasTheme() {
+//     //LÖS DETTA!!!!!!!!!!!!!!!!!!!!!
+// };
 
 function changeTheme(themeNum) {
     //If there is no active note, a new note is created.
@@ -122,38 +124,14 @@ function removeDuplicatesBy(keyFn, array) {
     });
 }
 
-// window.addEventListener("click", e =>{
-//     console.log("är inte tagbtn")
-//     if(!e.target.classList.contains("tag-btn")){
-//         document.querySelector(".tagDown-content")
-
-//     }
-// })
-
-// Close the dropdown menu (tag) if user clicks outside of it
-window.addEventListener("click", (event) => {
-    if (!event.target.matches('.tag-btn')) {
-        let dropdowns = document.getElementsByClassName("tagDown-content");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('tag-show')) {
-                openDropdown.classList.remove('tag-show');                
-            }
-        }
-    }
-});
-
-
 function tagFunc() {
-  /*    
+    document.querySelector("#myTagDown").classList.toggle("show-tags");
+    
     let nodes = document.querySelectorAll(".tagBtnClass");
-    console.log(nodes);
     for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
-    } */
-
-    
+    }
+     
  removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
 
     for (let i = 0; i < removedDup.length; i++) {
@@ -163,51 +141,85 @@ function tagFunc() {
             button.classList.add("tagBtnClass");
             button.setAttribute("id", "dropdown-" + i)
             button.innerHTML += `<i id="nav-tag-dop" class="fas fa-tag"></i> ${removedDup[i].tag}`
-
             tagBtn.appendChild(button);
+
+
+            /* tagBtn.addEventListener('click', tagSearch); */
+
+          /*   tagBtn.addEventListener('click', (e) => {
+                id = e.target.closest(".tagBtnClass").innerText
+                runTagInSearch(e)       
+            }) */
             
-
-
-            /* document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + removedDup[i].tag + '</button>'; */
         }
-        document.getElementById("myTagDown").classList.toggle("tag-show");
     }
 }
 
+window.addEventListener("click", (event) => {
+    if (!event.target.matches('.tag-btn')) { 
+        let dropdowns = document.querySelector(".tag-show");
+            
+            if (dropdowns.classList.contains('show-tags')) {
+                dropdowns.classList.remove('show-tags');   
+        
+        } 
+    } 
+}); 
 
-function runTagInSearch(e) {
+/* =========================== ONUR start ===========================*/
+/* 
+function searchNotes(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
 
+    return savedNotes.filter(func)
+}
+
+const tagBtnTwo = document.querySelectorAll('.tagBtnClass') 
+
+
+tagBtnTwo.addEventListener("click", (e) => {
+
+    let tagText = e.target.closest(".tagBtnClass").innerHTML;
+
+    if (tagText) {
+        tagList = searchTag(tagText, x => x.tag)
+    } else {
+        tagList = savedNotes;
+    }
+    notePreview.innerHTML = "";
+    buildPreviewWind(tagList);
+
+})
+ */
+/* =========================== ONUR slut ===========================*/
+
+let foundNotes;
+
+function searchForTag(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
+    return savedNotes.filter(func)
+}
+
+
+
+tagListner.addEventListener('click', runTagInSearch);
+
+function runTagInSearch (e){
+   let thisButtonId = e.target.closest('#myTagDown > button').id;
+   let buttonTagText = document.getElementById(thisButtonId).innerText;
+  
+   showAllNotes.classList.add("show-tag-btn");
+   showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " + buttonTagText; 
 
     notePreview.innerHTML = "";
-    if (buttonTagText.length >= 1) {
-        let foundNotes = searchNotes(buttonTagText);
+    console.log(buttonTagText);
+    foundNotes = searchForTag("hästar");
 
-        const rankedSearch = foundNotes.map(noteObj => {
-
-            let points = 0;
-
-            if (noteObj.text.includes(buttonTagText)) {
-                points += 4;
-            }
-            if (noteObj.text.startsWith(buttonTagText)) {
-                points += 3;
-            }
-            if (noteObj.title.includes(buttonTagText)) {
-                points += 2;
-            }
-            if (noteObj.title.startsWith(buttonTagText)) {
-                points += 1;
-            }
-            return { ...noteObj, points };
-        }).sort((a, b) => b.points - a.points);
-
-        buildPreviewWind(rankedSearch);
-    } else {
-        // anv har tömt sökrutan
-        buildPreviewWind(savedNotes)
-    }
+    
+    console.log(foundNotes);
+    
+    buildPreviewWind(foundNotes); 
 }
-
-function settingsFunc() {
-    document.getElementById("myDropuptwo").classList.toggle("settings-show");
-}
+/**************************************/
+showAllNotes.addEventListener('click', updateArrRebuild);
+showAllNotes.addEventListener('click', () => {
+showAllNotes.classList.remove("show-tag-btn");
+})
