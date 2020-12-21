@@ -1,5 +1,5 @@
 /***************************************************************************/
-/* ============================== VARIABLES ============================== */ 
+/* ============================== VARIABLES ============================== */
 /***************************************************************************/
 
 //editorTheme points to the currently opened editor
@@ -13,7 +13,7 @@ const settingsBtn = document.querySelector('.settings');
 
 
 /***************************************************************************/
-/* ============================ EVENTLISTENERS! ===========================*/ 
+/* ============================ EVENTLISTENERS! ===========================*/
 /***************************************************************************/
 
 themesBtn.addEventListener("click", themesFunc);
@@ -30,7 +30,7 @@ defaultBtn.addEventListener('click', () => {
     changeTheme(themeNum)
 });
 
-tagBtn.addEventListener("click", tagFunc); 
+tagBtn.addEventListener("click", tagFunc);
 
 // Close the dropdown menu if user clicks outside of it
 window.addEventListener("click", event => {
@@ -47,7 +47,7 @@ window.addEventListener("click", event => {
 });
 
 // Close the dropdown menu (tag) if user clicks outside of it
-window.addEventListener("click", (event)  => {  
+window.addEventListener("click", (event) => {
     if (!event.target.matches('.tag-btn')) {
         let dropdowns = document.getElementsByClassName("tagDown-content");
         let i;
@@ -85,7 +85,7 @@ window.addEventListener("click", event => {
 
 
 /***************************************************************************/
-/* ============================ FUNCTIONS ================================ */ 
+/* ============================ FUNCTIONS ================================ */
 /***************************************************************************/
 
 function checkIfNoteHasTheme() {
@@ -106,7 +106,7 @@ function changeTheme(themeNum) {
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
         }
     }
-    
+
     //If user clicks on formal button, editorTheme gets an id of #formal, hence activating a CSS rule-set
     if (currentNote.theme == 1) {
         editorTheme.setAttribute('id', 'formal');
@@ -114,7 +114,7 @@ function changeTheme(themeNum) {
     } else if (currentNote.theme == 2) {
         editorTheme.setAttribute('id', 'playful');
     } else if (currentNote.theme == 3) {
-       /*  editorTheme.setAttribute('id', 'xmas'); */
+        /*  editorTheme.setAttribute('id', 'xmas'); */
     } else if (currentNote.theme == 0) {
         editorTheme.setAttribute('id', '');
     }
@@ -128,7 +128,7 @@ function themesFunc() {
 
 function removeDuplicatesBy(keyFn, array) {
     let mySet = new Set();
-    return array.filter(function(x) {
+    return array.filter(function (x) {
         let key = keyFn(x), isNew = !mySet.has(key);
         if (isNew) mySet.add(key);
         return isNew;
@@ -136,34 +136,45 @@ function removeDuplicatesBy(keyFn, array) {
 }
 
 function tagFunc() {
+    console.log("Hej")
     let nodes = document.querySelectorAll(".tagBtnClass");
+    console.log(nodes);
     for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
     }
-    
     removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
-    
-    for (let i = 0; i < removedDup.length; i++) {
-        if(!removedDup[i].tag == ""){
 
-        document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + removedDup[i].tag + '</button>';
-       }
+    for (let i = 0; i < removedDup.length; i++) {
+        if (!removedDup[i].tag == "") {
+            let tagBtn = document.querySelector('#myTagDown');
+            let button = document.createElement("button");
+            button.classList.add("tagBtnClass");
+            button.setAttribute("id", "dropdown-" + i)
+            console.log(button)
+            button.innerHTML += `<i id="nav-tag-dop" class="fas fa-tag"></i> ${removedDup[i].tag}`
+
+            tagBtn.appendChild(button);
+
+
+            /* document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + removedDup[i].tag + '</button>'; */
+        }
         document.getElementById("myTagDown").classList.toggle("tag-show");
-     }
+    }
 }
 
 
-function runTagInSearch (e){
+function runTagInSearch(e) {
+    console.log("Nämen")
     let thisButtonId = e.target.closest('.tagDown-content > button').id;
     let buttonTagText = document.getElementById(thisButtonId).innerText;
-   
+
     showAllNotes.classList.add("show-tag-btn");
-    showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " +buttonTagText; 
+    showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " + buttonTagText;
 
 
     notePreview.innerHTML = "";
     if (buttonTagText.length >= 1) {
-       let foundNotes = searchNotes(buttonTagText);
+        let foundNotes = searchNotes(buttonTagText);
 
         const rankedSearch = foundNotes.map(noteObj => {
 
@@ -181,13 +192,13 @@ function runTagInSearch (e){
             if (noteObj.title.startsWith(buttonTagText)) {
                 points += 1;
             }
-            return {...noteObj, points};
+            return { ...noteObj, points };
         }).sort((a, b) => b.points - a.points);
 
-       buildPreviewWind(rankedSearch);
+        buildPreviewWind(rankedSearch);
     } else {
-       // anv har tömt sökrutan
-       buildPreviewWind(savedNotes)
+        // anv har tömt sökrutan
+        buildPreviewWind(savedNotes)
     }
 }
 

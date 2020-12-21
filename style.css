@@ -826,7 +826,9 @@ nav i{
      .tagDown-content a:hover {background-color: #ddd}
      
      /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-     .tag-show {display:block;}
+     .tag-show {
+        display: block !important;
+    }
      /* ====================TAG DROPDOWN ENDS====================*/
    
 
@@ -837,6 +839,8 @@ nav i{
      /* SATS-WIDOW */
 
      .exit-stats{
+        margin-top: 1.4vh;
+
          border: none;
          width: 150px;
          height: 30px;
