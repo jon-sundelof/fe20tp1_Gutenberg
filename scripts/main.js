@@ -621,7 +621,8 @@ searchInput.addEventListener('input', e => {
 
         //Här körs searchNotes med sökordet som arg och resultatet o blir variabeln foundNotes. foundNotes är en array med de filtrerade notesen som obj inuti
         let foundNotes = searchNotes(searchedWord);
-
+        
+        console.log(foundNotes);
 
         //map låter dig köra önskad funktion på alla element i en array och returnerar sedan en ny array med "resultatet"
         //Ju lägre siffra desto längre upp i previewfönstret hamnar noten
