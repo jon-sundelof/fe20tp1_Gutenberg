@@ -1,9 +1,21 @@
+/***************************************************************************/
+/* ============================== VARIABLES ============================== */ 
+/***************************************************************************/
 
-/* ==================== VARIABLES ====================*/
 //editorTheme points to the currently opened editor
 let editorTheme = editor.root;
+let tagBtn = document.querySelector(".tag-btn");
+let tagDivDrop = document.querySelector('.tagDown-content');
+let tagListner = document.querySelector('.tagDown-content');
+let removedDup;
+const showAllNotes = document.querySelector('#show-all-notes');
+const settingsBtn = document.querySelector('.settings');
 
-/* ==================== EVENT LISTENERS ====================*/
+
+/***************************************************************************/
+/* ============================ EVENTLISTENERS! ===========================*/ 
+/***************************************************************************/
+
 themesBtn.addEventListener("click", themesFunc);
 formalBtn.addEventListener('click', () => {
     let themeNum = 1;
@@ -17,18 +29,70 @@ defaultBtn.addEventListener('click', () => {
     let themeNum = 0;
     changeTheme(themeNum)
 });
-/* xmasBtn.addEventListener('click', () => {
-    let themeNum = 3;
-    changeTheme(themeNum)
-}); */
 
-/* ==================== FUNCTIONS ====================*/
+tagBtn.addEventListener("click", tagFunc); 
+
+// Close the dropdown menu if user clicks outside of it
+window.addEventListener("click", event => {
+    if (!event.target.matches('.themes')) {
+        let dropdowns = document.getElementsByClassName("dropup-content");
+        let i;
+        for (i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('theme-show')) {
+                openDropdown.classList.remove('theme-show');
+            }
+        }
+    }
+});
+
+// Close the dropdown menu (tag) if user clicks outside of it
+window.addEventListener("click", (event)  => {  
+    if (!event.target.matches('.tag-btn')) {
+        let dropdowns = document.getElementsByClassName("tagDown-content");
+        let i;
+        for (i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('tag-show')) {
+                openDropdown.classList.remove('tag-show');
+            }
+        }
+    }
+});
+
+tagListner.addEventListener('click', runTagInSearch);
+
+showAllNotes.addEventListener('click', updateArrRebuild);
+showAllNotes.addEventListener('click', () => {
+    showAllNotes.classList.remove("show-tag-btn");
+});
+
+settingsBtn.addEventListener("click", settingsFunc);
+
+// Close the dropdown menu if user clicks outside of it
+window.addEventListener("click", event => {
+    if (!event.target.matches('.settings')) {
+        let dropdowns = document.getElementsByClassName("dropup-content-two");
+        let i;
+        for (i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('settings-show')) {
+                openDropdown.classList.remove('settings-show');
+            }
+        }
+    }
+});
+
+
+/***************************************************************************/
+/* ============================ FUNCTIONS ================================ */ 
+/***************************************************************************/
+
 function checkIfNoteHasTheme() {
     //LÖS DETTA!!!!!!!!!!!!!!!!!!!!!
 };
 
 function changeTheme(themeNum) {
-
     //If there is no active note, a new note is created.
     if (currentNote == undefined) {
         createNote();
@@ -62,25 +126,6 @@ function themesFunc() {
     document.getElementById("myDropup").classList.toggle("theme-show");
 }
 
-// Close the dropdown menu if user clicks outside of it
-window.addEventListener("click", event => {
-    if (!event.target.matches('.themes')) {
-        let dropdowns = document.getElementsByClassName("dropup-content");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('theme-show')) {
-                openDropdown.classList.remove('theme-show');
-            }
-        }
-    }
-})
-///////////////////////////////////////////////////////////////////////
-let tagBtn = document.querySelector(".tag-btn");
-let tagDivDrop = document.querySelector('.tagDown-content');
-
-tagBtn.addEventListener("click", tagFunc); 
-
 function removeDuplicatesBy(keyFn, array) {
     let mySet = new Set();
     return array.filter(function(x) {
@@ -89,8 +134,6 @@ function removeDuplicatesBy(keyFn, array) {
         return isNew;
     });
 }
-
-let removedDup;
 
 function tagFunc() {
     let nodes = document.querySelectorAll(".tagBtnClass");
@@ -109,32 +152,8 @@ function tagFunc() {
      }
 }
 
-// Close the dropdown menu if user clicks outside of it
 
-window.onclick = function (event) {
-    if (!event.target.matches('.tag-btn')) {
-        let dropdowns = document.getElementsByClassName("tagDown-content");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('tag-show')) {
-                
-                openDropdown.classList.remove('tag-show');
-            }
-        }
-    }
- }
-
-
- /******************************************/
-
-
- let tagListner = document.querySelector('.tagDown-content');
-
- tagListner.addEventListener('click', runTagInSearch);
-
-
- function runTagInSearch (e){
+function runTagInSearch (e){
     let thisButtonId = e.target.closest('.tagDown-content > button').id;
     let buttonTagText = document.getElementById(thisButtonId).innerText;
    
@@ -142,66 +161,36 @@ window.onclick = function (event) {
     showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " +buttonTagText; 
 
 
-   notePreview.innerHTML = "";
-   if (buttonTagText.length >= 1) {
+    notePreview.innerHTML = "";
+    if (buttonTagText.length >= 1) {
        let foundNotes = searchNotes(buttonTagText);
 
-       const rankedSearch = foundNotes.map(noteObj => {
+        const rankedSearch = foundNotes.map(noteObj => {
 
-           let points = 0;
+            let points = 0;
 
-           if (noteObj.text.includes(buttonTagText)) {
-               points += 4;
-           }
-           if (noteObj.text.startsWith(buttonTagText)) {
-               points += 3;
-           }
-           if (noteObj.title.includes(buttonTagText)) {
-               points += 2;
-           }
-           if (noteObj.title.startsWith(buttonTagText)) {
-               points += 1;
-           }
-           return {...noteObj, points};
-       }).sort((a, b) => b.points - a.points);
+            if (noteObj.text.includes(buttonTagText)) {
+                points += 4;
+            }
+            if (noteObj.text.startsWith(buttonTagText)) {
+                points += 3;
+            }
+            if (noteObj.title.includes(buttonTagText)) {
+                points += 2;
+            }
+            if (noteObj.title.startsWith(buttonTagText)) {
+                points += 1;
+            }
+            return {...noteObj, points};
+        }).sort((a, b) => b.points - a.points);
 
        buildPreviewWind(rankedSearch);
-   } else {
+    } else {
        // anv har tömt sökrutan
        buildPreviewWind(savedNotes)
-   }
- }
- /**************************************/
- const showAllNotes = document.querySelector('#show-all-notes');
- showAllNotes.addEventListener('click', updateArrRebuild);
- showAllNotes.addEventListener('click', () => {
-    showAllNotes.classList.remove("show-tag-btn");
- })
-
- /******************************************************************/
-
-
-
- /*********************** Settings-Drop-Up start ********************/
-
-const settingsBtn = document.querySelector('.settings')
- settingsBtn.addEventListener("click", settingsFunc);
-
- function settingsFunc() {
-    document.getElementById("myDropuptwo").classList.toggle("settings-show");
+    }
 }
 
-// Close the dropdown menu if user clicks outside of it
-window.addEventListener("click", event => {
-    if (!event.target.matches('.settings')) {
-        let dropdowns = document.getElementsByClassName("dropup-content-two");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('settings-show')) {
-                openDropdown.classList.remove('settings-show');
-            }
-        }
-    }
-})
-///////////////////////////////////////////////////////////////////////
+function settingsFunc() {
+    document.getElementById("myDropuptwo").classList.toggle("settings-show");
+}

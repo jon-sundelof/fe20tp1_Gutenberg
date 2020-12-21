@@ -1,6 +1,6 @@
 ![Quire logo](pictures/logo-feather2.png)
-*by Gutenberg*
 
+# *by Gutenberg*
 
 A rich text editor where you can create, customize and save notes.
 
@@ -24,10 +24,11 @@ This is a school assignment we did when studying at kyh in Stockholm.
 - Save them in local storage
 - Use **templates** with pre-written text and pre-assigned formats
 - Change the **theme** of your text after you've written it
+- Print your notes
 
 ### Screenshots
 
-![Quire logo](pictures/quireScreenshot.png)
+![Screenshot of Quire](pictures/quireScreenshot18dec.png)
 
 ### Trello
 
@@ -35,7 +36,7 @@ This is a school assignment we did when studying at kyh in Stockholm.
 
 ### Credits
 
-Wehen making this text editor, we took inspiration from:
+When making this text editor, we took inspiration from:
 
 - [Evernote](https://evernote.com/)
 - [Medium](https://medium.com/)
