@@ -192,13 +192,7 @@ tagBtnTwo.addEventListener("click", (e) => {
  */
 /* =========================== ONUR slut ===========================*/
 
-let foundNotes;
-
-function searchForTag(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
-    return savedNotes.filter(func)
-}
-
-
+/* =========================== Karl + Jon 21 dec START =========================== */
 
 tagListner.addEventListener('click', runTagInSearch);
 
@@ -211,7 +205,7 @@ function runTagInSearch (e){
 
     notePreview.innerHTML = "";
     console.log(buttonTagText);
-    foundNotes = searchForTag("hästar");
+    let foundNotes = searchNotes(buttonTagText);
 
     
     console.log(foundNotes);
@@ -223,3 +217,5 @@ showAllNotes.addEventListener('click', updateArrRebuild);
 showAllNotes.addEventListener('click', () => {
 showAllNotes.classList.remove("show-tag-btn");
 })
+
+/* =========================== Karl + Jon 21 dec SLUT =========================== */
