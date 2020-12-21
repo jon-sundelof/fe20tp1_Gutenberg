@@ -71,8 +71,8 @@ const favInputChecked = document.querySelector("input:checked")
 const els = document.getElementsByClassName('preDiv active');
 
 //Eventlisteners-----
-document.querySelector('.recyc-del button:last-child').addEventListener("click",permanentlyRemoveNote)
-document.querySelector('.recyc-del button:first-child').addEventListener("click",restoreDeletedNote)
+document.querySelector('.recyc-del button:last-child').addEventListener("click", permanentlyRemoveNote)
+document.querySelector('.recyc-del button:first-child').addEventListener("click", restoreDeletedNote)
 
 //Eventlisteners-Slut----
 
@@ -279,9 +279,9 @@ notePreview.addEventListener('click', e => {
             removeNote(id)
 
             e.target.closest('div').remove()
-            if(savedNotes.length > 0)
-            pushToEditor(savedNotes[(savedNotes.length - 1)].id)
-        
+            if (savedNotes.length > 0)
+                pushToEditor(savedNotes[(savedNotes.length - 1)].id)
+
             //
         } else {
             return null;
@@ -332,7 +332,7 @@ function removeClassActive() {
 }
 
 function buildPreviewWind(renderedList) {
-    
+
     for (let i = 0; i < renderedList.length; i++) {
         const preDiv = noteTemplate(renderedList[i])
         notePreview.prepend(preDiv);
@@ -341,7 +341,7 @@ function buildPreviewWind(renderedList) {
 
 function updateArrRebuild() {
     // console.log("updateArrrebuild")
-    savedNotes.sort((a,b)=> a.id - b.id );
+    savedNotes.sort((a, b) => a.id - b.id);
     for (let i = 0; i < savedNotes.length; i++) {
         if (currentNoteId == savedNotes[i].id.toString()) {
             savedNotes[i].title = titleInput.value;
@@ -390,8 +390,6 @@ function createNote() {
         changeTheme(newNote.theme);
         editorTheme.setAttribute('id', '');
         editor.setText("");
-
-        //updateArrRebuild()
     }
     else if (favInput.checked == true) {
         const datum = new Date();
@@ -413,7 +411,7 @@ function createNote() {
         editorTheme.setAttribute('id', '');
         editor.setText("");
 
-        //updateArrRebuild()
+        favList.push(newNote)
     }
 }
 
@@ -498,7 +496,7 @@ function noteTemplate(note) {
     preDiv.setAttribute('class', 'preDiv');
 
     preDiv.addEventListener('click', event => {
-        
+
         if (!event.target.classList.contains("fas")) {
             toggleMain()
             if (favInput.checked == false) {
@@ -526,7 +524,7 @@ const favourite = note => {
 const pushToEditor = (thisDivId) => {
     //console.log("Inside push to editor")
     //handle click
-    
+
     index = savedNotes.findIndex(x => x.id == thisDivId)
     editor.setContents(savedNotes[index].content);
     titleInput.value = savedNotes[index].title;
@@ -576,6 +574,12 @@ const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     deletedNotes.push(savedNotes[index]);
     savedNotes.splice(index, 1);
+
+    if (favInput.checked == true) {
+        index = favList.findIndex(x => x.id == id)
+        deletedNotes.push(favList[index]);
+        favList.splice(index, 1);
+    }
 
     if (currentNoteId == id) {
         editorTheme.setAttribute('id', '');
