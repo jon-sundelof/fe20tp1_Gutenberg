@@ -46,19 +46,6 @@ window.addEventListener("click", event => {
     }
 });
 
-// Close the dropdown menu (tag) if user clicks outside of it
-window.addEventListener("click", (event) => {
-    if (!event.target.matches('.tag-btn')) {
-        let dropdowns = document.getElementsByClassName("tagDown-content");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('tag-show')) {
-                openDropdown.classList.remove('tag-show');
-            }
-        }
-    }
-});
 
 tagListner.addEventListener('click', runTagInSearch);
 
@@ -135,14 +122,39 @@ function removeDuplicatesBy(keyFn, array) {
     });
 }
 
+// window.addEventListener("click", e =>{
+//     console.log("är inte tagbtn")
+//     if(!e.target.classList.contains("tag-btn")){
+//         document.querySelector(".tagDown-content")
+
+//     }
+// })
+
+// Close the dropdown menu (tag) if user clicks outside of it
+window.addEventListener("click", (event) => {
+    if (!event.target.matches('.tag-btn')) {
+        let dropdowns = document.getElementsByClassName("tagDown-content");
+        let i;
+        for (i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('tag-show')) {
+                openDropdown.classList.remove('tag-show');                
+            }
+        }
+    }
+});
+
+
 function tagFunc() {
-    console.log("Hej")
+  /*    
     let nodes = document.querySelectorAll(".tagBtnClass");
     console.log(nodes);
     for (let i = 0; i < nodes.length; i++) {
         nodes[i].parentNode.removeChild(nodes[i]);
-    }
-    removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
+    } */
+
+    
+ removedDup = removeDuplicatesBy(x => x.tag, savedNotes);
 
     for (let i = 0; i < removedDup.length; i++) {
         if (!removedDup[i].tag == "") {
@@ -150,10 +162,10 @@ function tagFunc() {
             let button = document.createElement("button");
             button.classList.add("tagBtnClass");
             button.setAttribute("id", "dropdown-" + i)
-            console.log(button)
             button.innerHTML += `<i id="nav-tag-dop" class="fas fa-tag"></i> ${removedDup[i].tag}`
 
             tagBtn.appendChild(button);
+            
 
 
             /* document.getElementById("myTagDown").innerHTML += '<button class="tagBtnClass" id="' + i + '"><i id="nav-tag-dop" class="fas fa-tag"></i>' + removedDup[i].tag + '</button>'; */
@@ -164,12 +176,6 @@ function tagFunc() {
 
 
 function runTagInSearch(e) {
-    console.log("Nämen")
-    let thisButtonId = e.target.closest('.tagDown-content > button').id;
-    let buttonTagText = document.getElementById(thisButtonId).innerText;
-
-    showAllNotes.classList.add("show-tag-btn");
-    showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " + buttonTagText;
 
 
     notePreview.innerHTML = "";
