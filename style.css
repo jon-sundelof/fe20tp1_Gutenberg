@@ -264,10 +264,7 @@ p.pretime{
     margin-left: 15px;
     font-size: 12px;
 }
-#tag-in-pre-div{
-    display: flex;
-    justify-content: space-between;
-}
+
 
 .preview-notes::-webkit-scrollbar {
     width: 10px;
