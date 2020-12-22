@@ -13,8 +13,6 @@
    --xmasvisblogo: none;
    --delhidetop: block;
    --delhide: none;
-   
-   
 }
 
 *{
@@ -53,12 +51,14 @@ button {
     outline: none;
 }
 
-
-/* ???????????? */
 .hideMe{
     display: none;
 }
-/* -------------- */
+
+aside div{
+    padding-left: 15px;
+    padding-right: 15px;
+}
 
 aside{
     width: 30%;
@@ -79,11 +79,9 @@ aside{
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */   
+    
+    
 }
-aside div{
-    padding:10px ;
-}
-
 
 aside .filter{
     margin: 0 auto;
@@ -108,9 +106,23 @@ aside .filter{
     border-bottom: 1px solid rgb(211, 211, 211);
     font-size: 14px;
     width: 100%;
-   
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    min-height: 17vh;
+    padding-left: 1vw;
+    padding-right: 5vw;
+    
     word-wrap: break-word;
     cursor: pointer;
+}
+.preview-notes div p.pretime{
+    padding: 4px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-right: 5vw;
 }
 .preview-notes > div:hover{
     background-color: var(--hovercolor); 
@@ -122,6 +134,8 @@ aside .filter{
 }
 .preview-notes div h3{
     color: var(--secondarycolor);
+    margin-top: 1vh;
+    font-size: 20px;
 }
 .preview-notes .star{
     position: absolute;
@@ -156,7 +170,7 @@ aside .filter{
     cursor: pointer;
     color: rgb(255, 101, 101);
 }
-/* Toggle alla-favo--------------------- */
+/* Toggle all favourites--------------------- */
 .filter label {
     justify-self: self-end;
     height: 30px;
@@ -215,10 +229,12 @@ aside .filter{
     color: white;
     
 }
+
 /* ______________________________________ */
 .search-container{
 width: 100%;
 } 
+
 #search {
     margin: 10px auto;
     border-radius: 20px;
@@ -240,9 +256,6 @@ width: 100%;
     align-items: center;
     padding-bottom: 30px;
 }
-.preDivTagCon{
-    display: flex;
-}
 #pretag{
     font-size: 10px;
     font-weight: bolder;
@@ -253,18 +266,18 @@ width: 100%;
 #show-all-notes:hover{
     background-color: rgb(89, 89, 89);
 }
-
-p.pretime{
-    padding: 5px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.582);
+.preDivTagCon{
+    display: flex;
+    align-items: center;
+    padding: 0;
+    /* margin-top: 5vh; */
+    margin-bottom: 1vh;
 }
-
-#preTag{
-    margin-left: 15px;
-    font-size: 12px;
+#tagPre{
+    position: unset;
+    font-size: 14px;
+    margin-left: 13px;
 }
-
 
 .preview-notes::-webkit-scrollbar {
     width: 10px;
@@ -281,12 +294,9 @@ p.pretime{
     
 }
 
-
 .active{
-
     border-left: 5px solid var(--color2orange) !important;
     /* transition: all 4s !important; */
-  
 }
 
 nav{
@@ -298,12 +308,12 @@ nav{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
     /* padding-bottom: 100px; */
     padding-left: 10px;
     padding-right: 10px;
 
     position: relative;
+    
 }
 
 .show-snow-man{
@@ -381,7 +391,7 @@ nav button, .templates{
 .clear-lc:hover{
     background-color: #b16161;
 }
-nav, button:hover, .templates:hover, .themes:hover{
+ button:hover, .templates:hover, .themes:hover{
     cursor: pointer;
     background-color: rgb(58, 58, 58);
 }
@@ -421,38 +431,14 @@ nav, button:hover, .templates:hover, .themes:hover{
     font-size: 20px;
 }
 
-/* div#myDropdown.dropdown-content
-{
-    background-color: var(--color3grey);
-}
- */
-
-/* nav > button > i{
-    float: left;
-} */
 
 nav img{
     width: 100%;
 }
 
-/* 
-nav .logo{
-   width: auto;
-    height: auto;
-    padding-top: 20px;
-    padding-bottom: 20px ;
-    border-bottom: 1px solid rgb(255, 255, 255);
-    margin-bottom: 20px;
-    filter: saturate(1); 
-
-    
-}
- */
 nav i{
     font-size: 2.5rem;
 }
-
-
 
 /* ====================TEMPLATES DROP DOWN start====================*/
 
@@ -487,7 +473,6 @@ nav i{
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
 /* ====================TEMPLATES DROP DOWN end====================*/
-
 
 /* Following segment is styling for first-time visit information. */
 
@@ -581,7 +566,6 @@ nav i{
     color: #333333cc;
 }
 
-
 #center-all{
     width:100%;
     height: 80%;
@@ -604,7 +588,6 @@ nav i{
     background-color: var(--primarycolor);
     z-index: 1;
 }
-
 
 #editor {
     position: relative;
@@ -657,15 +640,12 @@ nav i{
 }
 /* ------Scroll på editorn -SLUT */
 
-
 /* .ql-container{
     height: 85%;
 } */
 
-
 /* Specify our own scrolling container */
 /* #scrolling-container {
-
 
 /* Specify our own scrolling container */
 /* #scrolling-container {
@@ -674,7 +654,7 @@ nav i{
     overflow-y: auto;
   } */
 
-/* ====================THEMES DROP up start====================*/
+/* ====================THEMES DropDown START====================*/
 
 /* The container <div> - needed to position the dropdown content */
 
@@ -684,7 +664,6 @@ nav i{
  padding-left: 10px;
  
 }
-
 
 .themes, .trash-nav{
     text-align: start; 
@@ -718,18 +697,16 @@ nav i{
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .theme-show {display:block;}
-  /* ====================TEMPLATES DROP DOWN end====================*/
+  /* ====================TEMPLATES DropDown END====================*/
 
-
-
-  /* ====================SETTINGS DROPUP starts====================*/
-.dropuptwo {
+  /* ====================SETTINGS dropUp START====================*/
+    .dropuptwo {
     position: relative;
     display: inline-block;
     width: 100%;
   }
   /* Dropdown Content (Hidden by Default) */
-  .dropup-content-two {
+    .dropup-content-two {
     display: none;
     position: absolute;
     bottom: 45px;
@@ -766,8 +743,7 @@ nav i{
       margin-top: 0 auto;
       color: white;
   }
-  /* ====================Settings DROPUP end====================*/
-
+/* ====================SETTINGS dropUp END====================*/
 
 /* ======================== THEMES ====================== */
 #formal {
@@ -793,9 +769,7 @@ nav i{
     color: rgba(9, 255, 0, 0.507);
 }
 
-
-
-/* ====================TAG-DropDown start====================*/
+/* ====================TAG DropDown START====================*/
 
 /* The container <div> - needed to position the dropdown content */
 #nav-tag-dop{
@@ -814,13 +788,11 @@ nav i{
     position: relative;
 }
 
-.tag-btn{
+    .tag-btn{
        text-align: start;
        width: 100%;
    }
    
-
-
    .tag-down {
        position: relative;
        display: inline-block;
@@ -853,14 +825,8 @@ nav i{
         z-index: 1;
     }
 
-  
-     /* ====================TAG DROPDOWN ENDS====================*/
+     /* ====================TAG DropDown END====================*/
    
-
-
-
-
-
      /* SATS-WIDOW */
 
      .exit-stats{
@@ -884,7 +850,6 @@ nav i{
      .stats-header-con{
       display: flex;
      /*  align-items: center; */
- 
      }
 
   .exit-stats , .stats-header-con h1{
@@ -892,8 +857,6 @@ nav i{
     
      }
 
-    
-     
      .show-stats{
          display: flex !important;
      }

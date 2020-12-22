@@ -205,16 +205,22 @@ exitStatsBtn.addEventListener('click', () => {
     statsCon.classList.remove('show-stats')
 });
 
+
+let noNoteWar = false;
 trashNavBtn.addEventListener('click', () => {
     if (deletedNotes.length <= 0) {
+        if(noNoteWar == false){
         let warSpan = document.createElement('span');
         warSpan.setAttribute('class', 'no-notes-warning')
         warSpan.innerHTML = " No Notes";
         trashNavBtn.append(warSpan);
+        noNoteWar = true; 
         setTimeout(function () {
             trashNavBtn.removeChild(warSpan);
+            noNoteWar = false;
         }, 3000);
         return;
+    }
     } else {
         buildPreviewWindDel(deletedNotes);
         const theme = themes[trashNavBtn.dataset.theme];
@@ -502,6 +508,7 @@ function noteTemplate(note) {
     <p>${note.text.substr(0, 70)} ...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
+    <i id="tagPre" class="fas fa-tag"></i>
     <p id="preTag">${note.tag}</p>
     </div>
    
