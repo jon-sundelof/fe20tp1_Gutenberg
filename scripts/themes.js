@@ -50,13 +50,6 @@ window.addEventListener("click", event => {
 });
 
 
-
-/* showAllNotes.addEventListener('click', updateArrRebuild);
-showAllNotes.addEventListener('click', () => {
-    showAllNotes.classList.remove("show-tag-btn");
-}); */
-
-
 settingsBtn.addEventListener("click", settingsFunc);
 
 // Close the dropdown menu if user clicks outside of it
@@ -143,16 +136,6 @@ function tagFunc() {
             button.setAttribute("id", "dropdown-" + i)
             button.innerHTML += `<i id="nav-tag-dop" class="fas fa-tag"></i> ${removedDup[i].tag}`
             tagBtn.appendChild(button);
-
-
-
-            /* tagBtn.addEventListener('click', tagSearch); */
-
-          /*   tagBtn.addEventListener('click', (e) => {
-                id = e.target.closest(".tagBtnClass").innerText
-                runTagInSearch(e)       
-            }) */
-            
         }
     }
 }
@@ -194,48 +177,33 @@ tagBtnTwo.addEventListener("click", (e) => {
  */
 /* =========================== ONUR slut ===========================*/
 
+let tagWind = false;
+
 function searchForTag(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
     return savedNotes.filter(func)
 }
-
 
 tagListner.addEventListener('click', (e) => {
     let buttonTagText = e.target.closest('#myTagDown > button').innerText;
   
     showAllNotes.classList.add("show-tag-btn");
-    showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " + buttonTagText; 
+    showAllNotes.innerHTML = '<i id="tag-in-btn" class="fas fa-tag"></i>' + " " + buttonTagText + " " + '<i class="far fa-times-circle"></i>'; 
  
      notePreview.innerHTML = "";
-     console.log(buttonTagText);
-     foundNotes = searchNotes(buttonTagText);
- 
-     
-     console.log(foundNotes);
-     
+
+     buttonTagText = buttonTagText.trim();
+     foundNotes = searchForTag(buttonTagText);
      buildPreviewWind(foundNotes); 
+     tagWind = true;
 }); 
 
-
-/* function runTagInSearch (e){
- let thisButtonId = e.target.closest('#myTagDown > button').id; 
-  buttonTagText = document.getElementById(thisButtonId).innerText; 
-   
-   let buttonTagText = e.target.closest('#myTagDown > button').innerText;
-  
-   showAllNotes.classList.add("show-tag-btn");
-   showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " + buttonTagText; 
-
-    notePreview.innerHTML = "";
-    console.log(buttonTagText);
-    foundNotes = searchForTag(buttonTagText);
-
-    
-    console.log(foundNotes);
-    
-    buildPreviewWind(foundNotes); 
-}  */
 /**************************************/
-showAllNotes.addEventListener('click', updateArrRebuild);
+/* showAllNotes.addEventListener('click', updateArrRebuild); */
 showAllNotes.addEventListener('click', () => {
-showAllNotes.classList.remove("show-tag-btn");
+    
+    tagWind = false;
+    updateArrRebuild();
+    showAllNotes.classList.remove("show-tag-btn");
+
+
 })
