@@ -86,6 +86,7 @@ let currentNote;
 let savedNotes = [];
 let deletedNotes = [];
 let favList = [];
+let foundNotes = [];
 
 if (!localStorage.getItem('savedNotes') || localStorage.getItem('savedNotes').length < 0) {
     savedNotes = [];
@@ -367,18 +368,13 @@ function updateArrRebuild() {
 
     if (favInput.checked == true) {
         buildPreviewWind(favList);
-        console.log('fav')
     } else if (deleted == true) {
         buildPreviewWindDel(deletedNotes);
-        console.log('del')
     } else if (tagWind == true) {
         buildPreviewWind(foundNotes);
-        console.log('tag')
     } else {
         buildPreviewWind(savedNotes);
-        console.log('saved')
     }
-
 }
 
 function setDate(){
@@ -505,7 +501,7 @@ function noteTemplate(note) {
     
     <div class="button">
     </div>
-    <p>${note.text.substr(0, 70)} ...</p>
+    <p>${note.text.substr(0, 70)}...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
     <i id="tagPre" class="fas fa-tag"></i>
@@ -542,7 +538,7 @@ const favourite = note => {
     updateArrRebuild();
 }
 
-const pushToEditor = (thisDivId) => {
+function pushToEditor(thisDivId) {
     //console.log("Inside push to editor")
     //handle click
 
@@ -595,6 +591,7 @@ const removeNote = id => {
     index = savedNotes.findIndex(x => x.id == id)
     deletedNotes.push(savedNotes[index]);
     savedNotes.splice(index, 1);
+    foundNotes.splice(index, 1);
 
     if (favInput.checked == true) {
         index = favList.findIndex(x => x.id == id)
@@ -606,6 +603,7 @@ const removeNote = id => {
         editorTheme.setAttribute('id', '');
         editor.setText("");
         titleInput.value = "";
+        tagInput.value = "";
     }
     localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
     localStorage.setItem("deletedNotes", JSON.stringify(deletedNotes));

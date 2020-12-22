@@ -122,7 +122,8 @@ aside .filter{
     padding: 4px;
     border-radius: 10px;
     font-size: 12px;
-    margin-right: 5vw;
+    margin-right: 0.1vw;
+    min-width: 9vw;
 }
 .preview-notes > div:hover{
     background-color: var(--hovercolor); 
@@ -142,10 +143,11 @@ aside .filter{
     top: 5px;
     right: 5px;
     color:rgb(124, 124, 124);
-    font-size: 20px !important;
+    font-size: 27px !important;
     border:none;
     background:none;
     outline: none;
+    
 }
 .preview-notes .star:hover{
     font-size: 27px;
@@ -153,6 +155,7 @@ aside .filter{
 }
 .preview-notes .star.starClicked{
     color: orange;
+    
 }
 .preview-notes .trash{
     font-size: 25px;
@@ -244,6 +247,8 @@ width: 100%;
     height: 40px;
     width: 80%;
     display: var(--delhidetop);
+    background-color: var(--primarycolor);
+    color: var(--secondarycolor);
 }
 
 .preview-notes{
@@ -260,8 +265,10 @@ width: 100%;
     font-size: 10px;
     font-weight: bolder;
     color: black;
-
     margin-left: 3.6vw;
+}
+.preview-notes div #preTag{
+    max-width: 90px;
 }
 #show-all-notes:hover{
     background-color: rgb(89, 89, 89);
@@ -346,12 +353,12 @@ nav button{
 }
 /* Print icon */
 .fa-print{
-    font-size: 15px;
+    font-size: 17px;
     padding-right: 10px;
 }
 /* Info icon */
 .fa-info{
-    font-size: 15px;
+    font-size: 17px;
     padding-left: 4px;
     padding-right: 16px;
 }
@@ -387,6 +394,7 @@ nav button, .templates{
     position: relative;
     width: 100%;
     margin: 5px auto;
+    font-size: 15px;
 }
 .clear-lc:hover{
     background-color: #b16161;
@@ -564,6 +572,8 @@ nav i{
     outline-style: none;
     font-family: poppins;
     color: #333333cc;
+    background-color: var(--primarycolor);
+    color: var(--secondarycolor);
 }
 
 #center-all{
@@ -936,13 +946,16 @@ nav i{
     }
 
     input[type='checkbox']{
+        margin: 15px;  /* ändra om preDivDel blir konstig på checkboxen */
         width:20px;
         height:20px;
         outline-style: none;
         cursor: pointer;
+
     }
   
     .deleted-div{
+        
         display: var(--delhide);
         margin-top: 0;
         height: 200px;
@@ -951,6 +964,9 @@ nav i{
         outline-style: none;
         border: none;
         background: none;
+
+        padding: 0.5em;
+        border-radius: 5px;
     }
 
     .deleted-div h3{
@@ -962,14 +978,22 @@ nav i{
     .fa-minus-circle{
         font-size: 1.5rem;
         color: rgba(255, 60, 60, 0.829);
+        padding-right: 0.5vw;
+        padding-top: 0.1vh;
     }
     .fa-recycle{
         font-size: 1.5rem;
         color: rgba(53, 194, 95, 0.829);
+        padding-right: 0.5vw;
+        padding-top: 0.1vh;
+    }
+    .deleted-div button:hover{
+        background-color: rgb(187, 187, 187);
     }
     .fa-caret-square-left{
       /*   font-size: 2em; */
-        color: var(--color2orange);
+        /* color: var(--color2orange); */
+        color: white;
     }
 
     .recyc-del{
@@ -977,6 +1001,10 @@ nav i{
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+
+        margin-top: 0.5vh;
+        margin-bottom: 0.5vh;
+        
     }
     .recyc-del button, i{
         display: flex;
@@ -986,6 +1014,12 @@ nav i{
     .title-input-cont{
         display: flex;
         justify-content: space-between;
+        width: 100%;
+        padding: 0;
+    }
+    .title-input-cont h3{
+        padding-left: 0;
+        margin-left: 0;
     }
 
     .del-all-notes{
@@ -997,24 +1031,45 @@ nav i{
         display: flex;
         align-items: center;
         color: var(--color4blac);
-        font-size: 1.3em;
     }
     .del-all-notes i{
         margin-right: 10px;
+        font-size: 22px;
     }
     
     .del-all-notes button{
-        margin-right: 10px;
-        padding: 4px 15px 4px 15px;
+        /* margin-right: 10px;
         border-radius: 10px;
+        padding: 4px 15px 4px 15px; */
         color: white;
-        background-color: var(--color3grey);
-    }
 
+        padding: 0.55em;
+        margin: 0.8em;
+        font-size: 16px;
+        border-radius: 5px;
+        width: 100%;
+        background-color: rgb(101, 101, 101);
+    }
+     .del-all-notes button:hover{
+         background-color: rgb(85, 85, 85);
+     }
     .no-notes-warning{
         color: rgb(238, 160, 160);
         font-family: poppins;
         font-weight: normal;
     }
+
+    .preDivDel div p{
+        margin: 0;
+        padding: 0;
+        bottom: 5px;
+    }
+
+    .preview-notes .preDivDel{
+        width: 100%;
+        padding: 0;
+        padding-left: 1vw;
+    }
+  
 
    

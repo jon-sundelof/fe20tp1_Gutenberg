@@ -120,14 +120,15 @@
        
 
         <div class="deleted-div">
-            <div class="del-all-notes">
-                <button data-theme="deleteshow" id="delAllNotesBtn"><i class="fas fa-caret-square-left"></i>ALL
-                    NOTES</button>
-            </div>
             <h3>Deleted Notes</h3>
+            <div class="del-all-notes">
+                <button data-theme="deleteshow" id="delAllNotesBtn"><i class="fas fa-caret-square-left"></i>All
+                    notes</button>
+            </div>
+            
             <div class="recyc-del">
-                <button><i class="fas fa-recycle"></i>RESTORE</button>
-                <button><i class="fas fa-minus-circle"></i>DELETE</button>
+                <button><i class="fas fa-recycle" id="restore"></i>Restore</button>
+                <button><i class="fas fa-minus-circle" id="delete-in-deleted-notes"></i>Delete</button>
             </div>
         </div>
         <section class="preview-notes">
@@ -208,7 +209,7 @@
         <div class="tag-container">
             <form>
                 <i class="fas fa-tag"></i>
-                <input placeholder="Tag Name..." spellcheck="false" list="tag-suggestion-datalist" id="tag-input"
+                <input type="text" placeholder="Tag Name..." spellcheck="false" list="tag-suggestion-datalist" id="tag-input"
                     maxlength="13">
                 <datalist id="tag-suggestion-datalist">
                 </datalist>
