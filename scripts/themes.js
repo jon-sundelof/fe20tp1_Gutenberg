@@ -50,12 +50,6 @@ window.addEventListener("click", event => {
 });
 
 
-
-showAllNotes.addEventListener('click', updateArrRebuild);
-showAllNotes.addEventListener('click', () => {
-    showAllNotes.classList.remove("show-tag-btn");
-});
-
 settingsBtn.addEventListener("click", settingsFunc);
 
 // Close the dropdown menu if user clicks outside of it
@@ -142,15 +136,6 @@ function tagFunc() {
             button.setAttribute("id", "dropdown-" + i)
             button.innerHTML += `<i id="nav-tag-dop" class="fas fa-tag"></i> ${removedDup[i].tag}`
             tagBtn.appendChild(button);
-
-
-            /* tagBtn.addEventListener('click', tagSearch); */
-
-          /*   tagBtn.addEventListener('click', (e) => {
-                id = e.target.closest(".tagBtnClass").innerText
-                runTagInSearch(e)       
-            }) */
-            
         }
     }
 }
@@ -166,56 +151,32 @@ window.addEventListener("click", (event) => {
     } 
 }); 
 
-/* =========================== ONUR start ===========================*/
-/* 
-function searchNotes(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
+let tagWind = false;
 
+function searchForTag(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
     return savedNotes.filter(func)
 }
 
-const tagBtnTwo = document.querySelectorAll('.tagBtnClass') 
-
-
-tagBtnTwo.addEventListener("click", (e) => {
-
-    let tagText = e.target.closest(".tagBtnClass").innerHTML;
-
-    if (tagText) {
-        tagList = searchTag(tagText, x => x.tag)
-    } else {
-        tagList = savedNotes;
-    }
-    notePreview.innerHTML = "";
-    buildPreviewWind(tagList);
-
-})
- */
-/* =========================== ONUR slut ===========================*/
-
-/* =========================== Karl + Jon 21 dec START =========================== */
-
-tagListner.addEventListener('click', runTagInSearch);
-
-function runTagInSearch (e){
-   let thisButtonId = e.target.closest('#myTagDown > button').id;
-   let buttonTagText = document.getElementById(thisButtonId).innerText;
+tagListner.addEventListener('click', (e) => {
+    let buttonTagText = e.target.closest('#myTagDown > button').innerText;
   
-   showAllNotes.classList.add("show-tag-btn");
-   showAllNotes.innerHTML = '<i class="far fa-times-circle"></i>' + 'Tag:' + " " + buttonTagText; 
+    showAllNotes.classList.add("show-tag-btn");
+    showAllNotes.innerHTML = '<i id="tag-in-btn" class="fas fa-tag"></i>' + " " + buttonTagText + " " + '<i class="far fa-times-circle"></i>'; 
+ 
+     notePreview.innerHTML = "";
 
-    notePreview.innerHTML = "";
-    console.log(buttonTagText);
-    let foundNotes = searchNotes(buttonTagText);
+     buttonTagText = buttonTagText.trim();
+     foundNotes = searchForTag(buttonTagText);
+     buildPreviewWind(foundNotes); 
+     tagWind = true;
+}); 
 
-    
-    console.log(foundNotes);
-    
-    buildPreviewWind(foundNotes); 
-}
 /**************************************/
-showAllNotes.addEventListener('click', updateArrRebuild);
 showAllNotes.addEventListener('click', () => {
-showAllNotes.classList.remove("show-tag-btn");
-})
+    
+    tagWind = false;
+    updateArrRebuild();
+    showAllNotes.classList.remove("show-tag-btn");
 
-/* =========================== Karl + Jon 21 dec SLUT =========================== */
+
+})

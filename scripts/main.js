@@ -361,19 +361,35 @@ function updateArrRebuild() {
 
     if (favInput.checked == true) {
         buildPreviewWind(favList);
-    } else if (deleted == !true) {
-        buildPreviewWind(savedNotes);
-    } else {
+        console.log('fav')
+    } else if (deleted == true) {
         buildPreviewWindDel(deletedNotes);
+        console.log('del')
+    } else if (tagWind == true) {
+        buildPreviewWind(foundNotes);
+        console.log('tag')
+    } else {
+        buildPreviewWind(savedNotes);
+        console.log('saved')
     }
+
+}
+
+function setDate(){
+    const datum = new Date();
+        
+    let month;
+    switch (datum.getMonth()) { case 0: month = "Jan"; break; case 1: month = "Feb"; break; case 2: month = "March"; break; case 3: month = "April"; break; case 4: month = "May"; break; 
+    case 5: month = "June"; break; case 6: month = "July"; case 7: month = "Aug"; case 8: month = "Sep"; case 9: month = "Oct"; case 10: month = "Nov"; case 11: month = "Dec";} 
+
+    return datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + " " + month + " " + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
 }
 
 
 
 function createNote() {
     if (favInput.checked == false) {
-        const datum = new Date();
-        const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+        const date =  setDate();
 
         titleInput.value = "New Note";
         tagInput.value = "";
@@ -392,8 +408,7 @@ function createNote() {
         editor.setText("");
     }
     else if (favInput.checked == true) {
-        const datum = new Date();
-        const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+        const date = setDate();
 
         titleInput.value = "New Note";
         tagInput.value = "";
@@ -435,10 +450,9 @@ editor.on('editor-change', () => {
     autosave = setTimeout(() => {
         //Checks if the array is empty or if CurrentNoteId is undefined. In those cases it creates a new note. Otherwise it uppdates the current one.
         if (savedNotes.length < 1 && checkIfTrue == false) {
-            const datum = new Date();
-            const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
+            const date = setDate();
 
-            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0);
+            let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents, 0, "");
 
             savedNotes.push(newNote);
             localStorage.setItem("savedNotes", JSON.stringify(savedNotes));
@@ -488,7 +502,7 @@ function noteTemplate(note) {
     <p>${note.text.substr(0, 70)} ...</p>
     <div class="preDivTagCon">
     <p class="pretime">${note.date}</p>
-    <p class="preTag">${note.tag}</p>
+    <p id="preTag">${note.tag}</p>
     </div>
    
     <button class="trash"><i class="fas fa-trash"></i></button>`;
@@ -621,7 +635,8 @@ searchInput.addEventListener('input', e => {
 
         //Här körs searchNotes med sökordet som arg och resultatet o blir variabeln foundNotes. foundNotes är en array med de filtrerade notesen som obj inuti
         let foundNotes = searchNotes(searchedWord);
-
+        
+        console.log(foundNotes);
 
         //map låter dig köra önskad funktion på alla element i en array och returnerar sedan en ny array med "resultatet"
         //Ju lägre siffra desto längre upp i previewfönstret hamnar noten

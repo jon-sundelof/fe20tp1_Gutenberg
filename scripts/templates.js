@@ -31,9 +31,9 @@ const tempBtn = document.querySelector('#myDropdown');
 tempBtn.addEventListener('click', templateClick)
 
 function openTemp(value) {
-    const datum = new Date();
-    const date = datum.getHours() + ":" + ((datum.getMinutes() < 10 ? '0' : '') + datum.getMinutes()) + ' / ' + datum.getFullYear() + '-' + (datum.getMonth() + 1) + '-' + ((datum.getDate() < 10 ? '0' : '') + datum.getDate());
-
+    const date =  setDate();
+    
+    tagInput.value = "";
     titleInput.value = "New template";
     let newNote = new Note(titleInput.value, date, getQuillText, false, getQuillContents);
     savedNotes.push(newNote);
