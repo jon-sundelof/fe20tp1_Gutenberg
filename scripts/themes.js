@@ -151,32 +151,6 @@ window.addEventListener("click", (event) => {
     } 
 }); 
 
-/* =========================== ONUR start ===========================*/
-/* 
-function searchNotes(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
-
-    return savedNotes.filter(func)
-}
-
-const tagBtnTwo = document.querySelectorAll('.tagBtnClass') 
-
-
-tagBtnTwo.addEventListener("click", (e) => {
-
-    let tagText = e.target.closest(".tagBtnClass").innerHTML;
-
-    if (tagText) {
-        tagList = searchTag(tagText, x => x.tag)
-    } else {
-        tagList = savedNotes;
-    }
-    notePreview.innerHTML = "";
-    buildPreviewWind(tagList);
-
-})
- */
-/* =========================== ONUR slut ===========================*/
-
 let tagWind = false;
 
 function searchForTag(str, func = function (note) { return note.tag.toLowerCase().includes(str.toLowerCase()) }) {
@@ -198,7 +172,6 @@ tagListner.addEventListener('click', (e) => {
 }); 
 
 /**************************************/
-/* showAllNotes.addEventListener('click', updateArrRebuild); */
 showAllNotes.addEventListener('click', () => {
     
     tagWind = false;
